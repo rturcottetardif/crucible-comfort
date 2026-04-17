@@ -121,4 +121,25 @@ Primitives
 - Rotational velocity of the fan or noise of the system in time (which one is the primitive, vitesse of the fan i guess, noise is second order effect)
 - The condensation on the pipe with respect to the outside temperature
 
+----
+# Day 2
+
+We are simplifying crucible-comfort. The task is mono. We want to be able to detect when the filters have to be changed. 
+
+So we need to know when the air does flow doesn't flow well anymore through the filter. The primitive is called **Porosity Ratio**.
+
+Let see if the pipeline can get it from engineering specs (engineering language)
+
+
+`claude`
+
+In the Claude CLI
+read CLAUDE.md ---> that makes sure that Claude adheres to the constitution
+/spec
+
+
+
+
+
+
 

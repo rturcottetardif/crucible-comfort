@@ -17,15 +17,79 @@ Updated after: every field test session, every BOM revision, every schematic cha
 
 ## Device Purpose
 
-> [One paragraph. State what the device measures or controls, who or what depends
-> on its output, and the cost of the two failure modes (false positive and false negative).
-> Every hw-advisor suggestion and every attorney argument must be grounded in this
-> statement. Delete this placeholder and write the real purpose before Stage 0.]
+ComfortSense alerts the maintenance team of a commercial packaged rooftop HVAC
+unit when the air filter needs to be replaced. The maintenance team's filter-swap
+decision depends on the alert: if the device fires too early (false positive),
+filters are replaced prematurely, increasing cost to the maintenance company and
+generating environmental waste from discarded filters; if the device fires too
+late or not at all (false negative), an undetected clog damages HVAC components,
+transfers cost to the client, and harms the maintenance company's reputation.
+The hardest scenario is **seasonal regime change**: the inference from indirect
+signals (vibration, acoustic, motor current) to filter pressure drop depends on
+whether the HVAC is in heating or cooling mode — a naive model tuned on one
+regime will misread filter state in the other. The device must perform correctly
+in both heating (winter) and cooling (summer) regimes across Canadian year-round
+rooftop conditions.
+
+**Project target:** Detect the filter-replacement point on a commercial packaged
+rooftop HVAC unit in both heating (winter) and cooling (summer) regimes, using
+indirect sensing only (no in-line pressure sensor).
+
+**Pass/fail threshold:** The alert must fire when filter ΔP reaches
+1.8 × ΔP₀ to 1.9 × ΔP₀ (80–90 % of the clog point, where clog point = 2 × ΔP₀
+and ΔP₀ is the installed-new baseline pressure drop). Validated against a
+reference pressure measurement in both heating and cooling regimes.
 
 **Domain primitives** (traces to Article I):
-1. [Primitive 1] ([unit]) — [one-line physical description]
-2. [Primitive 2] ([unit]) — [one-line physical description]
-3. [Primitive 3] ([unit]) — [optional]
+1. **Filter ΔP** (Pa) — pressure drop across the HVAC filter; inferred indirectly.
+   Measured via: IMU 6-channel (vibration), microphone (acoustic turbulence),
+   CT current (blower motor RMS current).
+2. **HVAC operating regime** (categorical: heating / cooling / off) —
+   thermodynamic mode of the HVAC; conditioning variable for the Filter ΔP
+   inference.
+   Measured via: outside thermometer.
+
+**Operating envelope:**
+- **Normal:** Device mounted on the side of a commercial packaged rooftop HVAC
+  unit housing. Ambient: Canadian year-round (≈ −40 °C to +35 °C air; 0–100 %
+  RH with condensation and freeze-thaw cycling; rooftop surface temp up to
+  ~+60 °C under summer solar loading). Monitoring continuous; result transmission
+  every hour; duty cycle matches HVAC runtime (signals valid only when HVAC is
+  active).
+- **Worst-case:** High wind (rooftop wind shake adds non-HVAC vibration and wind
+  noise to IMU and microphone — algorithm must not mistake wind for fan load);
+  abnormal dust load (wildfire smoke, dust storms → filter ΔP rises on a
+  timescale of hours rather than weeks — algorithm must track rapid-onset
+  clogging). Cold soak, peak heat, ice, and extended runtime deferred to a
+  later envelope revision.
+- **Out-of-scope:** Mounting locations other than the side of the housing (top,
+  indoor, inside-duct); HVAC failure modes other than filter clog — ComfortSense
+  does not detect and must not claim to detect bearing wear, belt slip, coil
+  icing, refrigerant leak, or motor-winding fault.
+
+---
+
+## Signal Inventory
+
+| Signal | Physical quantity | Unit | Normal range | Hard limits | Sample rate | Primitive |
+|--------|-------------------|------|--------------|-------------|-------------|-----------|
+| imu_accel_x | Linear acceleration (X-axis), HVAC housing | g | ±2 g | saturate at ±2 g | 1.66 kHz | P1 |
+| imu_accel_y | Linear acceleration (Y-axis), HVAC housing | g | ±2 g | saturate at ±2 g | 1.66 kHz | P1 |
+| imu_accel_z | Linear acceleration (Z-axis), HVAC housing | g | ±2 g | saturate at ±2 g | 1.66 kHz | P1 |
+| imu_gyro_x  | Angular velocity (X-axis), HVAC housing    | °/s | ±250 dps | saturate at ±250 dps | 1.66 kHz | P1 |
+| imu_gyro_y  | Angular velocity (Y-axis), HVAC housing    | °/s | ±250 dps | saturate at ±250 dps | 1.66 kHz | P1 |
+| imu_gyro_z  | Angular velocity (Z-axis), HVAC housing    | °/s | ±250 dps | saturate at ±250 dps | 1.66 kHz | P1 |
+| microphone  | Acoustic pressure (airflow / blower signature) | dBSPL | 40–70 dBSPL | clip ≥ ~120 dBSPL; silence < 30 dBSPL (disconnect) | 16 kHz | P1 |
+| outside_temp | Outdoor ambient air temperature           | °C  | −30 to +45 °C | fault < −40 °C or > +60 °C; stuck value over long window | 1/60 Hz (≈ 0.0167 Hz) | P2 |
+| ct_current_rms | AC current draw, HVAC blower motor (60 Hz, derived RMS-to-DC) | A RMS | 2–15 A RMS | < 0.3 A (fan off); > 25 A (saturation / stall) | 1 Hz | P1 |
+
+**Primitive key:**
+- **P1** = Filter ΔP
+- **P2** = HVAC operating regime
+
+**Baseline calibration required:** ΔP₀ (installed-new filter baseline) and clean-filter
+vibration/acoustic/current signatures must be empirically established per deployment
+during Stage 1 simulation and Stage 2 HIL.
 
 ---
 

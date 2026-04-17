@@ -240,7 +240,49 @@ Amendment 1 (Domain Primitives) is written here by `/spec collect` after human
 ratification. Subsequent project-specific amendments are added below Amendment 1
 as the project evolves.
 
-> [Amendment 1 will appear here after /spec collect is run and ratified.]
+### Amendment 1 — Domain Primitives (ComfortSense)
+*Traces to: Article I*
+*Status: RATIFIED 2026-04-16*
+
+**Governing rule (one sentence):**
+Every threshold, filter cutoff, FSM transition, and algorithm parameter in this
+project must trace to one of the following domain primitives. A parameter that
+cannot be so traced is a guess and is not permitted.
+
+**Domain primitives:**
+
+1. **Filter ΔP** (Pa) — pressure drop across the HVAC filter. The device alerts
+   when ΔP reaches 1.8 × ΔP₀ to 1.9 × ΔP₀, where ΔP₀ is the installed-new baseline
+   pressure drop. Inferred indirectly from IMU 6-channel vibration, microphone
+   acoustic turbulence, and CT blower-motor RMS current.
+
+2. **HVAC operating regime** (categorical: heating / cooling / off) —
+   thermodynamic mode of the HVAC system; conditioning variable for the
+   Filter ΔP inference. Different regimes yield different ΔP₀ baselines and
+   different signal-to-ΔP mappings. Measured via outside thermometer as a
+   proxy for climatic mode.
+
+**Physical or process justification:**
+ComfortSense is a commercial-rooftop HVAC filter monitor that infers filter ΔP
+indirectly — no in-line pressure sensor is available. The project target requires
+the device to work in both heating (winter) and cooling (summer) regimes; the
+mapping from indirect signals (vibration, acoustic, current) to ΔP is regime-
+dependent. These two primitives — the quantity the device reports (ΔP) and the
+conditioning variable required for correct inference (regime) — are the minimum
+set that both (a) covers every physically observable signal on the device and
+(b) ties every algorithm decision to the pass/fail criterion of
+ΔP ∈ [1.8 × ΔP₀, 1.9 × ΔP₀]. Any additional primitive would expand scope beyond
+filter monitoring.
+
+**Amendment it complements or constrains:**
+Precedes all other Amendments. All subsequent Amendments (Stage Gates, Toolchain
+Alignment, Three-Strike Rule, etc.) must remain consistent with these primitives.
+
+**What happens without it:**
+Thresholds and filter cutoffs are set by intuition or by fitting to available
+data, with no traceable physical basis. Article I cannot be enforced;
+code-reviewer, sw-advisor, hw-advisor, and bill-drafter have no basis for their
+findings.
 
 ---
 
@@ -248,7 +290,7 @@ as the project evolves.
 
 | # | Title | Status | Traces to |
 |---|-------|--------|-----------|
-| 1 | Domain Primitives | NOT YET RATIFIED — run /spec collect | Article I |
+| 1 | Domain Primitives (ComfortSense) | RATIFIED 2026-04-16 | Article I |
 | 2 | Stage Gate Order | PROPOSED | Article I + II |
 | 3 | Toolchain Alignment | PROPOSED | Article II |
 | 4 | Three-Strike Escalation Rule | PROPOSED | Article II |
