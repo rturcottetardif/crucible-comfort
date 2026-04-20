@@ -145,10 +145,7 @@ during Stage 1 simulation and Stage 2 HIL.
 
 | Date | Stage | Test type | Profile / scenario | Key measurement | Pass/Fail | Notes |
 |------|-------|-----------|-------------------|-----------------|-----------|-------|
-| YYYY-MM-DD | 0 | HIL smoke | USB serial | [e.g., counter=100 ✓] | PASS | — |
-| YYYY-MM-DD | 0 | HIL smoke | IMU I2C | [e.g., WHO_AM_I=0x6A ✓] | PASS | — |
-| YYYY-MM-DD | 1 | Simulation | [profile] | [e.g., steps=100, SI=2.1%] | PASS | — |
-| YYYY-MM-DD | 2 | Firmware | [scenario] | [e.g., SESSION_END in 18s] | PASS | — |
+| 2026-04-20 | Pre-Stage 0 | Toolchain bring-up (Option A from /toolchain init session) | `/tmp/xiao_smoke/xiao_smoke.ino` — Serial + tick loop, no IMU, no PDM | Compile: 43044 B flash (5%), 7144 B RAM (3%). Upload: "Device programmed", port re-enumerated. UART at 115200 baud: 7 consecutive `tick <ms>` lines at 1s intervals, counter 74000→80000 monotonic, no boot-loop pattern. | PASS | Closes E5. Toolchain path validated: `arduino-cli compile --fqbn Seeeduino:nrf52:xiaonRF52840Sense` → `.elf`/`.hex`/`.zip` at `build/arduino/xiaonRF52840Sense/` → `arduino-cli upload` via adafruit-nrfutil DFU over CDC → clean run. Case 1 Condition 1a (`Adafruit_TinyUSB.h` include) verified required: compile without it failed with `undefined reference to 'Serial'`; compile with it succeeded. Stage 0 smoke battery (counter, IMU I2C, algo USB, algo BLE) not yet run — this is only the toolchain-path smoke test. |
 
 ### Signal measurements (evidence pool)
 
@@ -168,7 +165,7 @@ during Stage 1 simulation and Stage 2 HIL.
 
 | Date observed | Description | Stage | Status |
 |---------------|-------------|-------|--------|
-| Pre-2026-04-19 (exact date unknown) | E5 — Boot-loop anomaly on XIAO nRF52840 Sense under PlatformIO. A prior `pio run` + flash attempt on this board produced corrupted firmware; board entered reboot loop. Colleague resolved the issue by unknown means; resolution not recorded. Failure mode consistent with incorrect memory map, linker script, or bootloader offset from a mismatched platform/board definition (specifically: `xiaoblesense` board ID not present in stock `nordicnrf52` platform — confirmed by `pio boards nrf52` on 2026-04-19). | Spec Gate → Stage 0 pre-flash | OPEN — superseded by Case 1 ruling (2026-04-19). PlatformIO blocked for this project. Mark resolved only after first clean flash under arduino-cli succeeds with no boot-loop recurrence on `/dev/cu.usbmodem14301` at 115200 baud. |
+| Pre-2026-04-19 (exact date unknown) | E5 — Boot-loop anomaly on XIAO nRF52840 Sense under PlatformIO. A prior `pio run` + flash attempt on this board produced corrupted firmware; board entered reboot loop. Colleague resolved the issue by unknown means; resolution not recorded. Failure mode consistent with incorrect memory map, linker script, or bootloader offset from a mismatched platform/board definition (specifically: `xiaoblesense` board ID not present in stock `nordicnrf52` platform — confirmed by `pio boards nrf52` on 2026-04-19). | Spec Gate → Stage 0 pre-flash | **RESOLVED 2026-04-20.** First flash under the enacted arduino-cli toolchain (Seeeduino:nrf52 v1.1.12, FQBN `Seeeduino:nrf52:xiaonRF52840Sense`) succeeded: `arduino-cli upload` via adafruit-nrfutil DFU over CDC completed with "Device programmed"; port re-enumerated cleanly at `/dev/cu.usbmodem14301`; firmware ran stably (7 consecutive 1-second tick events captured 74–80s after upload, monotonic counter, no reset pattern). Closure confirms Case 1 + Case 1.1 ruling: the prior PlatformIO boot-loop was specific to the PlatformIO platform class (now blocked) and does not affect the arduino-cli path. See Test Results Field / HIL test log entry below. |
 
 ---
 

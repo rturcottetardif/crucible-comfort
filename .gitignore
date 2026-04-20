@@ -3,3 +3,6 @@ __pycache__/
 *.pyc
 .env
 .DS_Store
+
+# Build artifacts — Case 1 Condition 7 canonical path
+build/

@@ -25,6 +25,7 @@ matplotlib>=3.7.0          # all plot primitives (Agg backend — headless safe)
 # -----------------------------------------------------------------------------
 
 bleak>=0.21.0              # BLE UART console (NUS) and GATT client
+pyserial>=3.5              # CDC serial capture (miniterm fallback, uart-reader scripts)
 
 # -----------------------------------------------------------------------------
 # PlatformIO — firmware build and flash
