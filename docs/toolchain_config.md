@@ -9,9 +9,14 @@
 ## Lock Status
 
 ```
-Status:  UNLOCKED
-Locked:  —
-Evidence: —
+Status:   LOCKED
+Locked:   2026-04-20 at Stage 0 closeout
+Evidence: Gates 0.1 + 0.2 + 0.3 + 0.4 PASS — see docs/device_context.md Test Results
+            Field / HIL test log rows dated 2026-04-20.
+          Police audit CLEAN across 7 Stage 0 commits (e5b97ff → ec03141).
+          Stage-compactor freeze at commit 80f2e41 — Case 1, Case 1.1, and
+            4 Standing Order Records moved to Frozen Precedents.
+          Unlock requires a new Judicial Hearing per Amendment 3.
 ```
 
 ---
@@ -182,7 +187,7 @@ arduino-cli lib install "arduinoFFT"@<version>
 
 ```
 Spec Gate  — Device Specification:  CLOSED 2026-04-16 (Amendment 1 ratified)
-Stage 0    — HIL Toolchain Lock:    OPEN 2026-04-20 — Gates 0.1 + 0.2 PASS; 0.3/0.4 pending
+Stage 0    — HIL Toolchain Lock:    CLOSED 2026-04-20 — all four gates PASS, toolchain LOCKED
 Stage 1    — Simulation:            NOT STARTED
 Stage 2    — Firmware Integration:  NOT STARTED
 Stage 3    — Field Test:            NOT STARTED
