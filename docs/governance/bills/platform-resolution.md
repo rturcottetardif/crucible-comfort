@@ -5,7 +5,7 @@ Proposed by:   Roxanne Turcotte (human engineer) — drafted by bill-drafter age
 Date drafted:  2026-04-19
 Change type:   firmware (toolchain configuration)
 Branch:        toolchain/platform-resolution-xiaoblesense
-Status:        DRAFT — awaiting /judicial hear
+Status:        ENACTED — Case 1 ruling 2026-04-19, amended by Case 1.1 2026-04-20
 ```
 
 ---

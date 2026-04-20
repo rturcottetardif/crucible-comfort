@@ -78,6 +78,49 @@ Live entries accumulate full argument text. Frozen entries (after stage closeout
 
 ---
 
+### Standing Order Record — Ratification date convention (2026-04-20)
+
+For amendments ratified in the /toolchain init → Case 1 session sequence, the
+ratification date stated in `docs/governance/amendments.md` ("RATIFIED YYYY-MM-DD")
+refers to the Justice's act of ratification concurrent with the ruling or explicit
+command, NOT the date of the git commit that recorded the state change. This is
+the governing Crucible convention for this project — the amendment is ratified
+when the Justice says "ratify" (or enacts a ruling that ratifies), and the commit
+is the durable record of that act.
+
+Applies to:
+- Amendment 3 — ratified 2026-04-19 concurrent with Case 1 ruling (commit date 2026-04-20)
+- Amendments 2, 4 — ratified 2026-04-20 by explicit Justice command (commit date 2026-04-20)
+
+This note closes Police Warning W2 from the /session 0 pre-audit (2026-04-20).
+
+---
+
+### Standing Order Record — agent-updater execution (2026-04-20)
+
+Under Case 1 Condition 9, `agent-updater` proposed agent-file edits to propagate
+the PlatformIO → arduino-cli scope change. Each proposed edit was reviewed
+individually and approved by the Justice before apply (per Article II).
+
+**Approved edits (applied in commit 0ab8f88):**
+
+1. `CLAUDE.md` — `pio` → `arduino-cli` (2 occurrences: agent roster + Standing Orders list).
+2. `.claude/agents/package-manager.md` — Standing Order install command + required-tools check updated; explicit "pio BLOCKED" note added.
+3. `.claude/agents/simulator-operator.md` — ELF rebuild bash block replaced with `arduino-cli compile --build-path ...`.
+4. `.claude/agents/regression-runner.md` — ELF path clarifying note added (points at `build/arduino/xiaonRF52840Sense/<sketch>.ino.elf`).
+5. `.claude/agents/uart-reader.md` — Conduct Rule 7 added (serial monitor = `arduino-cli monitor`; do NOT use `pio device monitor`).
+6. `.claude/agents/code-reviewer.md` — new `SKETCH-HEADER-VIOLATION` check for Case 1.1 Condition 1a (`Adafruit_TinyUSB.h` include); counter + stage-gate-blocker entries added.
+
+**Plus one out-of-scope doc fix applied by Justice (same commit):**
+
+7. `docs/toolchain_config.md` — stale "Amendment 3 currently PROPOSED" Constitutional References note corrected to "RATIFIED 2026-04-19".
+
+All 7 edits applied on branch `toolchain/platform-resolution-xiaoblesense`, commit `0ab8f88`.
+
+This note closes Police Warning W3 from the /session 0 pre-audit (2026-04-20).
+
+---
+
 ## Frozen Precedents
 
 *(Populated by stage-compactor at each stage gate.)*
