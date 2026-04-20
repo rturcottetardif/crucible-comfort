@@ -168,7 +168,7 @@ during Stage 1 simulation and Stage 2 HIL.
 
 | Date observed | Description | Stage | Status |
 |---------------|-------------|-------|--------|
-| YYYY-MM-DD | [what was seen] | [N] | [open / investigating / resolved YYYY-MM-DD] |
+| Pre-2026-04-19 (exact date unknown) | E5 — Boot-loop anomaly on XIAO nRF52840 Sense under PlatformIO. A prior `pio run` + flash attempt on this board produced corrupted firmware; board entered reboot loop. Colleague resolved the issue by unknown means; resolution not recorded. Failure mode consistent with incorrect memory map, linker script, or bootloader offset from a mismatched platform/board definition (specifically: `xiaoblesense` board ID not present in stock `nordicnrf52` platform — confirmed by `pio boards nrf52` on 2026-04-19). | Spec Gate → Stage 0 pre-flash | OPEN — superseded by Case 1 ruling (2026-04-19). PlatformIO blocked for this project. Mark resolved only after first clean flash under arduino-cli succeeds with no boot-loop recurrence on `/dev/cu.usbmodem14301` at 115200 baud. |
 
 ---
 
@@ -180,8 +180,7 @@ during Stage 1 simulation and Stage 2 HIL.
 
 | Date | Event | Impact | Action taken |
 |------|-------|--------|--------------|
-| YYYY-MM-DD | [e.g., Rev A board received] | — | [toolchain init run] |
-| YYYY-MM-DD | [e.g., I2C pullup too weak — 10kΩ → 4.7kΩ] | [IMU lost comms at 400kHz] | [BOM updated] |
+| 2026-04-19 | Seeed XIAO nRF52840 Sense (SKU 102010469) enumerated via USB-C on macOS 24.6.0. `pio device list` output: port `/dev/cu.usbmodem14301`, VID:PID `2886:8045`, description "XIAO nRF52840 Sense". | Board present and identified by OS — hardware is not the failure point for E5 boot-loop (cited in Case 1). | `/toolchain init` completed. Case 1 hearing (PlatformIO vs arduino-cli) ruled for Position B — arduino-cli + Seeed mbed core. |
 
 ---
 

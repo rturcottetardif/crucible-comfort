@@ -41,7 +41,7 @@ not a debugging tool.
 
 ### Amendment 3 — Toolchain Alignment
 *Traces to: Article II*
-*Status: PROPOSED — ratify by removing this line*
+*Status: RATIFIED 2026-04-19 (concurrent with Case 1 — see docs/governance/case_law.md)*
 
 Every agent working on this project must operate within the toolchain that is currently
 active and recorded in `docs/toolchain_config.md`. No agent may introduce a new
@@ -292,7 +292,7 @@ findings.
 |---|-------|--------|-----------|
 | 1 | Domain Primitives (ComfortSense) | RATIFIED 2026-04-16 | Article I |
 | 2 | Stage Gate Order | PROPOSED | Article I + II |
-| 3 | Toolchain Alignment | PROPOSED | Article II |
+| 3 | Toolchain Alignment | RATIFIED 2026-04-19 | Article II |
 | 4 | Three-Strike Escalation Rule | PROPOSED | Article II |
 | 5 | Simulation is the Hardware Proxy | PROPOSED | Article I + II |
 | 6 | Signal Plot Mandate | PROPOSED | Article I + II |
