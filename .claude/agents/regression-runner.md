@@ -39,7 +39,9 @@ A passing matrix is necessary but not sufficient for gate advance — the Justic
    - Amendment 2: stage-gate pass criteria
    - Amendment 6: whether signal plots are mandated for this run
 3. `docs/toolchain_config.md`
-   - Active firmware ELF path
+   - Active firmware ELF path — read from `## Active Firmware Toolchain` section,
+     Build line: `build/arduino/xiaonRF52840Sense/<sketch>.ino.elf`
+     (PlatformIO `.pio/build/<env>/firmware.elf` is blocked — Case 1 ruling 2026-04-19)
    - Signal model path (for simulator-operator)
 
 ---

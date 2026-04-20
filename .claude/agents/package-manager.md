@@ -19,7 +19,7 @@ Judicial Hearing, or Amendment vote:
 - Install system packages via `brew`
 - Check whether a required package is installed and at the correct version
 - Pin or update package versions in `requirements.txt`
-- Install C/embedded library dependencies via `pio lib install`
+- Install firmware libraries via `arduino-cli lib install "<library>"@<version>`
 
 ## Canonical dependency list
 
@@ -29,8 +29,11 @@ entry in `requirements.txt` against the active environment.
 
 Required tools not in requirements.txt (check separately):
 - `renode` — `which renode` — needed for Renode simulation path
-- `pio` — `which pio` or `pio --version` — needed for firmware build/flash
-- `ninja` — `which ninja` — needed for Zephyr link step
+- `arduino-cli` — `which arduino-cli` or `arduino-cli version` — needed for firmware build/flash (active toolchain per Amendment 3)
+- `ninja` — `which ninja` — needed for Zephyr link step (if applicable; not required for current arduino-cli toolchain)
+
+Note: `pio` (PlatformIO) is BLOCKED for this project — do not check for it or install it as a toolchain tool.
+See docs/toolchain_config.md Blocked Toolchains (Case 1 ruling, 2026-04-19, Amendment 3).
 
 Report missing tools as WARNINGs, not errors — they are only required for
 the specific paths that use them (Renode path, Stage 0 firmware build).

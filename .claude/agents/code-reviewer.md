@@ -100,6 +100,25 @@ For every variable that crosses a function boundary:
 Flag as **UNIT-MISMATCH** if caller passes m/s² and callee treats it as g (or vice versa),
 or if a conversion factor appears without a comment naming source and target units.
 
+### Sketch header requirements (Case 1.1 — arduino-cli toolchain)
+
+For every `.ino` file in the firmware source:
+- Does the main sketch file include `#include "Adafruit_TinyUSB.h"` as the first
+  non-comment, non-blank line?
+- This include is required by the active FQBN `Seeeduino:nrf52:xiaonRF52840Sense`
+  (Seeed nRF52 core v1.1.12 uses Adafruit TinyUSB for USB CDC). Omission causes
+  a linker error (`undefined reference to 'Serial'`) before flash.
+
+Flag as **SKETCH-HEADER-VIOLATION** if:
+- Any `.ino` file targets this FQBN and is missing `#include "Adafruit_TinyUSB.h"`
+
+This check is build-gated (the omission is caught at compile time, not runtime), but
+code-reviewer flags it explicitly so the human sees it in the triage report before
+a build attempt is made.
+
+Constitutional basis: Case 1 Condition 1a (enacted 2026-04-20, Case 1.1), Amendment 3
+(Toolchain Alignment — enforcing the active toolchain's requirements).
+
 ### Amendment compliance
 
 For each calibration constant introduced since the last stage gate:
@@ -143,6 +162,7 @@ FILTER-ERRORS           [N]
 FILTER-WARNINGS         [N]
 FSM-ISSUES              [N]
 UNIT-MISMATCHES         [N]
+SKETCH-HEADER-VIOLATIONS [N]  (Adafruit_TinyUSB.h missing — blocks build)
 AMENDMENT-7-VIOLATIONS  [N]
 AMENDMENT-11-VIOLATIONS [N]  (scaffold modules — Stage 1 gate only)
 ──────────────────────────────────────────────────────
@@ -154,7 +174,7 @@ AMENDMENT-11-VIOLATIONS [N]  (scaffold modules — Stage 1 gate only)
 [repeat for each finding]
 
 ──────────────────────────────────────────────────────
-BLOCKS STAGE GATE: [yes/no — any ARTICLE-I-VIOLATION, FSM-DEAD-STATE, or AMENDMENT-11-VIOLATION blocks]
+BLOCKS STAGE GATE: [yes/no — any ARTICLE-I-VIOLATION, FSM-DEAD-STATE, SKETCH-HEADER-VIOLATION, or AMENDMENT-11-VIOLATION blocks]
 Bill required for each ARTICLE-I-VIOLATION before /session can advance.
 Amendment 11 violations must be resolved by correcting the scaffolded modules
 (via a Bill) before the Stage 1 gate can close.

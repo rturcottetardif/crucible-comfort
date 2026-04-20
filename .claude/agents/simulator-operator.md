@@ -215,10 +215,16 @@ Pass criteria: [from project's stage-gate Amendment]
 ## ELF rebuild (Path B — on invalid ELF)
 
 ```bash
-pio run -e <sim_env>
-ninja -C .pio/build/<sim_env> zephyr/zephyr.elf
+# Active toolchain: arduino-cli (Amendment 3 — PlatformIO blocked, Case 1 ruling 2026-04-19)
+arduino-cli compile --fqbn Seeeduino:nrf52:xiaonRF52840Sense \
+  --build-path build/arduino/xiaonRF52840Sense/ <sketch_dir>
+# ELF produced at: build/arduino/xiaonRF52840Sense/<sketch>.ino.elf
 ```
 After rebuild: re-run ELF validation. If still invalid → fall back to Path A.
+Note: `.pio/build/<env>/firmware.elf` path is no longer valid — PlatformIO is blocked.
+The RenoneBridge ELF path adaptation (Case 1 Condition 7) must point to the arduino-cli
+build path above. A follow-up Bill is pending to update crucible.sim.renode.RenoneBridge
+formally; until then, use a documented hand-edit in project-local src/ only.
 
 ---
 

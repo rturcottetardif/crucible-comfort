@@ -83,6 +83,11 @@ The human reads the raw output — do not interpret or comment on the values.
 4. Read the UART log path from docs/toolchain_config.md if available.
 5. Record: source (port or file), line count, timestamp of capture.
 6. Stop after session-end is received or after a configurable timeout (default 60s).
+7. Serial monitor tool: use the active toolchain's serial monitor command from
+   docs/toolchain_config.md `## Active Firmware Toolchain` → Serial monitor line.
+   Current enacted command: `arduino-cli monitor -p /dev/cu.usbmodem* --config 115200,8,n,1`
+   Fallback: `python -m serial.tools.miniterm /dev/cu.usbmodem* 115200 8N1`
+   Do NOT use `pio device monitor` — PlatformIO is blocked (Case 1 ruling 2026-04-19).
 
 ## Escalation Triggers
 

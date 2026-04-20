@@ -98,7 +98,7 @@ hard stop.
 | `code-reviewer` | Article I traceability, FSM integrity, filter chain, unit checks |
 | `doc-reviewer` | Documentation completeness, staleness, cross-doc consistency |
 | `constitution-auditor` | Governance record consistency (amendments vs case law) |
-| `package-manager` | Python/brew/pio dependency management |
+| `package-manager` | Python/brew/arduino-cli dependency management |
 | `stage-compactor` | Freezes and compacts case law at each stage gate |
 | `agent-updater` | Propagates Amendment/Bill changes to affected agent files |
 
@@ -148,7 +148,7 @@ hard stop.
 These are Bureaucracy Standing Orders — pre-approved, no human decision required:
 
 - Build firmware from existing source using the active toolchain
-- Install, update, or pin Python/brew/pio dependencies
+- Install, update, or pin Python/brew/arduino-cli dependencies
 - Run simulation profiles against existing firmware and signal models
 - Generate signal diagnostic plots
 - Capture and print UART output
