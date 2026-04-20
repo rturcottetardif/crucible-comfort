@@ -121,6 +121,24 @@ This note closes Police Warning W3 from the /session 0 pre-audit (2026-04-20).
 
 ---
 
+### Standing Order Record — Police Warning W-Gate0.3-A1 acknowledged (2026-04-20)
+
+Police pre-audit at /session 0 resumption (Stage 0 OPEN, Gates 0.1+0.2 PASS)
+flagged a WARNING on `firmware/stage0_algo_usb/stage0_algo_usb.ino` line 37:
+`REPORT_PERIOD_MS = 500` lacked a primitive or practical-basis citation while
+the other three constants in the sketch cited [S2 Table 3] or LSM6DS3 ODR.
+
+Justice acknowledged the warning and directed a one-line inline comment noting
+the practical basis (2 Hz emission sufficient for ~10 s Gate 0.3 observation
+window; no P1/P2 detection logic — Stage 0 liveness only). Edit applied on the
+same session. No Bill required — the constant is a UART emission cadence in a
+no-threshold liveness smoke test, consistent with the sketch header's Article I
+note that "no thresholds are introduced."
+
+This note closes Police Warning W-Gate0.3-A1. Session proceeded to Gate 0.3.
+
+---
+
 ## Frozen Precedents
 
 *(Populated by stage-compactor at each stage gate.)*
