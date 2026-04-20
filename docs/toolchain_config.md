@@ -141,7 +141,7 @@ session_end_marker: SESSION_END
 
 | Library | Version | Source | Purpose | Known issues |
 |---------|---------|--------|---------|--------------|
-| Seeed_Arduino_LSM6DS3 | TBD — pin at first arduino-cli compile | https://github.com/Seeed-Studio/Seeed_Arduino_LSM6DS3 | LSM6DS3TR-C IMU driver (accel + gyro) for P1 (Filter ΔP inference via vibration) | `setBitOrder()` removed on `ARDUINO_ARCH_MBED` — patch LSM6DS3.cpp if compile fails |
+| Seeed Arduino LSM6DS3 | 2.0.5 (pinned 2026-04-20 at Gate 0.2 PASS) | Arduino Library Manager (Seeed Studio) — https://github.com/Seeed-Studio/Seeed_Arduino_LSM6DS3 | LSM6DS3TR-C IMU driver (accel + gyro) for P1 (Filter ΔP inference via vibration). Verified at Gate 0.2: `imu.begin()` returns 0, `WHO_AM_I=0x6A`, accel magnitude matches gravity ✓. | Known issue on `ARDUINO_ARCH_MBED` (patch LSM6DS3.cpp `setBitOrder()`) — does NOT apply under `Seeeduino:nrf52` v1.1.12 active core (non-mbed). Install: `arduino-cli lib install "Seeed Arduino LSM6DS3"@2.0.5` |
 | OneWire | TBD — pin at first arduino-cli compile | Arduino Library Manager (Paul Stoffregen) | DS18B20 OneWire bus protocol for `outside_temp` (P2 regime proxy) | — |
 | DallasTemperature | TBD — pin at first arduino-cli compile | Arduino Library Manager (Miles Burton) | DS18B20 high-level read API | Depends on OneWire — pin both to compatible versions |
 | arduinoFFT | TBD — pin at first arduino-cli compile | Arduino Library Manager (Enrique Condes) | Spectral analysis for IMU / mic — optional, include only if on-device FFT chosen | Deferred decision: could run FFT host-side instead |
@@ -182,7 +182,7 @@ arduino-cli lib install "arduinoFFT"@<version>
 
 ```
 Spec Gate  — Device Specification:  CLOSED 2026-04-16 (Amendment 1 ratified)
-Stage 0    — HIL Toolchain Lock:    NOT STARTED
+Stage 0    — HIL Toolchain Lock:    OPEN 2026-04-20 — Gates 0.1 + 0.2 PASS; 0.3/0.4 pending
 Stage 1    — Simulation:            NOT STARTED
 Stage 2    — Firmware Integration:  NOT STARTED
 Stage 3    — Field Test:            NOT STARTED
