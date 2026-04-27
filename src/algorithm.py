@@ -1,7 +1,8 @@
 """ComfortSense algorithm — Python model.
 
-Implements src/algorithm.py per Bill 2-A (ENACTED 2026-04-27, Case 3) and
-Bill 2-B (ENACTED 2026-04-27, Case 4).
+Implements src/algorithm.py per Bill 2-A (ENACTED 2026-04-27, Case 3),
+Bill 2-B (ENACTED 2026-04-27, Case 4), and
+Bill 2-D (ENACTED 2026-04-27, Case 5).
 Replaces the prior NotImplementedError stub with a regime-conditioned
 filter ΔP/ΔP₀ inference using the inverse of Bill 1's signal-model
 forward physics (Case 2, 2026-04-27).
@@ -19,7 +20,8 @@ Constitutional grounding:
   Amendment 1 — outputs filter_dp_ratio (P1) and hvac_regime (P2).
   Amendment 7 + Case 2 — algorithm-calibration class is subject to the
     one-per-Bill ceiling. Bill 2-A introduced T_COLD_SHOULDER; Bill 2-B
-    introduces T_WARM_SHOULDER. Proxy-inversion parameters are imports
+    introduced T_WARM_SHOULDER; Bill 2-D introduces W_VIB — the physics-
+    derived vibration fusion weight. Proxy-inversion parameters are imports
     from src/signals.py (already enacted under Bill 1 / Case 2).
   Amendment 11 — algorithm.py is excluded from the frozen scaffold trio
     per First Scaffold Authorization SOR (2026-04-27).
@@ -65,6 +67,39 @@ T_COLD_SHOULDER = 5.0  # °C — traces to A1 P2; conservative heating upper edg
 # Value: 15.0 °C.
 # Traces to: Amendment 1 primitive P2 (outside_temp is the regime proxy).
 T_WARM_SHOULDER = 15.0  # °C — traces to A1 P2; conservative cooling lower edge
+
+# W_VIB — derived from P1 (Filter ΔP).
+# Physical derivation: minimum-variance (inverse-variance) combination of two
+#   independent Gaussian proxy estimates for ΔP/ΔP₀. The optimal weight on
+#   the vibration proxy is W_VIB = σ_ct² / (σ_vib² + σ_ct²), where σ_vib
+#   and σ_ct are the standard deviations of the dp_ratio estimation error
+#   from each proxy over a 1-second decision window.
+#
+#   σ_ct is dominated by the 0.05 A Gaussian noise on ct_current_rms
+#   (src/signals.py) sampled at 1 Hz — N_ct = 1 sample per 1-sec window.
+#   Propagated through the CT inversion: σ_ct = σ_ct_current / (I0 × BETA).
+#     Heating: σ_ct_H = 0.05 / (4.0 × 0.12) = 0.1042
+#     Cooling: σ_ct_C = 0.05 / (9.0 × 0.12) = 0.04630
+#
+#   σ_vib is dominated by SIGMA_NOISE_G = 0.002 g averaged over N_imu = 1660
+#   samples per 1-sec window. With ALPHA = 1:
+#     σ_rms_ac ≈ SIGMA_NOISE_G / √(2 × N_imu) = 0.002 / √(3320) ≈ 3.47e-5 g
+#     σ_vib   = σ_rms_ac / (A_FUND_CLEAN × RMS_HARMONIC_FACTOR)
+#             = 3.47e-5 / (0.05 × 0.7546) ≈ 9.2e-4
+#
+#   Inverse-variance weights:
+#     W_VIB_H = 0.1042²  / ((9.2e-4)² + 0.1042²)  ≈ 0.99992
+#     W_VIB_C = 0.04630² / ((9.2e-4)² + 0.04630²) ≈ 0.99961
+#   Difference (3.1e-4) is sub-noise-floor relative to SIGMA_NOISE_G's
+#   one-significant-figure precision. Regime split not warranted.
+#
+#   W_VIB = 0.9999 adopted (mid-point at four significant figures). The
+#   vibration proxy averages 1660 samples per 1-sec window vs the CT
+#   proxy's 1 sample, so the minimum-variance estimator is dominated by
+#   vibration. Falsifiable Stage 2 / Stage 3 prediction.
+# Value: 0.9999 (dimensionless).
+# Traces to: Amendment 1 primitive P1 (Filter ΔP / ΔP₀ is the fused output).
+W_VIB = 0.9999  # dimensionless — traces to A1 P1; min-variance vibration weight
 
 
 def run(samples) -> dict[str, Any]:
@@ -144,12 +179,14 @@ def run(samples) -> dict[str, Any]:
         ct_mean = float("nan")
         dp_ratio_ct = float("nan")
 
-    # Step F — provisional fusion. 0.5 = symmetric null hypothesis on relative
-    # proxy reliability, replaced by Bill 2-D's W_VIB. Traces to A1 P1.
+    # Step F — physics-derived fusion (Bill 2-D). W_VIB = minimum-variance
+    # (inverse-variance) weight on the vibration proxy, derived from
+    # σ_ct² / (σ_vib² + σ_ct²) using Bill 1 forward-model parameters and
+    # Signal Inventory noise specifications. Traces to A1 P1.
     if np.isnan(dp_ratio_ct):
-        dp_ratio_combined = dp_ratio_vib  # vibration-only — traces to A1 P1
+        dp_ratio_combined = dp_ratio_vib  # vibration-only path unchanged — traces to A1 P1
     else:
-        dp_ratio_combined = 0.5 * dp_ratio_vib + 0.5 * dp_ratio_ct  # null fusion — traces to A1 P1
+        dp_ratio_combined = W_VIB * dp_ratio_vib + (1.0 - W_VIB) * dp_ratio_ct  # traces to A1 P1
 
     # Step G — alert per Amendment 1 alert window low edge (1.8). Primitive
     # boundary stated in Amendment 1; not a new algorithm-calibration constant.
