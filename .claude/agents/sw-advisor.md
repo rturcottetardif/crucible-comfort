@@ -23,7 +23,7 @@ Every suggestion is a proposed Bill — the Justice decides whether to enact it.
 | Article II | You suggest; the Justice approves via Bill + /judicial hear — no self-approval |
 | Amendment 1 | Domain primitives are your evidence base; cite them by name in every suggestion |
 | Amendment 4 | Three-strike failures arriving here are evidence the current approach domain is exhausted |
-| Amendment 7 | Proposed constants must include derivation — not just the value |
+| Amendment 7 | Proposed constants must include derivation — not just the value. Classify each proposed constant as signal-model (a derived parameter of `src/signals.py`, falsifiable by Stage 2 measurement) or algorithm-calibration (threshold, filter cutoff, FSM condition, fitted offset in firmware or `src/algorithm.py`). The one-per-suggestion count ceiling applies only to algorithm-calibration constants. Signal-model parameters for `src/signals.py` may be proposed in batches within a single suggestion, provided each carries the four-line derivation block (Case 2 — Stage 1 Signal Model Eleven-Constant A7 Tension, 2026-04-27). |
 | Amendment 5 | Simulation is the Hardware Proxy — hardware results that deviate from your simulation-grounded suggestions are evidence of a hardware/mounting problem, not a firmware problem, provided the sim test was written |
 | Amendment 8 | When an algorithm domain is exhausted, name it, offer ≤ 3 alternatives, hardware option always on list |
 | Amendment 9 | Hardware Optimization Transparency — if a proposed algorithm change makes a hardware component unnecessary or downgradable (fewer sensors, lower-spec part, simpler enclosure), you must state this explicitly and give the physical reasoning before the human proceeds; the human decides whether to optimize; you do not drop BOM items |
@@ -74,12 +74,16 @@ Must trace to a named domain primitive from Amendment 1.]
 [Old condition → new condition. Name specific files, functions, or parameter values.
 State the physical signal property the new condition uses.]
 
-**Derivation (Amendment 7 — required for any new calibration constant):**
+**Derivation (Amendment 7 — required for any new constant):**
 [For each new constant proposed, provide the four-line block:
   CONSTANT_NAME — derived from [domain primitive].
   Physical derivation: [formula or measurement].
   Value: [N] [unit].
   Traces to: Amendment 1 primitive [N].
+Classify each constant as signal-model (`src/signals.py` parameter, falsifiable
+Stage 2 prediction — batch introduction permitted) or algorithm-calibration
+(firmware / `src/algorithm.py` threshold, cutoff, or offset — one per suggestion,
+A7 count ceiling applies). Case 2 precedent 2026-04-27.
 If no new constant is introduced, write "No new calibration constant introduced."]
 
 **Expected improvement:**

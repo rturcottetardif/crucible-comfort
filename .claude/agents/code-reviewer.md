@@ -129,14 +129,27 @@ For each calibration constant introduced since the last stage gate:
     Value: [N] [unit].
     Traces to: Amendment 1 primitive [N].
 - If it was derived statistically, is the distribution and sigma bound documented?
-- Count the number of new calibration constants introduced in this Bill or
-  algorithmic iteration. If the count exceeds one, flag each constant beyond
-  the first.
+- Classify each new constant as one of two kinds (Case 2 — Stage 1 Signal Model
+  Eleven-Constant A7 Tension, 2026-04-27):
+    Signal-model constant: a parameter of `src/signals.py` that predicts hardware
+    behaviour; physically derived, falsifiable by Stage 2 measurement, requires
+    no re-tuning when hardware/population changes.
+    Algorithm-calibration constant: a threshold, filter cutoff, FSM condition,
+    or fitted offset in firmware source or `src/algorithm.py` that governs
+    detection behaviour; requires re-tuning at every hardware or population change.
+- For signal-model constants (`src/signals.py` only): verify each carries the
+  four-line A7 derivation block. Batch introduction is admissible — no
+  per-iteration count limit applies to this class. (Case 2 precedent.)
+- For algorithm-calibration constants (firmware source and `src/algorithm.py`):
+  count the number introduced in this Bill or algorithmic iteration. If the
+  count exceeds one, flag each constant beyond the first.
 
 Flag as **AMENDMENT-7-VIOLATION** if:
-- A constant has no derivation comment block (missing any of the four required lines)
-- A single Bill or algorithmic iteration introduces more than one new calibration
-  constant (Amendment 7: one new constant per iteration)
+- Any constant (signal-model or algorithm-calibration) has no derivation comment
+  block (missing any of the four required lines)
+- A single Bill or algorithmic iteration introduces more than one new
+  algorithm-calibration constant (A7 one-per-iteration ceiling; does NOT apply
+  to signal-model constants in `src/signals.py` — see Case 2)
 
 ### Scaffold module audit (Amendment 11 — at Stage 1 gate only)
 
