@@ -133,6 +133,21 @@ authorizing it.
 
 ---
 
+### Case 4: Bill 2-B — Regime Classifier Warm Shoulder (Three-Outcome Classifier)
+**Date:** 2026-04-27
+**Positions:** A — Bill 2-B as drafted (one new algorithm-calibration constant T_WARM_SHOULDER = 15.0 °C; three-outcome classifier replacing Bill 2-A's two-outcome classifier; ndarray-path "cooling" default preserved) | B — none raised; Justice accepted directly per Case 3 procedural precedent.
+**Prevailing position:** A
+**Justice's ruling:** Bill 2-B enacts as drafted. The drafter's two pre-flagged points are accepted as framed: (1) the ndarray-path default of "cooling" is preserved from Bill 2-A — the ndarray path carries no thermal information, and changing the default to "off" without an outside_temp signal or proxy signal would silently change behaviour for existing ndarray callers without physical justification; (2) T_WARM_SHOULDER = 15.0 °C (ASHRAE 90.1 Canadian supplement balance-point upper edge) is preferred over alternatives (HDD base 18 °C, ISO European 10 °C) because the Canadian rooftop application context (Amendment 1 / Device Purpose) grounds the standard, and the constant is explicitly falsifiable by Stage 2/3 DS18B20 field readings. Implementation proceeds on branch `stage1/algorithm-regime-warm-shoulder`.
+**Physical/empirical basis:** ASHRAE 90.1 Canadian supplement balance-point upper edge (≈ 15 °C) for commercial rooftop heat-pump / gas-furnace systems. T_WARM_SHOULDER = 15.0 °C lies within Signal Inventory normal range (−30 to +45 °C) and is consistent with Bill 2-A's T_COLD_SHOULDER = 5.0 °C from the same standard's lower edge. Gate 0.3 stationary rms_g ∈ [1.0014, 1.0056] supports the physical premise that an "off" unit (blower stopped) produces a near-stationary signal that the prior two-outcome classifier misclassified as a clean "cooling" unit — the constitutional deficit this Bill closes.
+**Device outcome protected:** The three-outcome regime classifier completes the Amendment 1 P2 primitive contract by making "off" reachable from `run()`. Zero regression on the eight enacted Bill 1 profiles (T_HEATING = −10 °C and T_COOLING = +25 °C both lie outside the new [5, 15) °C "off" band). Predicted output: `run({"outside_temp": np.array([10.0]), ...})` returns `hvac_regime = "off"`.
+**Conditions:** None.
+**Evidence gap acknowledged:** No Bill 1 simulation profile uses outside_temp in [5.0, 15.0) °C; the "off" classification branch is exercisable only by code inspection and manual unit test until a future Bill 1 amendment adds a shoulder-season profile (e.g., `clean_off` at outside_temp = 10 °C, blower off, ct_current ≈ 0 A, az ≈ A_Z_DC + noise). The gap is a follow-up obligation on a separate Bill, not a Bill 2-B blocker.
+**Procedural note:** Second no-hearing direct acceptance under the active constitutional record (Case 3 precedent applied). Both pre-flagged debate points were drafter-assessed as not contestable on physical grounds; the Justice did not contest. Case 3's procedural precedent is now twice-applied — direct acceptance is established as the appropriate path when the drafter's pre-flagged tensions are uncontested. Formal Judicial debate remains the default for any Bill where the Justice elects to convene attorneys.
+**Enacted bill:** Bill 2-B — Regime Classifier Warm Shoulder (`docs/governance/bills/stage1-algorithm-regime-warm-shoulder.md`).
+**Implementation branch:** stage1/algorithm-regime-warm-shoulder
+
+---
+
 ## Frozen Precedents
 
 ### Case 1: XIAO nRF52840 Sense — Platform Resolution for xiaoblesense Board ID
