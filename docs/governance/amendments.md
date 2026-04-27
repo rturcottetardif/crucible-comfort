@@ -21,7 +21,7 @@ then remove the PROPOSED prefix to ratify.
 
 ### Amendment 2 — Stage Gate Order
 *Traces to: Article I + II*
-*Status: PROPOSED — ratify by removing this line*
+*Status: RATIFIED 2026-04-20*
 
 Development proceeds through exactly these stages in order, and no stage begins
 until the previous stage's exit criteria are explicitly confirmed by the human:
@@ -41,7 +41,7 @@ not a debugging tool.
 
 ### Amendment 3 — Toolchain Alignment
 *Traces to: Article II*
-*Status: PROPOSED — ratify by removing this line*
+*Status: RATIFIED 2026-04-19 (concurrent with Case 1 — see docs/governance/case_law.md)*
 
 Every agent working on this project must operate within the toolchain that is currently
 active and recorded in `docs/toolchain_config.md`. No agent may introduce a new
@@ -59,7 +59,7 @@ recorded in toolchain_config.md with a date and reason.
 
 ### Amendment 4 — Three-Strike Escalation Rule
 *Traces to: Article II*
-*Status: PROPOSED — ratify by removing this line*
+*Status: RATIFIED 2026-04-20*
 
 If a simulation, unit test, hardware smoke test, or iterative fix process fails to meet
 exit criteria within three attempts, the agent must stop, report the full status to the
@@ -87,7 +87,7 @@ after explicit human ratification.
 
 ### Amendment 5 — Simulation is the Hardware Proxy
 *Traces to: Article I + II*
-*Status: PROPOSED — ratify when Stage 1 begins*
+*Status: RATIFIED 2026-04-27*
 
 If something cannot be tested in simulation, a simulation test must be written first.
 Hardware results that deviate from simulation predictions are evidence of a hardware or
@@ -101,7 +101,7 @@ against which hardware results are compared at each stage gate.
 
 ### Amendment 6 — Signal Plot Mandate
 *Traces to: Article I + II*
-*Status: PROPOSED — ratify when Stage 1 begins*
+*Status: RATIFIED 2026-04-27*
 
 After any change to the project's signal model or any filter coefficient in firmware
 source, an agent must generate a signal plot, save it to `docs/plots/`, and wait for
@@ -118,7 +118,7 @@ implausible signal.
 
 ### Amendment 7 — Calibration Discipline
 *Traces to: Article I*
-*Status: PROPOSED — ratify before any threshold is introduced in firmware*
+*Status: RATIFIED 2026-04-27*
 
 One new calibration constant may be introduced per algorithmic iteration. Every
 calibration constant must be documented with its physical derivation before the
@@ -161,7 +161,7 @@ the human must be in the decision.
 
 ### Amendment 9 — Hardware Optimization Transparency
 *Traces to: Article II*
-*Status: PROPOSED — ratify when algorithm work begins*
+*Status: RATIFIED 2026-04-27*
 
 When an agent identifies that an algorithm change enables lower-cost hardware
 (fewer sensors, lower-spec component, simpler enclosure), it must explicitly state
@@ -194,7 +194,7 @@ assumption no human ever approved.
 
 ### Amendment 11 — Scaffold Immutability
 *Traces to: Article I + II*
-*Status: PROPOSED — ratify before Stage 1 begins*
+*Status: RATIFIED 2026-04-27*
 
 Project analysis modules (`src/events.py`, `src/analysis.py`, `src/plot.py`) are
 generated exactly once — at the first execution of the stage that requires them
@@ -291,13 +291,13 @@ findings.
 | # | Title | Status | Traces to |
 |---|-------|--------|-----------|
 | 1 | Domain Primitives (ComfortSense) | RATIFIED 2026-04-16 | Article I |
-| 2 | Stage Gate Order | PROPOSED | Article I + II |
-| 3 | Toolchain Alignment | PROPOSED | Article II |
-| 4 | Three-Strike Escalation Rule | PROPOSED | Article II |
-| 5 | Simulation is the Hardware Proxy | PROPOSED | Article I + II |
-| 6 | Signal Plot Mandate | PROPOSED | Article I + II |
-| 7 | Calibration Discipline | PROPOSED | Article I |
+| 2 | Stage Gate Order | RATIFIED 2026-04-20 | Article I + II |
+| 3 | Toolchain Alignment | RATIFIED 2026-04-19 | Article II |
+| 4 | Three-Strike Escalation Rule | RATIFIED 2026-04-20 | Article II |
+| 5 | Simulation is the Hardware Proxy | RATIFIED 2026-04-27 | Article I + II |
+| 6 | Signal Plot Mandate | RATIFIED 2026-04-27 | Article I + II |
+| 7 | Calibration Discipline | RATIFIED 2026-04-27 | Article I |
 | 8 | Algorithm Search Honesty | PROPOSED | Article I + II |
-| 9 | Hardware Optimization Transparency | PROPOSED | Article II |
+| 9 | Hardware Optimization Transparency | RATIFIED 2026-04-27 | Article II |
 | 10 | Interim Results and Decision Logging | PROPOSED | Article II |
-| 11 | Scaffold Immutability | PROPOSED | Article I + II |
+| 11 | Scaffold Immutability | RATIFIED 2026-04-27 | Article I + II |

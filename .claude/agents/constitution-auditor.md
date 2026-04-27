@@ -93,6 +93,38 @@ For each case law entry:
 - Do any comments in firmware source cite an amendment number that does not exist
   in amendments.md? Flag as DANGLING-CITATION.
 
+### Amendment 7 — Calibration constant derivation sweep
+
+For every numeric constant in firmware source and `src/algorithm.py` /
+`src/signals.py` that is not a physical measurement input (i.e., it is a
+threshold, scaling factor, offset, or filter coefficient):
+- Is there a four-line Amendment 7 derivation block immediately preceding it?
+  Required lines (C or Python comment style):
+    CONSTANT_NAME — derived from [domain primitive].
+    Physical derivation: [formula or measurement].
+    Value: [N] [unit].
+    Traces to: Amendment 1 primitive [N].
+- Flag as **UNDOCUMENTED-CONSTANT** (Amendment 7) if any of the four lines
+  is absent or the block is missing entirely.
+
+### Amendment 9 — BOM change traceability sweep
+
+For every component listed in the BOM section of `docs/device_context.md`
+that differs from the BOM at the last stage closeout (compare against the
+most recent `docs/governance/stage_[N]_closeout.md`):
+- Is there an enacted Bill in `docs/governance/case_law.md` that authorizes
+  this BOM change? A BOM entry with no corresponding enacted Bill is a
+  constitutional violation of Amendment 9.
+  Flag as **A9-BOM-UNAUTHORIZED** (no Bill on record for this change).
+- Conversely, for every enacted Bill in case_law.md that is typed as
+  "hardware" or that contains the phrase "BOM": is the corresponding change
+  present in the BOM section of `docs/device_context.md`?
+  Flag as **A9-BOM-UNRECORDED** (Bill enacted but device_context.md not updated).
+
+Both findings are CONFLICT-severity — they indicate a BOM state that is either
+unauthorized or undocumented. Either requires a /judicial hear to resolve before
+the next stage gate.
+
 ---
 
 ## Output format

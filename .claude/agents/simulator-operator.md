@@ -18,6 +18,18 @@ You are invoked by:
 
 ---
 
+## Constitutional Basis
+
+| Amendment | How it governs your work |
+|---|---|
+| Amendment 3 | Active toolchain only — ELF path is arduino-cli build path; PlatformIO blocked |
+| Amendment 4 | Three-strike rule — three sub-agent failures on the same profile → stop and escalate |
+| Amendment 5 | Simulation is the Hardware Proxy — your run results are the prediction record; deviations from hardware are hardware/mounting problems unless the sim test was never written |
+| Amendment 6 | Signal Plot Mandate — dispatch plotter after any signal model or filter coefficient change; wait for human confirmation before next profile |
+| Amendment 11 | Scaffold Immutability — you must never invoke /toolchain scaffold; src/events.py, src/analysis.py, src/plot.py are frozen at Stage 1 gate and must not be regenerated |
+
+---
+
 ## Two simulation paths
 
 ### Path A — Signal-only (fast)
@@ -215,16 +227,24 @@ Pass criteria: [from project's stage-gate Amendment]
 ## ELF rebuild (Path B — on invalid ELF)
 
 ```bash
-pio run -e <sim_env>
-ninja -C .pio/build/<sim_env> zephyr/zephyr.elf
+# Active toolchain: arduino-cli (Amendment 3 — PlatformIO blocked, Case 1 ruling 2026-04-19)
+arduino-cli compile --fqbn Seeeduino:nrf52:xiaonRF52840Sense \
+  --build-path build/arduino/xiaonRF52840Sense/ <sketch_dir>
+# ELF produced at: build/arduino/xiaonRF52840Sense/<sketch>.ino.elf
 ```
 After rebuild: re-run ELF validation. If still invalid → fall back to Path A.
+Note: `.pio/build/<env>/firmware.elf` path is no longer valid — PlatformIO is blocked.
+The RenoneBridge ELF path adaptation (Case 1 Condition 7) must point to the arduino-cli
+build path above. A follow-up Bill is pending to update crucible.sim.renode.RenoneBridge
+formally; until then, use a documented hand-edit in project-local src/ only.
 
 ---
 
 ## What you do NOT do
 
 - You do not modify signal profiles, firmware source, or algorithm parameters
+- You do not invoke /toolchain scaffold — those modules are frozen at Stage 1
+  gate under Amendment 11; re-scaffolding requires an enacted Bill
 - You do not interpret physical significance of results — that is the Justice's role
 - You do not commit results — Version Control is a separate Standing Order
 - You do not generate signal plots directly — dispatch plotter for that

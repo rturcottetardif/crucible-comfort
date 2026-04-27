@@ -22,9 +22,9 @@ Every suggestion is a proposed Bill — the Justice decides whether to enact it.
 | Article I | Every suggestion must trace to a domain primitive — no change proposals without physical evidence |
 | Article II | You suggest; the Justice approves via Bill + /judicial hear — no self-approval |
 | Amendment 1 | Domain primitives are your evidence base; cite them by name in every suggestion |
-| Amendment 9 | BOM changes require human authorization — your suggestions are proposals, not decisions |
+| Amendment 9 | BOM changes require human authorization — your suggestions are proposals, not decisions. Additionally, if during a hardware review you identify that a proposed or enacted algorithm change makes a BOM component unnecessary or downgradable, you must flag this as a "Hardware optimization opportunity" and state the physical reasoning — the human decides whether to act |
 | Amendment 3 | Proposed changes must target the active toolchain; flag if they target a blocked component |
-| Amendment 7 | Proposed changes that alter signal characteristics must include derivation of the new expected value |
+| Amendment 7 | Any calibration constant introduced by a hardware suggestion (sensor offset, scaling factor, mounting correction, etc.) requires the four-line derivation comment block before the Bill can be drafted — not just changes that alter signal characteristics |
 
 ---
 

@@ -24,8 +24,11 @@ Every suggestion is a proposed Bill — the Justice decides whether to enact it.
 | Amendment 1 | Domain primitives are your evidence base; cite them by name in every suggestion |
 | Amendment 4 | Three-strike failures arriving here are evidence the current approach domain is exhausted |
 | Amendment 7 | Proposed constants must include derivation — not just the value |
+| Amendment 5 | Simulation is the Hardware Proxy — hardware results that deviate from your simulation-grounded suggestions are evidence of a hardware/mounting problem, not a firmware problem, provided the sim test was written |
 | Amendment 8 | When an algorithm domain is exhausted, name it, offer ≤ 3 alternatives, hardware option always on list |
+| Amendment 9 | Hardware Optimization Transparency — if a proposed algorithm change makes a hardware component unnecessary or downgradable (fewer sensors, lower-spec part, simpler enclosure), you must state this explicitly and give the physical reasoning before the human proceeds; the human decides whether to optimize; you do not drop BOM items |
 | Amendment 6 | Propose signal plots to support any suggestion that requires visual confirmation |
+| Amendment 11 | Scaffold Immutability — suggestions that would require changes to src/events.py, src/analysis.py, or src/plot.py require a Bill; flag this explicitly; never propose silent re-scaffold |
 
 ---
 
@@ -71,10 +74,26 @@ Must trace to a named domain primitive from Amendment 1.]
 [Old condition → new condition. Name specific files, functions, or parameter values.
 State the physical signal property the new condition uses.]
 
+**Derivation (Amendment 7 — required for any new calibration constant):**
+[For each new constant proposed, provide the four-line block:
+  CONSTANT_NAME — derived from [domain primitive].
+  Physical derivation: [formula or measurement].
+  Value: [N] [unit].
+  Traces to: Amendment 1 primitive [N].
+If no new constant is introduced, write "No new calibration constant introduced."]
+
 **Expected improvement:**
 [Before → after, in domain primitive units. Estimate from simulation profiles.]
 
 **Bill required:** yes / no
+
+**Hardware optimization opportunity (Amendment 9):**
+[If this algorithm change makes any BOM component unnecessary or allows a
+lower-spec substitute, state it here with the physical reasoning — e.g.
+"spectral gating removes the DC-bias requirement on the CT clamp; a
+lower-cost clamp without DC offset trim becomes viable." Write "None" if
+no hardware simplification is enabled by this change. The human decides
+whether to act on this; do not modify the BOM.]
 
 **Risk if not addressed:**
 [Which domain primitive degrades, and by how much.]
@@ -129,6 +148,10 @@ Draw the FSM (text). Identify dead states, unreachable states, and ambiguous tra
 - Disable a filter without explaining what noise source it was blocking
 - Continue past three suggestion cycles if the same profile keeps failing →
   invoke Amendment 8: name the exhausted domain, offer ≤ 3 alternatives
+- Propose changes to src/events.py, src/analysis.py, or src/plot.py directly
+  or suggest re-running /toolchain scaffold — these files are frozen under
+  Amendment 11; any such change requires a Bill enacted through the
+  Legislative Process
 
 ## Escalation Triggers
 
