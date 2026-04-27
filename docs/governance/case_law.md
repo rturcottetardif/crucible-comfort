@@ -106,6 +106,17 @@ authorizing it.
 
 ---
 
+### Case 2: Stage 1 Signal Model — Eleven-Constant A7 Tension
+**Date:** 2026-04-27
+**Positions:** A — model parameters exempt from A7 one-per-Bill | B — A7 applies to all source constants — split into 11 Bills
+**Prevailing position:** A
+**Justice's ruling:** Bill 1 enacts as drafted. The eleven constants (A_FUND_CLEAN, ALPHA, SIGMA_NOISE_G, F_FUND_HEATING, F_FUND_COOLING, I0_HEATING, I0_COOLING, BETA, T_HEATING, T_COOLING, SPL0) are admitted into `src/signals.py` in a single commit on branch `stage1/signals-harmonic-vibration-model`. Amendment 7's one-per-iteration ceiling does not apply to physically derived signal-model parameters of `src/signals.py`.
+**Physical/empirical basis:** "Calibration constant" in A7 is a term of art defined within A7 paragraph 2 — its target is *tuned* constants (fitted without derivation, requiring re-tuning at every hardware or population change). The eleven constants of Bill 1 are physically *derived* predictions, each carrying the four-line A7 derivation block traced to Amendment 1 primitives (P1 Filter ΔP, P2 HVAC operating regime) and Stage 0 hardware evidence (Gate 0.2 az_dc = 1.03 g; Gate 0.3 stationary noise band ≈ 0.004 g peak-to-peak ≈ 2σ at σ = 0.002 g). Derived constants are falsifiable Stage 2 predictions, not tuning knobs.
+**Device outcome protected:** Both heating-regime and cooling-regime detection paths must remain testable in simulation. Splitting the eleven constants into eleven sequential Bills would produce ten intermediate `signals.py` states that cannot generate a runnable profile, render a plot under Amendment 6, or test the cooling-regime false-negative scenario — the most commercially costly failure mode in the Device Purpose. Atomic admission preserves end-to-end testability of the regime-conditioned algorithm.
+**Conditions:** None.
+**Enacted bill:** Bill 1 — Implement Additive Harmonic Vibration Signal Model in src/signals.py (`docs/governance/bills/stage1-signal-model.md`).
+**Implementation branch:** stage1/signals-harmonic-vibration-model
+
 ---
 
 ## Frozen Precedents

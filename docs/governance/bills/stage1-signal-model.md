@@ -392,6 +392,8 @@ A_Z_DC (NOT a calibration constant — physical constant):
 
 ---
 
+**Status:** ENACTED — Case 2 ruling 2026-04-27
+
 Ready for Judicial debate. Invoke
 `/judicial hear "Bill 1 — Additive Harmonic Vibration Signal Model" A vs B`
 to assign attorneys and receive a ruling.

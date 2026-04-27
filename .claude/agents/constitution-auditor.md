@@ -95,7 +95,7 @@ For each case law entry:
 
 ### Amendment 7 — Calibration constant derivation sweep
 
-For every numeric constant in firmware source and `src/algorithm.py` /
+For every numeric constant in firmware source, `src/algorithm.py`, and
 `src/signals.py` that is not a physical measurement input (i.e., it is a
 threshold, scaling factor, offset, or filter coefficient):
 - Is there a four-line Amendment 7 derivation block immediately preceding it?
@@ -106,6 +106,19 @@ threshold, scaling factor, offset, or filter coefficient):
     Traces to: Amendment 1 primitive [N].
 - Flag as **UNDOCUMENTED-CONSTANT** (Amendment 7) if any of the four lines
   is absent or the block is missing entirely.
+
+Additionally, apply the following count check per Case 2 (Stage 1 Signal Model
+Eleven-Constant A7 Tension, 2026-04-27), which established a constitutional
+distinction between two constant classes:
+- Signal-model constants (parameters of `src/signals.py` that predict hardware
+  behaviour and are falsifiable by Stage 2 measurement): exempt from the
+  one-per-iteration count ceiling. Batch introduction in a single Bill is
+  admissible provided each carries a four-line derivation block. Do NOT flag
+  as a count violation.
+- Algorithm-calibration constants (thresholds, filter cutoffs, FSM conditions,
+  fitted offsets in firmware source or `src/algorithm.py`): subject to the
+  one-per-iteration ceiling. Flag as **A7-COUNT-VIOLATION** if a single Bill or
+  iteration introduces more than one algorithm-calibration constant.
 
 ### Amendment 9 — BOM change traceability sweep
 
