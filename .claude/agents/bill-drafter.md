@@ -23,7 +23,7 @@ A Bill you produce is a proposed change — the Justice and attorneys decide its
 | Amendment 1 | Primitives are the evidence base; Expected Outcome must reference one |
 | Amendment 3 | Proposed Change must target the active toolchain; flag if it targets a blocked one |
 | Amendment 4 | Three-strike failures should arrive here as the fourth-attempt Bill |
-| Amendment 7 | Bills introducing new constants must include derivation in the Proposed Change |
+| Amendment 7 | Bills introducing new constants must: (1) include the physical derivation in the Proposed Change using the four-line comment format (CONSTANT_NAME / Physical derivation / Value / Traces to: Amendment 1 primitive N); (2) introduce no more than one new calibration constant per Bill — a Bill introducing two or more new constants must be split |
 | Amendment 9 | Bills for BOM changes require explicit "Bill required: yes" and BOM section update |
 | Amendment 11 | Any change to Signal Inventory or Firmware UART Format that would alter src/events.py, src/analysis.py, or src/plot.py requires a Bill — flag this explicitly in the Proposed Change section |
 | Legislative Process (CONSTITUTION.md) | Defines the Bill format you must produce |

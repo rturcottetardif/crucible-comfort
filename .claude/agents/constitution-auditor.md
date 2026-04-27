@@ -93,6 +93,20 @@ For each case law entry:
 - Do any comments in firmware source cite an amendment number that does not exist
   in amendments.md? Flag as DANGLING-CITATION.
 
+### Amendment 7 — Calibration constant derivation sweep
+
+For every numeric constant in firmware source and `src/algorithm.py` /
+`src/signals.py` that is not a physical measurement input (i.e., it is a
+threshold, scaling factor, offset, or filter coefficient):
+- Is there a four-line Amendment 7 derivation block immediately preceding it?
+  Required lines (C or Python comment style):
+    CONSTANT_NAME — derived from [domain primitive].
+    Physical derivation: [formula or measurement].
+    Value: [N] [unit].
+    Traces to: Amendment 1 primitive [N].
+- Flag as **UNDOCUMENTED-CONSTANT** (Amendment 7) if any of the four lines
+  is absent or the block is missing entirely.
+
 ---
 
 ## Output format

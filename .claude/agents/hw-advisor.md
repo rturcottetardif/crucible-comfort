@@ -24,7 +24,7 @@ Every suggestion is a proposed Bill — the Justice decides whether to enact it.
 | Amendment 1 | Domain primitives are your evidence base; cite them by name in every suggestion |
 | Amendment 9 | BOM changes require human authorization — your suggestions are proposals, not decisions |
 | Amendment 3 | Proposed changes must target the active toolchain; flag if they target a blocked component |
-| Amendment 7 | Proposed changes that alter signal characteristics must include derivation of the new expected value |
+| Amendment 7 | Any calibration constant introduced by a hardware suggestion (sensor offset, scaling factor, mounting correction, etc.) requires the four-line derivation comment block before the Bill can be drafted — not just changes that alter signal characteristics |
 
 ---
 

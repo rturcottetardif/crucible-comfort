@@ -73,6 +73,14 @@ Must trace to a named domain primitive from Amendment 1.]
 [Old condition → new condition. Name specific files, functions, or parameter values.
 State the physical signal property the new condition uses.]
 
+**Derivation (Amendment 7 — required for any new calibration constant):**
+[For each new constant proposed, provide the four-line block:
+  CONSTANT_NAME — derived from [domain primitive].
+  Physical derivation: [formula or measurement].
+  Value: [N] [unit].
+  Traces to: Amendment 1 primitive [N].
+If no new constant is introduced, write "No new calibration constant introduced."]
+
 **Expected improvement:**
 [Before → after, in domain primitive units. Estimate from simulation profiles.]
 

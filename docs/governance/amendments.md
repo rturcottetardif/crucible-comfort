@@ -118,7 +118,7 @@ implausible signal.
 
 ### Amendment 7 — Calibration Discipline
 *Traces to: Article I*
-*Status: PROPOSED — ratify before any threshold is introduced in firmware*
+*Status: RATIFIED 2026-04-27*
 
 One new calibration constant may be introduced per algorithmic iteration. Every
 calibration constant must be documented with its physical derivation before the
@@ -296,7 +296,7 @@ findings.
 | 4 | Three-Strike Escalation Rule | RATIFIED 2026-04-20 | Article II |
 | 5 | Simulation is the Hardware Proxy | RATIFIED 2026-04-27 | Article I + II |
 | 6 | Signal Plot Mandate | RATIFIED 2026-04-27 | Article I + II |
-| 7 | Calibration Discipline | PROPOSED | Article I |
+| 7 | Calibration Discipline | RATIFIED 2026-04-27 | Article I |
 | 8 | Algorithm Search Honesty | PROPOSED | Article I + II |
 | 9 | Hardware Optimization Transparency | PROPOSED | Article II |
 | 10 | Interim Results and Decision Logging | PROPOSED | Article II |

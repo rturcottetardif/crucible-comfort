@@ -123,9 +123,20 @@ Constitutional basis: Case 1 Condition 1a (enacted 2026-04-20, Case 1.1), Amendm
 
 For each calibration constant introduced since the last stage gate:
 - Is it documented per Amendment 7 (Calibration Discipline)?
+  Required comment block (firmware C/C++ or Python `#` equivalent):
+    CONSTANT_NAME — derived from [domain primitive].
+    Physical derivation: [formula or measurement].
+    Value: [N] [unit].
+    Traces to: Amendment 1 primitive [N].
 - If it was derived statistically, is the distribution and sigma bound documented?
+- Count the number of new calibration constants introduced in this Bill or
+  algorithmic iteration. If the count exceeds one, flag each constant beyond
+  the first.
 
-Flag as **AMENDMENT-7-VIOLATION** if a constant has no derivation documentation.
+Flag as **AMENDMENT-7-VIOLATION** if:
+- A constant has no derivation comment block (missing any of the four required lines)
+- A single Bill or algorithmic iteration introduces more than one new calibration
+  constant (Amendment 7: one new constant per iteration)
 
 ### Scaffold module audit (Amendment 11 — at Stage 1 gate only)
 

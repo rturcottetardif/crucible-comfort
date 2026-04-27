@@ -131,6 +131,11 @@ Stop immediately and report to the human if:
   confirmed — scaffold freeze takes effect at gate close" for this session
   (Amendment 11: the scaffold freeze is only valid after code-reviewer confirms
   Article I traceability; do not compact Stage 1 without this confirmation on record)
+- Any calibration constant introduced during the closing stage does not have a
+  complete four-line Amendment 7 derivation comment block in source (Amendment 7:
+  derivation must be documented before the session ends; freezing an undocumented
+  constant makes it immutable without a physical basis on record — escalate to
+  code-reviewer for an AMENDMENT-7-VIOLATION finding before compacting)
 - A case law entry explicitly contradicts the confirmed exit criteria
   (the stage may not actually be clean — escalate before freezing)
 - Any case law entry is already marked FROZEN from a previous stage closeout
