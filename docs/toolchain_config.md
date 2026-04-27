@@ -121,24 +121,51 @@ Simulation:     Renode 1.16 via crucible.sim.renode.RenoneBridge
 
 ## Firmware UART Format
 
-> **Required for `/toolchain scaffold`** — fill in before running Stage 1.
-> This section defines what the firmware emits over UART. It is used to
-> generate `src/analysis.py` (UART parser) and `src/events.py` (event types).
-> NOT YET DEFINED — populate before Stage 1.
+> **Required for `/toolchain scaffold`** — read by the scaffold step to generate
+> `src/events.py` and `src/analysis.py`. Patterns below are derived from the
+> three Stage 0 sketches under `firmware/` (Gates 0.2 / 0.3 / 0.4 PASS, 2026-04-20).
+>
+> **Source of truth:**
+> - `firmware/stage0_sensor/stage0_sensor.ino`     — READING event (Gate 0.2)
+> - `firmware/stage0_algo_usb/stage0_algo_usb.ino` — METRIC event (Gate 0.3)
+> - `firmware/stage0_algo_ble/stage0_algo_ble.ino` — same METRIC event over BLE NUS (Gate 0.4)
+>
+> Banner / status lines (`STAGE0_*: start`, `IMU_INIT: OK`, `WHO_AM_I: ...`,
+> `BLE_INIT: OK`, etc.) are intentionally NOT defined as events — they are
+> setup-time human-readable diagnostics, not signal data.
 
 ```
 session_end_marker: SESSION_END
 ```
 
+> No Stage 0 sketch currently emits `SESSION_END` — the marker is reserved for
+> Stage 1+ when bounded simulation runs need an explicit end-of-stream sentinel
+> for the Renode bridge. Until then `SESSION_END` is a parse-time fallback only.
+
 ### Event Definitions
 
-> One block per UART event type the firmware emits. Add blocks as needed.
-> NOT YET DEFINED — populate before Stage 1.
+```toml
+[[event]]
+name        = "reading"
+description = "Raw IMU sample — 6-axis accel + gyro, emitted at 1 Hz by stage0_sensor.ino. Maps to Signal Inventory rows imu_accel_{x,y,z} (g, P1) and imu_gyro_{x,y,z} (°/s, P1)."
+pattern     = "READING ts=(\\d+) ax=(-?[\\d.]+) ay=(-?[\\d.]+) az=(-?[\\d.]+) gx=(-?[\\d.]+) gy=(-?[\\d.]+) gz=(-?[\\d.]+)"
+fields      = ["ts_ms", "ax_g", "ay_g", "az_g", "gx_dps", "gy_dps", "gz_dps"]
+types       = ["int",   "float","float","float","float", "float", "float"]
+
+[[event]]
+name        = "metric"
+description = "Algorithm output — RMS of accel magnitude over a 500 ms sliding window (50 samples @ 100 Hz), emitted at 2 Hz by stage0_algo_{usb,ble}.ino. Stage 0 liveness only — no Filter ΔP threshold yet (Article I; Stage 1+ work)."
+pattern     = "METRIC ts=(\\d+) rms_g=(-?[\\d.]+) n=(\\d+)"
+fields      = ["ts_ms", "rms_g", "n"]
+types       = ["int",   "float", "int"]
+```
 
 ### Binary Export Format (optional)
 
-> Fill in only if firmware supports a binary bulk export over BLE or UART.
-> NOT YET DEFINED.
+> NOT YET DEFINED — no Stage 0 sketch implements a binary bulk export.
+> If introduced in Stage 2+ (e.g., for high-rate IMU dumps over BLE that
+> would exceed text METRIC throughput), define the framing here and re-run
+> `/toolchain scaffold` (Bill required per Amendment 11 — Scaffold Immutability).
 
 ---
 
