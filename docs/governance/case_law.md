@@ -119,6 +119,20 @@ authorizing it.
 
 ---
 
+### Case 3: Bill 2-A — Regime Classifier Cold Shoulder + Proxy Inversion Infrastructure
+**Date:** 2026-04-27
+**Positions:** A — Bill 2-A as drafted (one new algorithm-calibration constant T_COLD_SHOULDER + structural infrastructure for proxy inversions and provisional 50/50 fusion) | B — none raised; Justice accepted directly without convening a hearing.
+**Prevailing position:** A
+**Justice's ruling:** Bill 2-A enacts as drafted. The drafter's three pre-flagged debate points are accepted as framed: (1) `RMS_HARMONIC_FACTOR = √(0.5·(1 + 1/9 + 1/36))` is not a new algorithm-calibration constant — it is an analytic consequence of Bill 1's enacted harmonic stack (1, 1/3, 1/6) and is computable to arbitrary precision from already-enacted parameters; (2) the provisional 0.5 fusion weight is the symmetric null hypothesis, introducing no information about relative proxy reliability, and is replaced by Bill 2-D's physics-derived W_VIB; (3) the cross-module import of `signals.py` constants into `algorithm.py` is a mathematical requirement of forward-model inversion — the inverse model must use the same physical relationships as the forward model. Implementation proceeds on branch `stage1/algorithm-regime-cold-shoulder`.
+**Physical/empirical basis:** Bill 1 enacted forward model (Case 2, 2026-04-27) provides A_FUND_CLEAN, ALPHA, A_Z_DC, I0_HEATING, I0_COOLING, BETA — the inverse model in Bill 2-A is the mathematical inversion of the same physics. T_COLD_SHOULDER = 5.0 °C traces to ASHRAE 90.1 Canadian supplement balance-point evidence and lies within Signal Inventory normal range (−30 to +45 °C). Gate 0.2 stationary az = 0.975 g grounds the gravity-subtraction dependency; Gate 0.3 stationary rms_g ∈ [1.0014, 1.0056] vs vigorous-motion rms_g ∈ [1.0228, 2.0154] confirms the non-gravity-subtracted false-positive mode this Bill corrects.
+**Device outcome protected:** A working `run()` produces a domain-primitive verdict (P1 = ΔP/ΔP₀, P2 = hvac_regime) for all eight Bill 1 profiles. Predicted alert behaviour: True at near_clog and past_clog profiles (dp_ratio ≥ 1.85), False at clean and mid_clog profiles. Unblocks `/regression` and the Stage 1 gate.
+**Conditions:** None.
+**Procedural note:** First no-hearing direct acceptance under the active constitutional record. The Bill's three debate points were drafter-flagged but uncontested by the Justice. Establishes that the Justice may rule directly when the drafter's pre-flagged tensions are not contested. Does not amend CONSTITUTION.md Judicial Process §1 — formal debate remains the default for any contested Bill or Bill where the Justice elects to convene attorneys.
+**Enacted bill:** Bill 2-A — Regime Classifier Cold Shoulder + Proxy Inversion Infrastructure (`docs/governance/bills/stage1-algorithm-regime-cold-shoulder.md`).
+**Implementation branch:** stage1/algorithm-regime-cold-shoulder
+
+---
+
 ## Frozen Precedents
 
 ### Case 1: XIAO nRF52840 Sense — Platform Resolution for xiaoblesense Board ID
