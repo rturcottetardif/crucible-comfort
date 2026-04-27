@@ -1,6 +1,7 @@
 """ComfortSense algorithm — Python model.
 
-Implements src/algorithm.py per Bill 2-A (ENACTED 2026-04-27, Case 3).
+Implements src/algorithm.py per Bill 2-A (ENACTED 2026-04-27, Case 3) and
+Bill 2-B (ENACTED 2026-04-27, Case 4).
 Replaces the prior NotImplementedError stub with a regime-conditioned
 filter ΔP/ΔP₀ inference using the inverse of Bill 1's signal-model
 forward physics (Case 2, 2026-04-27).
@@ -17,9 +18,9 @@ Constitutional grounding:
   Article I — every constant traces to P1 or P2 per Amendment 1.
   Amendment 1 — outputs filter_dp_ratio (P1) and hvac_regime (P2).
   Amendment 7 + Case 2 — algorithm-calibration class is subject to the
-    one-per-Bill ceiling. This Bill introduces ONE new constant
-    (T_COLD_SHOULDER); proxy-inversion parameters are imports from
-    src/signals.py (already enacted under Bill 1 / Case 2).
+    one-per-Bill ceiling. Bill 2-A introduced T_COLD_SHOULDER; Bill 2-B
+    introduces T_WARM_SHOULDER. Proxy-inversion parameters are imports
+    from src/signals.py (already enacted under Bill 1 / Case 2).
   Amendment 11 — algorithm.py is excluded from the frozen scaffold trio
     per First Scaffold Authorization SOR (2026-04-27).
 """
@@ -51,6 +52,19 @@ from src.signals import (
 # Value: 5.0 °C.
 # Traces to: Amendment 1 primitive P2 (outside_temp is the regime proxy).
 T_COLD_SHOULDER = 5.0  # °C — traces to A1 P2; conservative heating upper edge
+
+# T_WARM_SHOULDER — derived from P2 (HVAC operating regime).
+# Physical derivation: Canadian commercial rooftop HVAC units engage cooling
+#   when outdoor temperature rises above ~15 °C (the upper edge of the
+#   balance-point ambiguity band for heat-pump / gas-furnace systems per
+#   ASHRAE 90.1 Canadian supplement). Below 5 °C (T_COLD_SHOULDER) the
+#   system is clearly in heating mode. Above 15 °C the system is clearly
+#   in cooling mode. Between 5 °C and 15 °C the unit is in shoulder season:
+#   thermal demand is ambiguous and the blower may be off entirely.
+#   Stage 2/3 DS18B20 field readings will confirm or adjust this boundary.
+# Value: 15.0 °C.
+# Traces to: Amendment 1 primitive P2 (outside_temp is the regime proxy).
+T_WARM_SHOULDER = 15.0  # °C — traces to A1 P2; conservative cooling lower edge
 
 
 def run(samples) -> dict[str, Any]:
@@ -84,12 +98,21 @@ def run(samples) -> dict[str, Any]:
         ct_current_rms_arr = None
 
     # Step B — regime classification from outside_temp — traces to A1 P2.
+    # Three-outcome classifier (Bill 2-B): heating / off / cooling.
     if outside_temp_arr is not None and outside_temp_arr.size > 0:  # P2 present — traces to A1 P2
         temp_c = float(np.mean(outside_temp_arr))
-        # Heating below T_COLD_SHOULDER; otherwise cooling (conservative)
-        hvac_regime = "heating" if temp_c < T_COLD_SHOULDER else "cooling"
+        if temp_c < T_COLD_SHOULDER:
+            hvac_regime = "heating"    # traces to A1 P2
+        elif temp_c < T_WARM_SHOULDER:
+            hvac_regime = "off"        # shoulder-season ambiguity — traces to A1 P2
+        else:
+            hvac_regime = "cooling"    # traces to A1 P2
     else:
         # ndarray path or missing temp — default to cooling — traces to A1 P2.
+        # Conservative bias preserved from Bill 2-A (Case 3): the ndarray path
+        # carries no temperature information; "off" cannot be inferred without
+        # outside_temp. Bill 2-C / 2-D may revisit this default using proxy
+        # signals, but that is out of scope for this Bill.
         temp_c = float("nan")
         hvac_regime = "cooling"
 
