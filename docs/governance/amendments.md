@@ -161,7 +161,7 @@ the human must be in the decision.
 
 ### Amendment 9 — Hardware Optimization Transparency
 *Traces to: Article II*
-*Status: PROPOSED — ratify when algorithm work begins*
+*Status: RATIFIED 2026-04-27*
 
 When an agent identifies that an algorithm change enables lower-cost hardware
 (fewer sensors, lower-spec component, simpler enclosure), it must explicitly state
@@ -298,6 +298,6 @@ findings.
 | 6 | Signal Plot Mandate | RATIFIED 2026-04-27 | Article I + II |
 | 7 | Calibration Discipline | RATIFIED 2026-04-27 | Article I |
 | 8 | Algorithm Search Honesty | PROPOSED | Article I + II |
-| 9 | Hardware Optimization Transparency | PROPOSED | Article II |
+| 9 | Hardware Optimization Transparency | RATIFIED 2026-04-27 | Article II |
 | 10 | Interim Results and Decision Logging | PROPOSED | Article II |
 | 11 | Scaffold Immutability | RATIFIED 2026-04-27 | Article I + II |

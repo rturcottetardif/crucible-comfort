@@ -140,3 +140,9 @@ Stop immediately and report to the human if:
   (the stage may not actually be clean — escalate before freezing)
 - Any case law entry is already marked FROZEN from a previous stage closeout
   (do not re-freeze; flag it as already settled)
+- The BOM section of `docs/device_context.md` contains any component that
+  differs from the BOM recorded at the previous stage closeout AND no enacted
+  Bill in `docs/governance/case_law.md` authorizes that change
+  (Amendment 9: BOM changes require explicit human authorization via Bill —
+  freezing an unauthorized BOM change makes it immutable without a governance
+  trace; escalate to constitution-auditor and stop; do not compact this stage)

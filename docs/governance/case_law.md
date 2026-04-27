@@ -10,6 +10,67 @@ Live entries accumulate full argument text. Frozen entries (after stage closeout
 
 ## Active Precedents
 
+### Standing Order Record — Direct ΔP sensing rejected; indirect mandatory
+
+**Date:** 2026-04-27
+**Source:** hw-advisor full review (/advisor hw, this session)
+**Cross-references:** sw-advisor scoping pass (this session, "Hardware Alternative" callout)
+
+**Ruling (operative):** Direct differential-pressure sensing (Sensirion SDP810,
+Honeywell HSCMRRD005MD, or any equivalent MEMS differential transducer) is
+**rejected** as a primary or hybrid-commissioning path for ComfortSense P1
+(Filter ΔP) measurement. **Indirect sensing — IMU vibration + microphone
+acoustic + CT current, conditioned on outside_temp regime per P2 — is the
+mandatory primary architecture.**
+
+**Two independent grounds for rejection** (either one sufficient on its own):
+
+1. **Physical infeasibility under the deployment model.** Device Purpose
+   restricts mounting to the side of the HVAC housing (Out-of-scope: top,
+   indoor, in-duct). Filter plenums are internal to the packaged unit; no
+   pneumatic access from the exterior side wall without drilling through the
+   outer casing, insulation, and inner duct liner at two separate points
+   (upstream + downstream of the filter). This violates the no-commissioning
+   self-install model, voids unit UL listing in most jurisdictions, and has
+   no standardized geometry across HVAC manufacturers. Hybrid commissioning-
+   only path fails the same test — it requires the same pneumatic access
+   work even if the sensor is removed afterward.
+
+2. **Environmental incompatibility for the SDP810 sensor class.** Operating
+   Envelope hard lower limit is **−40 °C** ambient; SDP810 datasheet operating
+   range is **−20 °C to +85 °C**. At cold-soak the MEMS element produces
+   offset shifts indistinguishable from filter loading — false-positive alert
+   in winter is the worst-case false positive ComfortSense exists to prevent.
+   Pneumatic ports fill with condensate at every dew-point crossing and
+   freeze below 0 °C, blocking the ports and driving the reading to maximum —
+   indistinguishable from full clog. SDP810 IP20 rating fails the
+   0–100% RH with condensation envelope. A future sensor class meeting all
+   three constraints (−40 °C cold-soak, heated/anti-condensate ports,
+   IP65+ rated) does not lift constraint (1) — pneumatic access is still
+   required.
+
+**Effect on Stage 1 work:**
+- sw-advisor Suggestion 1-A (Additive Harmonic Vibration Model) and
+  Suggestion 2-A (Gravity-Subtracted RMS + Regime-Conditioned Threshold)
+  remain the active architectural baseline.
+- Bills 1 and 2 (signal model + algorithm architecture) proceed without
+  architectural ambiguity.
+- Three new BOM Bills surfaced by hw-advisor (CT clamp circuit, OneWire
+  pull-up + shielded cable, IP66 enclosure with rigid aluminium standoff)
+  are downstream of this finding — they specify the indirect-sensing
+  hardware path.
+
+**Reopens only if:**
+- Device Purpose is amended to permit a deployment model with pneumatic
+  access (e.g., in-duct or factory-installed at HVAC OEM), AND
+- A sensor class is identified that meets the full operating envelope
+  including −40 °C cold-soak and 0–100% RH with condensation on pneumatic
+  ports. Both conditions required jointly. A new opinion or a new sensor
+  catalog alone does not reopen this finding — the deployment-model
+  constraint is the dominant rejection ground.
+
+---
+
 ### Standing Order Record — First scaffold authorization
 
 **Date:** 2026-04-27

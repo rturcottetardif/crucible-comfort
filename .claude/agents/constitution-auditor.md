@@ -107,6 +107,24 @@ threshold, scaling factor, offset, or filter coefficient):
 - Flag as **UNDOCUMENTED-CONSTANT** (Amendment 7) if any of the four lines
   is absent or the block is missing entirely.
 
+### Amendment 9 — BOM change traceability sweep
+
+For every component listed in the BOM section of `docs/device_context.md`
+that differs from the BOM at the last stage closeout (compare against the
+most recent `docs/governance/stage_[N]_closeout.md`):
+- Is there an enacted Bill in `docs/governance/case_law.md` that authorizes
+  this BOM change? A BOM entry with no corresponding enacted Bill is a
+  constitutional violation of Amendment 9.
+  Flag as **A9-BOM-UNAUTHORIZED** (no Bill on record for this change).
+- Conversely, for every enacted Bill in case_law.md that is typed as
+  "hardware" or that contains the phrase "BOM": is the corresponding change
+  present in the BOM section of `docs/device_context.md`?
+  Flag as **A9-BOM-UNRECORDED** (Bill enacted but device_context.md not updated).
+
+Both findings are CONFLICT-severity — they indicate a BOM state that is either
+unauthorized or undocumented. Either requires a /judicial hear to resolve before
+the next stage gate.
+
 ---
 
 ## Output format
