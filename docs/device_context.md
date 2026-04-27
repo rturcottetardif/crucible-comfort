@@ -158,8 +158,9 @@ during Stage 1 simulation and Stage 2 HIL.
 
 | Date | Signal | Value | File / log | Physical quantity |
 |------|--------|-------|------------|-------------------|
-| YYYY-MM-DD | [e.g., gyr_y peak] | [e.g., 38.4 dps] | [log path] | [e.g., push-off angular velocity] |
-| YYYY-MM-DD | [e.g., SI_interval] | [e.g., 2.3%] | [log path] | [e.g., bilateral symmetry] |
+| 2026-04-27 | filter_dp_ratio @ near_clog_heating, 1-sec windows (N=16 Monte Carlo, signal-only sim) | min 1.783 / mean 1.859 / max 1.959 (true 1.85) | `docs/plots/bill2b_regime_classifier.png`; commit 89694ab | P1 detection margin — alert edge (1.8) grazed under short-window noise; min sample under-reads into no-alert zone in heating regime |
+| 2026-04-27 | filter_dp_ratio @ past_clog_heating, 1-sec windows (N=16) | min 1.878 / mean 1.998 / max 2.089 (true 2.00) | `docs/plots/bill2b_regime_classifier.png`; commit 89694ab | P1 detection margin — clear alert in all 16 chunks |
+| 2026-04-27 | algorithm output spread (max−min), heating vs cooling regimes, 1-sec windows | heating spread 0.13–0.21; cooling spread 0.07–0.11 | `docs/plots/bill2b_regime_classifier.png`; commit 89694ab | P1 noise sensitivity — heating regime ≈ 1.7× higher spread than cooling because I0_HEATING (4 A) is half I0_COOLING (9 A), making the 0.05 A CT Gaussian noise relatively larger; informs Bill 2-D W_VIB derivation |
 
 ### Open anomalies
 
