@@ -25,6 +25,7 @@ A Bill you produce is a proposed change — the Justice and attorneys decide its
 | Amendment 4 | Three-strike failures should arrive here as the fourth-attempt Bill |
 | Amendment 7 | Bills introducing new constants must include derivation in the Proposed Change |
 | Amendment 9 | Bills for BOM changes require explicit "Bill required: yes" and BOM section update |
+| Amendment 11 | Any change to Signal Inventory or Firmware UART Format that would alter src/events.py, src/analysis.py, or src/plot.py requires a Bill — flag this explicitly in the Proposed Change section |
 | Legislative Process (CONSTITUTION.md) | Defines the Bill format you must produce |
 
 ---
@@ -75,6 +76,12 @@ in the unit of that primitive. "Improved performance" is not accepted.
 **Scope gate**
 The Proposed Change must name specific files, functions, or parameter values.
 "Update the algorithm" is not a Proposed Change.
+
+If the Proposed Change touches `docs/device_context.md` Signal Inventory or
+`docs/toolchain_config.md` Firmware UART Format, explicitly state whether
+the change would alter `src/events.py`, `src/analysis.py`, or `src/plot.py`.
+If yes, add to the Bill: "Re-scaffold required: Amendment 11 applies —
+frozen modules will need explicit human authorization to regenerate."
 
 ---
 

@@ -24,8 +24,10 @@ Every suggestion is a proposed Bill — the Justice decides whether to enact it.
 | Amendment 1 | Domain primitives are your evidence base; cite them by name in every suggestion |
 | Amendment 4 | Three-strike failures arriving here are evidence the current approach domain is exhausted |
 | Amendment 7 | Proposed constants must include derivation — not just the value |
+| Amendment 5 | Simulation is the Hardware Proxy — hardware results that deviate from your simulation-grounded suggestions are evidence of a hardware/mounting problem, not a firmware problem, provided the sim test was written |
 | Amendment 8 | When an algorithm domain is exhausted, name it, offer ≤ 3 alternatives, hardware option always on list |
 | Amendment 6 | Propose signal plots to support any suggestion that requires visual confirmation |
+| Amendment 11 | Scaffold Immutability — suggestions that would require changes to src/events.py, src/analysis.py, or src/plot.py require a Bill; flag this explicitly; never propose silent re-scaffold |
 
 ---
 
@@ -129,6 +131,10 @@ Draw the FSM (text). Identify dead states, unreachable states, and ambiguous tra
 - Disable a filter without explaining what noise source it was blocking
 - Continue past three suggestion cycles if the same profile keeps failing →
   invoke Amendment 8: name the exhausted domain, offer ≤ 3 alternatives
+- Propose changes to src/events.py, src/analysis.py, or src/plot.py directly
+  or suggest re-running /toolchain scaffold — these files are frozen under
+  Amendment 11; any such change requires a Bill enacted through the
+  Legislative Process
 
 ## Escalation Triggers
 

@@ -10,7 +10,40 @@ Live entries accumulate full argument text. Frozen entries (after stage closeout
 
 ## Active Precedents
 
-*(No active precedents. All Stage 0 entries are frozen below.)*
+### Standing Order Record — First scaffold authorization
+
+**Date:** 2026-04-27
+**Closes:** Police Warning W-S1-A (/session 1 pre-audit)
+**Commit:** b69d057 (scaffold) — to be re-cited from this session's governance commit
+
+**Ruling (operative):** `/toolchain scaffold` ran for the first time at commit b69d057
+(2026-04-27), generating `src/events.py`, `src/analysis.py`, `src/plot.py`,
+`src/signals.py`, `src/algorithm.py` from the Firmware UART Format defined in
+`docs/toolchain_config.md` (session_end_marker `SESSION_END`; events `reading`
+and `metric`). Confirmed: no prior `src/` directory existed before this commit.
+Justice acknowledges the UART Format as the authorized event schema for the
+scaffold run.
+
+**Effect under Amendment 11 (Scaffold Immutability, RATIFIED 2026-04-27):**
+- `src/events.py`, `src/analysis.py`, `src/plot.py` are infrastructure modules
+  — they will be confirmed and frozen at the Stage 1 Justice Gate, after
+  code-reviewer audits Article I traceability of all parsed fields. Once frozen,
+  they must not be regenerated, overwritten, or modified for the remainder of
+  the project without explicit human authorization plus a Bill.
+- `src/signals.py` and `src/algorithm.py` are stubs to be implemented in
+  Stage 1; they are NOT subject to the Amendment 11 freeze (they are project
+  source, not scaffolded analysis modules). Implementation must comply with
+  Article I (every constant traces to a domain primitive in Amendment 1).
+- Any change to `docs/device_context.md` Signal Inventory or
+  `docs/toolchain_config.md` Firmware UART Format that would alter the
+  scaffolded modules requires a Bill enacted through the Legislative Process
+  before re-scaffolding is permitted.
+
+**Re-scaffold trigger:** silent re-execution of `/toolchain scaffold` after
+this date is a violation of Amendment 11 unless preceded by an enacted Bill
+authorizing it.
+
+---
 
 ---
 

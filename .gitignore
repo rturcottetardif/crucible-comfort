@@ -6,3 +6,7 @@ __pycache__/
 
 # Build artifacts — Case 1 Condition 7 canonical path
 build/
+
+# Session-capture utilities (out-of-tree; resolves Police Warning W-S1-B 2026-04-27)
+record_session.py
+transcripts/

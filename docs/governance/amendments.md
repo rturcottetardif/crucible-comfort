@@ -87,7 +87,7 @@ after explicit human ratification.
 
 ### Amendment 5 — Simulation is the Hardware Proxy
 *Traces to: Article I + II*
-*Status: PROPOSED — ratify when Stage 1 begins*
+*Status: RATIFIED 2026-04-27*
 
 If something cannot be tested in simulation, a simulation test must be written first.
 Hardware results that deviate from simulation predictions are evidence of a hardware or
@@ -101,7 +101,7 @@ against which hardware results are compared at each stage gate.
 
 ### Amendment 6 — Signal Plot Mandate
 *Traces to: Article I + II*
-*Status: PROPOSED — ratify when Stage 1 begins*
+*Status: RATIFIED 2026-04-27*
 
 After any change to the project's signal model or any filter coefficient in firmware
 source, an agent must generate a signal plot, save it to `docs/plots/`, and wait for
@@ -194,7 +194,7 @@ assumption no human ever approved.
 
 ### Amendment 11 — Scaffold Immutability
 *Traces to: Article I + II*
-*Status: PROPOSED — ratify before Stage 1 begins*
+*Status: RATIFIED 2026-04-27*
 
 Project analysis modules (`src/events.py`, `src/analysis.py`, `src/plot.py`) are
 generated exactly once — at the first execution of the stage that requires them
@@ -294,10 +294,10 @@ findings.
 | 2 | Stage Gate Order | RATIFIED 2026-04-20 | Article I + II |
 | 3 | Toolchain Alignment | RATIFIED 2026-04-19 | Article II |
 | 4 | Three-Strike Escalation Rule | RATIFIED 2026-04-20 | Article II |
-| 5 | Simulation is the Hardware Proxy | PROPOSED | Article I + II |
-| 6 | Signal Plot Mandate | PROPOSED | Article I + II |
+| 5 | Simulation is the Hardware Proxy | RATIFIED 2026-04-27 | Article I + II |
+| 6 | Signal Plot Mandate | RATIFIED 2026-04-27 | Article I + II |
 | 7 | Calibration Discipline | PROPOSED | Article I |
 | 8 | Algorithm Search Honesty | PROPOSED | Article I + II |
 | 9 | Hardware Optimization Transparency | PROPOSED | Article II |
 | 10 | Interim Results and Decision Logging | PROPOSED | Article II |
-| 11 | Scaffold Immutability | PROPOSED | Article I + II |
+| 11 | Scaffold Immutability | RATIFIED 2026-04-27 | Article I + II |

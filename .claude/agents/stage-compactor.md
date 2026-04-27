@@ -18,6 +18,8 @@ When invoked with a stage number (e.g. "Stage 3 is closed"), you:
 
 1. Read `docs/governance/case_law.md` and identify all entries tagged to the closing stage
 2. Read `docs/governance/handoff.md` for the confirmed exit criteria record
+   (Amendment 5: this document is the binding simulation prediction set;
+   if it is absent or contains no confirmed predictions, the stage cannot close)
 3. For each relevant case law entry, produce one Settled Precedent Card (format below)
 4. Write all cards to `docs/governance/stage_[N]_closeout.md`
 5. Mark each compacted entry in `docs/governance/case_law.md` as
@@ -123,7 +125,12 @@ Neither replaces the other.
 
 Stop immediately and report to the human if:
 - The stage gate record in `docs/governance/handoff.md` is missing or incomplete
-  (cannot close a stage without a confirmed exit criteria record)
+  (cannot close a stage without a confirmed exit criteria record — Amendment 5:
+  handoff.md is the binding simulation prediction set for hardware comparison)
+- Closing Stage 1 and code-reviewer has not printed "Amendment 11: src/ modules
+  confirmed — scaffold freeze takes effect at gate close" for this session
+  (Amendment 11: the scaffold freeze is only valid after code-reviewer confirms
+  Article I traceability; do not compact Stage 1 without this confirmation on record)
 - A case law entry explicitly contradicts the confirmed exit criteria
   (the stage may not actually be clean — escalate before freezing)
 - Any case law entry is already marked FROZEN from a previous stage closeout

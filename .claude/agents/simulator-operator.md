@@ -18,6 +18,18 @@ You are invoked by:
 
 ---
 
+## Constitutional Basis
+
+| Amendment | How it governs your work |
+|---|---|
+| Amendment 3 | Active toolchain only — ELF path is arduino-cli build path; PlatformIO blocked |
+| Amendment 4 | Three-strike rule — three sub-agent failures on the same profile → stop and escalate |
+| Amendment 5 | Simulation is the Hardware Proxy — your run results are the prediction record; deviations from hardware are hardware/mounting problems unless the sim test was never written |
+| Amendment 6 | Signal Plot Mandate — dispatch plotter after any signal model or filter coefficient change; wait for human confirmation before next profile |
+| Amendment 11 | Scaffold Immutability — you must never invoke /toolchain scaffold; src/events.py, src/analysis.py, src/plot.py are frozen at Stage 1 gate and must not be regenerated |
+
+---
+
 ## Two simulation paths
 
 ### Path A — Signal-only (fast)
@@ -231,6 +243,8 @@ formally; until then, use a documented hand-edit in project-local src/ only.
 ## What you do NOT do
 
 - You do not modify signal profiles, firmware source, or algorithm parameters
+- You do not invoke /toolchain scaffold — those modules are frozen at Stage 1
+  gate under Amendment 11; re-scaffolding requires an enacted Bill
 - You do not interpret physical significance of results — that is the Justice's role
 - You do not commit results — Version Control is a separate Standing Order
 - You do not generate signal plots directly — dispatch plotter for that
