@@ -164,6 +164,19 @@ authorizing it.
 
 ---
 
+### Case 7: Bill 4 — Stage 1 Algorithm Firmware + ALERT UART Event
+**Date:** 2026-04-29
+**Positions:** A — Bill 4 as drafted (ALERT event, AlertEvent, Stage 1 firmware with real + Renode paths) | B — none raised; Justice direct acceptance per Cases 3–6 procedural precedent.
+**Prevailing position:** A
+**Justice's ruling:** Bill 4 enacts as drafted. All four pre-flagged debate points accepted: (1) Serial1 → UARTE0 mapping is a Stage 1 falsifiable finding — if wrong, one-line fix; (2) CT absent from Renode path is a structural constraint of RenoneBridge (N×6 IMU only), not an algorithm deficit — CT fusion validated by Path A; (3) ALPHA=1 identity substitution is analytic, not a new constant; (4) events.py and analysis.py modification before Stage 1 gate close is authorized by this Bill per Amendment 11's "before gate close" window.
+**Physical/empirical basis:** Firmware constants trace identically to algorithm.py constants (Bill 1–3). The C inversion (rms_ac / denominator) is the ALPHA=1 case of the Python `run()` Step D. Zero regression on UART event parsing (AlertEvent is additive to PARSER). Stage 1 Path B gate criterion satisfied when Renode run produces matching dp_ratio.
+**Conditions:** None.
+**Procedural note:** Fifth no-hearing direct acceptance. Cases 3–6 precedent applied.
+**Enacted bill:** Bill 4 — Stage 1 Algorithm Firmware + ALERT UART Event (`docs/governance/bills/stage1-firmware.md`).
+**Implementation branch:** stage1/firmware
+
+---
+
 ### Case 6: Bill 3 — CT Sampling Rate Upgrade to 600 Hz and Regime-Split Fusion Weights
 **Date:** 2026-04-29
 **Positions:** A — Bill 3 as drafted (FS_CT_HZ 1 → 600; W_VIB scalar replaced by W_VIB_HEATING = 0.9144 and W_VIB_COOLING = 0.6785) | B — none raised; Justice direct acceptance per Case 3/4/5 procedural precedent.

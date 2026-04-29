@@ -158,6 +158,13 @@ description = "Algorithm output — RMS of accel magnitude over a 500 ms sliding
 pattern     = "METRIC ts=(\\d+) rms_g=(-?[\\d.]+) n=(\\d+)"
 fields      = ["ts_ms", "rms_g", "n"]
 types       = ["int",   "float", "int"]
+
+[[event]]
+name        = "alert"
+description = "Stage 1 algorithm output per 1660-sample decision window (~1 Hz). Emitted by stage1_algo_usb.ino (Bill 4, Case 7). dp_ratio = ΔP/ΔP₀ from vibration proxy (IMU-only Renode path); regime = cooling (conservative default, Bill 2-A); alert = 1 iff dp_ratio ≥ 1.8 (Amendment 1 P1 alert window low edge)."
+pattern     = "ALERT ts=(\\d+) dp=(-?[\\d.]+) regime=(\\w+) alert=([01])"
+fields      = ["ts_ms", "dp_ratio", "regime", "alert"]
+types       = ["int",   "float",    "str",     "bool_int"]
 ```
 
 ### Binary Export Format (optional)
