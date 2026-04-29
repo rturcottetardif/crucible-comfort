@@ -138,6 +138,33 @@ read CLAUDE.md ---> that makes sure that Claude adheres to the constitution
 /spec
 
 
+There is a video showing the demo https://drive.google.com/file/d/1ZunuM257p_AH4jHunRtG4PHjvMTdYeoB/view?usp=sharing
+
+--- 
+
+# Day 3
+
+C. Your dev kit and toolchain
+
+- what board are you using? (exact model, part number)
+lets reuse gaitSense: seeed studio xiao nrf52840 sense
+- What sensor(s) are on it or wired to it?
+there is a microphone and an IMU incorporated, i think we will need to add a thermometer.
+How do you flash firmware? (UF2, J-Link, DFU, JTAG)
+- I don't have anything to flash the firmware
+How do you observe output? (USB serial, BLE, RTT, UART)
+Let's start with USB
+
+---
+# Day 4 - Session 1
+Let's do the simulation, record the discussion and the screen of the discussion
+
+--> 08:49 Hardware not connected
+
+First video is wrapping up session 0. It's a bit weird because it seemed finished.
+
+
+
 
 
 
