@@ -33,6 +33,24 @@ class ReadingEvent:
 
 
 @dataclass
+class AlertEvent:
+    """Stage 1 algorithm output per 1660-sample decision window (~1 Hz).
+
+    Emitted by stage1_algo_usb.ino (Bill 4, Case 7).
+    UART format: ALERT ts=<ms> dp=<float> regime=<str> alert=<0|1>
+
+      ts_ms    -> firmware millis() at emission
+      dp_ratio -> filter_dp_ratio: ΔP/ΔP₀ vibration-proxy estimate (P1)
+      regime   -> hvac_regime: "cooling" default for IMU-only Renode path
+      alert    -> True iff dp_ratio >= 1.8 (Amendment 1 P1 alert window low edge)
+    """
+    ts_ms: int
+    dp_ratio: float
+    regime: str
+    alert: bool
+
+
+@dataclass
 class MetricEvent:
     """Algorithm output emitted at 2 Hz by stage0_algo_{usb,ble}.ino.
 

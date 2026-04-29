@@ -31,8 +31,15 @@ METRIC_DEF = EventDefinition(
     converters=[int, float, int],
 )
 
+ALERT_DEF = EventDefinition(
+    name="alert",
+    pattern=r"ALERT ts=(\d+) dp=(-?[\d.]+) regime=(\w+) alert=([01])",
+    fields=["ts_ms", "dp_ratio", "regime", "alert"],
+    converters=[int, float, str, lambda x: bool(int(x))],
+)
+
 PARSER = UartParser(
-    event_definitions=[READING_DEF, METRIC_DEF],
+    event_definitions=[READING_DEF, METRIC_DEF, ALERT_DEF],
     session_end_marker="SESSION_END",
 )
 
