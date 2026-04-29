@@ -81,7 +81,7 @@ reference pressure measurement in both heating and cooling regimes.
 | imu_gyro_z  | Angular velocity (Z-axis), HVAC housing    | °/s | ±250 dps | saturate at ±250 dps | 1.66 kHz | P1 |
 | microphone  | Acoustic pressure (airflow / blower signature) | dBSPL | 40–70 dBSPL | clip ≥ ~120 dBSPL; silence < 30 dBSPL (disconnect) | 16 kHz | P1 |
 | outside_temp | Outdoor ambient air temperature           | °C  | −30 to +45 °C | fault < −40 °C or > +60 °C; stuck value over long window | 1/60 Hz (≈ 0.0167 Hz) | P2 |
-| ct_current_rms | AC current draw, HVAC blower motor (60 Hz, derived RMS-to-DC) | A RMS | 2–15 A RMS | < 0.3 A (fan off); > 25 A (saturation / stall) | 1 Hz | P1 |
+| ct_current_rms | AC current draw, HVAC blower motor — raw instantaneous samples at 600 Hz; firmware computes true RMS over 1-sec window (600 samples). Key name preserved for scaffold compatibility (Bill 3, Case 6). | A | ±25 A instantaneous | saturate at ±25 A | 600 Hz | P1 |
 
 **Primitive key:**
 - **P1** = Filter ΔP

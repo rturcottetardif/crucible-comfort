@@ -164,6 +164,21 @@ authorizing it.
 
 ---
 
+### Case 6: Bill 3 — CT Sampling Rate Upgrade to 600 Hz and Regime-Split Fusion Weights
+**Date:** 2026-04-29
+**Positions:** A — Bill 3 as drafted (FS_CT_HZ 1 → 600; W_VIB scalar replaced by W_VIB_HEATING = 0.9144 and W_VIB_COOLING = 0.6785) | B — none raised; Justice direct acceptance per Case 3/4/5 procedural precedent.
+**Prevailing position:** A
+**Justice's ruling:** Bill 3 enacts as drafted. All four pre-flagged debate points accepted as framed: (1) σ_raw = 0.05 A per raw sample is consistent with the original 1 Hz spec and with typical 12-bit ADC noise on a ±25 A CT shunt; (2) the regime split is warranted — W_VIB_HEATING (0.9144) and W_VIB_COOLING (0.6785) differ by 0.236, which is well above the noise floor and invalidates the Bill 2-D single-scalar assumption; (3) both constants are outputs of the same minimum-variance formula applied to the same σ_raw, making atomic admission necessary for self-consistency; (4) "off"-regime CT bypass is a mathematical requirement (blower stopped → ct ≈ 0 → inversion undefined). Implementation proceeds on branch `stage1/ct-600hz-fusion`.
+**Physical/empirical basis:** Same minimum-variance (inverse-variance) framework as Case 5. σ_ct_eff = 0.05 / √(2 × 600) = 0.001443 A. Propagated: σ_ct_H = 0.003007 (heating, I0 = 4.0, BETA = 0.12), σ_ct_C = 0.001336 (cooling, I0 = 9.0). W_VIB_H = σ_ct_H² / (σ_vib² + σ_ct_H²) = 0.9144; W_VIB_C = σ_ct_C² / (σ_vib² + σ_ct_C²) = 0.6785. CT contribution: 8.6 % heating, 32.2 % cooling. Cooling benefit larger because I0_COOLING (9 A) vs I0_HEATING (4 A) — higher baseline current makes CT inversion more sensitive per unit noise.
+**Device outcome protected:** W_VIB_HEATING and W_VIB_COOLING are both convex combination weights. All eight Bill 1 profiles use T_HEATING (−10 °C) or T_COOLING (+25 °C), outside the shoulder band. Mean dp_ratio_vib and dp_ratio_ct are unbiased → zero regression on profile means. The CT signal model change (raw AC waveform vs pre-computed RMS) does not affect the mean value returned by the inversion — only the per-sample noise distribution, which the inverse-variance weights account for by construction.
+**Conditions:** None.
+**Procedural note:** Fourth no-hearing direct acceptance. Case 5 precedent applied (Justice may rule directly on contested points grounded in a constitutional principle). The architectural finding in Case 5 explicitly foreshadowed this Bill: "a *decision-window-length Bill* — at 60 sec, N_ct = 60, σ_ct drops by √60, and W_VIB shifts toward a more balanced value, restoring CT's ΔP-fusion contribution." Bill 3 achieves the same effect via sampling-rate increase rather than window-length extension — the physics is identical.
+**Supersedes:** W_VIB = 0.9999 scalar from Bill 2-D (Case 5). That constant is removed from algorithm.py and replaced by W_VIB_HEATING and W_VIB_COOLING.
+**Enacted bill:** Bill 3 — CT Sampling Rate Upgrade (`docs/governance/bills/stage1-ct-600hz.md`).
+**Implementation branch:** stage1/ct-600hz-fusion
+
+---
+
 ## Frozen Precedents
 
 ### Case 1: XIAO nRF52840 Sense — Platform Resolution for xiaoblesense Board ID
