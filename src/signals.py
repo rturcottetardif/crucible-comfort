@@ -33,7 +33,7 @@ import numpy as np
 # Sample rates (Hz) — derived from Signal Inventory in docs/device_context.md.
 # Traces to Amendment 1 primitives P1 (IMU/CT/Mic) and P2 (outside_temp).
 FS_IMU_HZ = 1660.0  # IMU ODR (Hz) — Signal Inventory; traces to A1 P1
-FS_CT_HZ = 1.0  # CT rate (Hz) — Signal Inventory; traces to A1 P1
+FS_CT_HZ = 600.0  # CT rate (Hz) — Signal Inventory; traces to A1 P1 (Bill 3, Case 6)
 FS_TEMP_HZ = 1.0 / 60.0  # outside_temp rate (Hz) — Signal Inventory; traces to A1 P2
 FS_MIC_HZ = 16000.0  # microphone rate (Hz) — Signal Inventory; traces to A1 P1
 
@@ -249,12 +249,19 @@ def generate(profile: str, n_steps: int) -> dict[str, np.ndarray]:
     g_y = np.clip(g_y, -250.0, 250.0)
     g_z = np.clip(g_z, -250.0, 250.0)
 
-    # ── CT current RMS (1 Hz) ──────────────────────────────────────
+    # ── CT current raw AC waveform (600 Hz) ───────────────────────
+    # Bill 3 (Case 6): raw 60 Hz sinusoidal AC waveform at 600 Hz.
+    # Algorithm computes true RMS over the 1-sec window (600 samples).
+    # σ_raw = 0.05 A per sample (ADC noise floor — traces to A1 P1).
+    # Key name preserved as ct_current_rms for algorithm.py compatibility.
     i0 = I0_HEATING if regime == "heating" else I0_COOLING
     ct_mean = i0 * (1.0 + BETA * (dp_ratio - 1.0))
-    ct = ct_mean + rng.normal(0.0, 0.05, n_steps)
-    # Saturate at Signal Inventory hard limits [0.3, 25.0] A.
-    ct = np.clip(ct, 0.3, 25.0)
+    ct_peak = ct_mean * np.sqrt(2.0)  # RMS → peak for sinusoid — traces to A1 P1
+    ct_phase = rng.uniform(0.0, 2.0 * np.pi)  # random phase per profile
+    t_ct = np.arange(n_steps) / FS_CT_HZ
+    ct = ct_peak * np.sin(2.0 * np.pi * 60.0 * t_ct + ct_phase) + rng.normal(0.0, 0.05, n_steps)
+    # Saturate at ±25 A (raw instantaneous current hard limit — traces to A1 P1).
+    ct = np.clip(ct, -25.0, 25.0)
 
     # ── Outside temp (1/60 Hz) ─────────────────────────────────────
     # Step constant per regime; temporal variation deferred to Stage 2.

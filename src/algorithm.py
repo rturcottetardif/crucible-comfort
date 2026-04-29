@@ -68,38 +68,34 @@ T_COLD_SHOULDER = 5.0  # °C — traces to A1 P2; conservative heating upper edg
 # Traces to: Amendment 1 primitive P2 (outside_temp is the regime proxy).
 T_WARM_SHOULDER = 15.0  # °C — traces to A1 P2; conservative cooling lower edge
 
-# W_VIB — derived from P1 (Filter ΔP).
+# W_VIB_HEATING / W_VIB_COOLING — derived from P1 (Filter ΔP). Bill 3 (Case 6).
 # Physical derivation: minimum-variance (inverse-variance) combination of two
 #   independent Gaussian proxy estimates for ΔP/ΔP₀. The optimal weight on
-#   the vibration proxy is W_VIB = σ_ct² / (σ_vib² + σ_ct²), where σ_vib
-#   and σ_ct are the standard deviations of the dp_ratio estimation error
-#   from each proxy over a 1-second decision window.
+#   the vibration proxy is W_VIB = σ_ct² / (σ_vib² + σ_ct²).
 #
-#   σ_ct is dominated by the 0.05 A Gaussian noise on ct_current_rms
-#   (src/signals.py) sampled at 1 Hz — N_ct = 1 sample per 1-sec window.
-#   Propagated through the CT inversion: σ_ct = σ_ct_current / (I0 × BETA).
-#     Heating: σ_ct_H = 0.05 / (4.0 × 0.12) = 0.1042
-#     Cooling: σ_ct_C = 0.05 / (9.0 × 0.12) = 0.04630
+#   Bill 3: CT sampled at 600 Hz — N_ct = 600 raw AC samples per 1-sec window.
+#   σ_raw = 0.05 A (ADC per-sample noise — traces to A1 P1).
+#   σ_ct_eff = σ_raw / √(2 × N_ct) = 0.05 / √1200 = 0.001443 A
+#   Propagated through CT inversion (σ_ct = σ_ct_eff / (I0 × BETA)):
+#     Heating: σ_ct_H = 0.001443 / (4.0 × 0.12) = 0.003007
+#     Cooling: σ_ct_C = 0.001443 / (9.0 × 0.12) = 0.001336
 #
-#   σ_vib is dominated by SIGMA_NOISE_G = 0.002 g averaged over N_imu = 1660
-#   samples per 1-sec window. With ALPHA = 1:
-#     σ_rms_ac ≈ SIGMA_NOISE_G / √(2 × N_imu) = 0.002 / √(3320) ≈ 3.47e-5 g
-#     σ_vib   = σ_rms_ac / (A_FUND_CLEAN × RMS_HARMONIC_FACTOR)
-#             = 3.47e-5 / (0.05 × 0.7546) ≈ 9.2e-4
+#   σ_vib unchanged (IMU unchanged at 1660 Hz, SIGMA_NOISE_G = 0.002 g):
+#     σ_rms_ac ≈ 0.002 / √(3320) ≈ 3.47e-5 g
+#     σ_vib    = 3.47e-5 / (0.05 × 0.7546) ≈ 9.2e-4
 #
 #   Inverse-variance weights:
-#     W_VIB_H = 0.1042²  / ((9.2e-4)² + 0.1042²)  ≈ 0.99992
-#     W_VIB_C = 0.04630² / ((9.2e-4)² + 0.04630²) ≈ 0.99961
-#   Difference (3.1e-4) is sub-noise-floor relative to SIGMA_NOISE_G's
-#   one-significant-figure precision. Regime split not warranted.
+#     W_VIB_H = 0.003007² / ((9.2e-4)² + 0.003007²) = 9.042e-6 / 9.888e-6 = 0.9144
+#     W_VIB_C = 0.001336² / ((9.2e-4)² + 0.001336²) = 1.786e-6 / 2.632e-6 = 0.6785
+#   Difference (0.236) is well above noise floor — regime split warranted (Bill 2-D
+#   single-scalar assumption required sub-noise-floor difference; it was 3.1e-4 at 1 Hz).
 #
-#   W_VIB = 0.9999 adopted (mid-point at four significant figures). The
-#   vibration proxy averages 1660 samples per 1-sec window vs the CT
-#   proxy's 1 sample, so the minimum-variance estimator is dominated by
-#   vibration. Falsifiable Stage 2 / Stage 3 prediction.
-# Value: 0.9999 (dimensionless).
+#   CT contribution: 8.6 % heating, 32.2 % cooling. Cooling larger because
+#   I0_COOLING (9 A) > I0_HEATING (4 A) → CT inversion more sensitive per unit noise.
+# Values: 0.9144 (heating), 0.6785 (cooling). Dimensionless.
 # Traces to: Amendment 1 primitive P1 (Filter ΔP / ΔP₀ is the fused output).
-W_VIB = 0.9999  # dimensionless — traces to A1 P1; min-variance vibration weight
+W_VIB_HEATING = 0.9144  # dimensionless — traces to A1 P1; min-variance weight, heating
+W_VIB_COOLING = 0.6785  # dimensionless — traces to A1 P1; min-variance weight, cooling
 
 
 def run(samples) -> dict[str, Any]:
@@ -170,23 +166,27 @@ def run(samples) -> dict[str, Any]:
         dp_ratio_vib = 1.0  # default to clean — traces to A1 P1
 
     # Step E — current → ΔP/ΔP₀ inversion (inverse of Bill 1 CT forward model).
-    if ct_current_rms_arr is not None and ct_current_rms_arr.size > 0:  # P1 CT present — traces to A1 P1
-        ct_mean = float(np.mean(ct_current_rms_arr))
+    # Bill 3: ct array now contains raw 600 Hz AC samples; compute true RMS first.
+    # "off" regime bypassed — blower stopped → ct ≈ 0 → inversion undefined (Bill 3).
+    if (ct_current_rms_arr is not None
+            and ct_current_rms_arr.size > 0
+            and hvac_regime != "off"):  # P1 CT present, regime defined — traces to A1 P1
+        ct_rms = float(np.sqrt(np.mean(ct_current_rms_arr ** 2)))  # true RMS — traces to A1 P1
         i0 = I0_HEATING if hvac_regime == "heating" else I0_COOLING
-        # Inverse of: ct_mean = I0 * (1 + BETA * (dp_ratio - 1)) — traces to A1 P1.
-        dp_ratio_ct = 1.0 + (ct_mean / i0 - 1.0) / BETA
+        # Inverse of: ct_rms = I0 * (1 + BETA * (dp_ratio - 1)) — traces to A1 P1.
+        dp_ratio_ct = 1.0 + (ct_rms / i0 - 1.0) / BETA
     else:
-        ct_mean = float("nan")
+        ct_rms = float("nan")
         dp_ratio_ct = float("nan")
 
-    # Step F — physics-derived fusion (Bill 2-D). W_VIB = minimum-variance
-    # (inverse-variance) weight on the vibration proxy, derived from
-    # σ_ct² / (σ_vib² + σ_ct²) using Bill 1 forward-model parameters and
-    # Signal Inventory noise specifications. Traces to A1 P1.
+    # Step F — regime-dependent physics-derived fusion (Bill 3, Case 6).
+    # W_VIB_HEATING / W_VIB_COOLING: minimum-variance weights at 600 Hz CT.
+    # "off" regime and missing CT fall through to vibration-only path. Traces to A1 P1.
     if np.isnan(dp_ratio_ct):
-        dp_ratio_combined = dp_ratio_vib  # vibration-only path unchanged — traces to A1 P1
+        dp_ratio_combined = dp_ratio_vib  # vibration-only path — traces to A1 P1
     else:
-        dp_ratio_combined = W_VIB * dp_ratio_vib + (1.0 - W_VIB) * dp_ratio_ct  # traces to A1 P1
+        w_vib = W_VIB_HEATING if hvac_regime == "heating" else W_VIB_COOLING  # traces to A1 P1
+        dp_ratio_combined = w_vib * dp_ratio_vib + (1.0 - w_vib) * dp_ratio_ct  # traces to A1 P1
 
     # Step G — alert per Amendment 1 alert window low edge (1.8). Primitive
     # boundary stated in Amendment 1; not a new algorithm-calibration constant.
@@ -201,7 +201,7 @@ def run(samples) -> dict[str, Any]:
             "rms_ac_g": rms_ac_g,
             "dp_ratio_vib": float(dp_ratio_vib),
             "dp_ratio_ct": float(dp_ratio_ct),
-            "ct_mean_a": ct_mean,
+            "ct_rms_a": ct_rms,
             "outside_temp_c": temp_c,
         },
     }
