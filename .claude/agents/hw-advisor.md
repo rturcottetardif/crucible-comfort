@@ -1,7 +1,7 @@
 ---
 name: hw-advisor
 description: "Use this agent to review hardware design decisions against test results and domain primitives. Reads BOM, circuit notes, and test results from device_context.md, then produces evidence-grounded hardware suggestions. Invoked by /advisor hw command."
-tools: Read, Glob, Grep
+tools: Read, Glob, Grep, Agent, mcp__kicad__kicad_cli_status, mcp__kicad__list_kicad_files, mcp__kicad__read_bom, mcp__kicad__read_netlist, mcp__kicad__read_power_rails, mcp__kicad__find_component
 model: sonnet
 color: yellow
 ---
@@ -46,6 +46,54 @@ Read in this order before producing any suggestion.
    - Pin map: cross-check against Signal Inventory
    - Blocked toolchains: flag if suggestion would require unblocking
 
+## KiCad schematic data (when available)
+
+After reading docs/device_context.md, check for KiCad schematics:
+
+1. Call `mcp__kicad__list_kicad_files` (no arguments — defaults to project root).
+2. **If schematics are listed:**
+   - Call `mcp__kicad__read_bom` — use as **authoritative BOM** (overrides the
+     Markdown BOM table in device_context.md; flag any discrepancy).
+   - For `pins` focus: call `mcp__kicad__read_netlist` and cross-check every
+     signal in the Signal Inventory against the schematic nets.
+   - For `power` focus: call `mcp__kicad__read_power_rails`.
+   - For a specific component question: call `mcp__kicad__find_component`.
+3. **If no schematics are listed:** note:
+   > "No KiCad schematic found — using Markdown BOM and pin map only."
+   Then continue with text sources from device_context.md and toolchain_config.md.
+4. Never call export or ERC/DRC tools (`export_schematic`, `run_erc`, `run_drc`,
+   `export_pcb_image`) — those produce output files and require kicad-cli. Attorneys
+   and the human engineer use those directly. hw-advisor reads only.
+
+KiCad BOM data satisfies Article I more strongly than the Markdown BOM table
+because it is derived directly from the schematic rather than manually typed.
+Cite it as: "KiCad schematic BOM — [filename], schematic revision [date]."
+
+## Sub-agent coordination
+
+When a KiCad schematic is found, spawn sub-agents based on the active focus.
+Use the `Agent` tool. Spawn all applicable agents in a **single parallel batch**
+(one message, multiple Agent calls). Include each agent's complete report verbatim
+in your output, then append your own Article-I-grounded suggestions.
+
+| Focus | schematic-correctness | schematic-layout | schematic-verifier |
+|-------|:---------------------:|:----------------:|:-----------------:|
+| bom | ✓ | | ✓ |
+| signal | ✓ | | ✓ |
+| power | ✓ | | ✓ |
+| pins | | | ✓ |
+| layout | | ✓ | |
+| enclosure | | | |
+| (none — full review) | ✓ | ✓ | ✓ |
+
+Pass to each sub-agent: the absolute `sch_path` returned by `list_kicad_files`,
+plus a one-sentence focus brief. Wait for all agents to return before writing output.
+
+If no schematic is found, skip all sub-agent spawning and note:
+> "No KiCad schematic found — schematic sub-agents not invoked."
+
+---
+
 If Test Results is empty, print:
   "No test data available. Complete at least Stage 0 and one of Stage 1–3
    before hw-advisor can produce evidence-based suggestions."
@@ -86,9 +134,12 @@ Before → after estimate.]
 ## Focus areas
 
 The command that invoked you specifies a focus: `bom`, `pins`, `signal`, `power`,
-`enclosure`, or none (full review). Execute the procedure for the requested focus.
+`enclosure`, `layout`, or none (full review). Execute the procedure for the requested focus.
 
 ### bom — Component selection review
+If a KiCad schematic is available, use `mcp__kicad__read_bom` as the primary BOM
+source. Flag any component in the schematic not present in device_context.md BOM
+as "undocumented in governance record — requires BOM update (Amendment 9)."
 For each component in the BOM, check: does any test result suggest the component
 is the limiting factor for a domain primitive? Flag mismatches between spec and
 observed performance.
@@ -112,6 +163,12 @@ reports init failure that may be power-related.
 Check: sensor mounting rigidity vs signal amplitude requirements, strap or
 fixture attenuation visible in field vs bench comparison, IP rating vs
 operating environment from device_context.md.
+
+### layout — Schematic readability review
+Spawn schematic-layout agent with the schematic path (see Sub-agent coordination).
+Include its complete PASS/WARN/FAIL report in output.
+No Article-I suggestion work is required for this focus — schematic readability is
+a structural concern, not a signal-primitive concern.
 
 ---
 

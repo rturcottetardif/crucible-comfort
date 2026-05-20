@@ -12,6 +12,9 @@ Live entries accumulate full argument text. Frozen entries (after stage closeout
 
 ### Standing Order Record — Direct ΔP sensing rejected; indirect mandatory
 
+**[FROZEN — Stage 1 closed 2026-05-19]**
+**Compact card:** docs/governance/stage_1_closeout.md
+
 **Date:** 2026-04-27
 **Source:** hw-advisor full review (/advisor hw, this session)
 **Cross-references:** sw-advisor scoping pass (this session, "Hardware Alternative" callout)
@@ -73,6 +76,9 @@ mandatory primary architecture.**
 
 ### Standing Order Record — First scaffold authorization
 
+**[FROZEN — Stage 1 closed 2026-05-19]**
+**Compact card:** docs/governance/stage_1_closeout.md
+
 **Date:** 2026-04-27
 **Closes:** Police Warning W-S1-A (/session 1 pre-audit)
 **Commit:** b69d057 (scaffold) — to be re-cited from this session's governance commit
@@ -107,6 +113,10 @@ authorizing it.
 ---
 
 ### Case 2: Stage 1 Signal Model — Eleven-Constant A7 Tension
+
+**[FROZEN — Stage 1 closed 2026-05-19]**
+**Compact card:** docs/governance/stage_1_closeout.md
+
 **Date:** 2026-04-27
 **Positions:** A — model parameters exempt from A7 one-per-Bill | B — A7 applies to all source constants — split into 11 Bills
 **Prevailing position:** A
@@ -120,6 +130,10 @@ authorizing it.
 ---
 
 ### Case 3: Bill 2-A — Regime Classifier Cold Shoulder + Proxy Inversion Infrastructure
+
+**[FROZEN — Stage 1 closed 2026-05-19]**
+**Compact card:** docs/governance/stage_1_closeout.md
+
 **Date:** 2026-04-27
 **Positions:** A — Bill 2-A as drafted (one new algorithm-calibration constant T_COLD_SHOULDER + structural infrastructure for proxy inversions and provisional 50/50 fusion) | B — none raised; Justice accepted directly without convening a hearing.
 **Prevailing position:** A
@@ -134,6 +148,10 @@ authorizing it.
 ---
 
 ### Case 4: Bill 2-B — Regime Classifier Warm Shoulder (Three-Outcome Classifier)
+
+**[FROZEN — Stage 1 closed 2026-05-19]**
+**Compact card:** docs/governance/stage_1_closeout.md
+
 **Date:** 2026-04-27
 **Positions:** A — Bill 2-B as drafted (one new algorithm-calibration constant T_WARM_SHOULDER = 15.0 °C; three-outcome classifier replacing Bill 2-A's two-outcome classifier; ndarray-path "cooling" default preserved) | B — none raised; Justice accepted directly per Case 3 procedural precedent.
 **Prevailing position:** A
@@ -149,6 +167,10 @@ authorizing it.
 ---
 
 ### Case 5: Bill 2-D — Physics-Derived Vibration Fusion Weight (W_VIB)
+
+**[FROZEN — Stage 1 closed 2026-05-19]**
+**Compact card:** docs/governance/stage_1_closeout.md
+
 **Date:** 2026-04-27
 **Positions:** A — Bill 2-D as drafted (W_VIB = 0.9999, the physics-derived inverse-variance weight; CT formally remains in ΔP fusion at 0.01 % contribution) | B — none raised; Justice accepted directly per Case 3 procedural precedent applied to the drafter's contested Point 1.
 **Prevailing position:** A
@@ -165,6 +187,10 @@ authorizing it.
 ---
 
 ### Case 7: Bill 4 — Stage 1 Algorithm Firmware + ALERT UART Event
+
+**[FROZEN — Stage 1 closed 2026-05-19]**
+**Compact card:** docs/governance/stage_1_closeout.md
+
 **Date:** 2026-04-29
 **Positions:** A — Bill 4 as drafted (ALERT event, AlertEvent, Stage 1 firmware with real + Renode paths) | B — none raised; Justice direct acceptance per Cases 3–6 procedural precedent.
 **Prevailing position:** A
@@ -178,6 +204,10 @@ authorizing it.
 ---
 
 ### Case 6: Bill 3 — CT Sampling Rate Upgrade to 600 Hz and Regime-Split Fusion Weights
+
+**[FROZEN — Stage 1 closed 2026-05-19]**
+**Compact card:** docs/governance/stage_1_closeout.md
+
 **Date:** 2026-04-29
 **Positions:** A — Bill 3 as drafted (FS_CT_HZ 1 → 600; W_VIB scalar replaced by W_VIB_HEATING = 0.9144 and W_VIB_COOLING = 0.6785) | B — none raised; Justice direct acceptance per Case 3/4/5 procedural precedent.
 **Prevailing position:** A
@@ -274,3 +304,19 @@ authorizing it.
 **Compact card:** docs/governance/stage_0_closeout.md
 
 **Ruling (operative):** `REPORT_PERIOD_MS = 500` in `firmware/stage0_algo_usb/stage0_algo_usb.ino` line 37 is a UART emission cadence for a Stage 0 liveness smoke test only (no thresholds, no detection logic). Inline practical-basis comment added. This exception (uncited constant in no-threshold sketch) does not extend to Stage 1+ firmware that introduces thresholds or detection logic.
+
+---
+
+### Standing Order Record — Stage 1 Path B (Renode) Waiver
+
+**[FROZEN — Stage 1 closed 2026-05-19]**
+**Compact card:** docs/governance/stage_1_closeout.md
+
+**Date:** 2026-05-19
+**Relates to:** Case 7 (Bill 4) — Stage 1 Path B gate criterion
+
+**Finding:** Renode binary is present (`/usr/local/bin/renode`) but the RenoneBridge infrastructure required by `run_renode_sim.py` was never built: no `.resc` script, no `sim_usbd_stub.py`, no `sim_uart_stub.py`. Path B cannot execute in the current toolchain state.
+
+**Justice's ruling:** Path B waived for Stage 1 gate. Stage 1 gate criterion is satisfied by Path A alone — all 8 registered profiles pass (2026-05-19 regression run: 8 PASS, 0 FAIL, 0 ERROR). The Bill 4 Path B mandate is superseded by this waiver. RenoneBridge infrastructure build is deferred to a future Bill before Stage 2 gate if firmware-in-emulator validation is required at that stage.
+
+**Effect:** Stage 1 gate is MET. stage-compactor may proceed.

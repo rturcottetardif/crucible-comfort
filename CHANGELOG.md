@@ -43,11 +43,35 @@ Changes are classified as:
 
 ---
 
+## [0.2.0] — 2026-05-19 — KiCad MCP server + Python module
+
+### Agent
+- `hw-advisor` — updated to call KiCad MCP tools when a schematic is present;
+  `read_bom` is now authoritative over Markdown BOM (overrides if both present)
+
+### Infrastructure
+- `crucible/hw/sexpr.py` — pure-Python S-expression parser for KiCad file format
+  (tokenizer, recursive descent parser, serializer, navigation helpers)
+- `crucible/hw/kicad.py` — public API: `read_bom`, `read_netlist`, `read_power_rails`,
+  `find_component`, `list_project_files`, `detect_kicad_cli`, plus kicad-cli bridge
+  for `export_svg`, `export_pdf`, `run_erc`, `export_pcb_image`, `run_drc`
+- `src/kicad_integration.py` — ComfortSense net→signal mapping; `check_signal_inventory`
+  and `bom_vs_device_context` for hw-advisor use
+- `.claude/mcp/kicad/server.py` — MCP stdio server exposing 10 tools (6 read-only,
+  4 kicad-cli-dependent); registered in `.mcp.json`
+- `hardware/` — placeholder directory for `.kicad_sch` and `.kicad_pcb` files
+
+### Docs
+- `KNOWN_LIMITATIONS.md` — updated KiCad limitation; kicad-cli export needs KiCad 7.0+
+- `.claude/mcp/kicad/README.md` — tool table, registration, upgrade instructions
+
+---
+
 ## Roadmap (not yet released)
 
 - [ ] CI server integration guide
 - [ ] Generic field data replay pipeline (simulation feedback loop tooling)
-- [ ] KiCad schematic parser for hw-advisor
+- [x] KiCad schematic parser for hw-advisor (0.2.0)
 - [ ] Smart home sensor complete example
 - [ ] docs/simulation/simulation_guide.md
 - [ ] docs/firmware/integration_guide.md
