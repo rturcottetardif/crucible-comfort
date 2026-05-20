@@ -33,14 +33,16 @@ PCB_PATH       = "hardware/comfortsense.kicad_pcb"
 # IMU signals share one I2C bus (IMU_SDA / IMU_SCL) — they cannot be
 # individually resolved to nets; the mapping records the bus net.
 SIGNAL_TO_NET: dict[str, str] = {
-    "imu_accel_x":    "IMU_SDA",
-    "imu_accel_y":    "IMU_SDA",
-    "imu_accel_z":    "IMU_SDA",
-    "imu_gyro_x":     "IMU_SDA",
-    "imu_gyro_y":     "IMU_SDA",
-    "imu_gyro_z":     "IMU_SDA",
-    "ct_current_rms": "CT_CURRENT",
+    "imu_accel_x":    "SDA",
+    "imu_accel_y":    "SDA",
+    "imu_accel_z":    "SDA",
+    "imu_gyro_x":     "SDA",
+    "imu_gyro_y":     "SDA",
+    "imu_gyro_z":     "SDA",
+    "ct_current_rms": "ADC_CT",
+    # DS18B20 OneWire — no authorized net in rev 0.1; correctly MISSING until rev 0.2 (Bill 5 Option B)
     "outside_temp":   "OUTSIDE_TEMP",
+    # On-board XIAO routing — no external net in ComfortSense PCB; correctly MISSING
     "microphone":     "PDM_DATA",
 }
 

@@ -222,7 +222,7 @@ arduino-cli lib install "arduinoFFT"@<version>
 ```
 Spec Gate  — Device Specification:  CLOSED 2026-04-16 (Amendment 1 ratified)
 Stage 0    — HIL Toolchain Lock:    CLOSED 2026-04-20 — all four gates PASS, toolchain LOCKED
-Stage 1    — Simulation:            NOT STARTED
+Stage 1    — Simulation:            CLOSED 2026-05-19 — Path A 8/8 PASS, Path B waived (RenoneBridge not built)
 Stage 2    — Firmware Integration:  NOT STARTED
 Stage 3    — Field Test:            NOT STARTED
 Stage 4    — Host Integration:      NOT STARTED

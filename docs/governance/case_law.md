@@ -222,6 +222,24 @@ authorizing it.
 
 ---
 
+### Case 8: Bill 5 — Retroactive Authorization: Stage 2 KiCad Schematic, PCB Layout, and Signal Traceability Module
+
+**Date:** 2026-05-19
+**Positions:** A — Bill 5 as drafted, Option A (NTC thermistor accepted) | B — Bill 5 as drafted, Option B (DS18B20 reinstated); Justice direct acceptance per Cases 3–7 procedural precedent.
+**Prevailing position:** B (Option B — DS18B20 OneWire reinstated)
+**Justice's ruling:** Bill 5 enacts as drafted with Option B on Debate Point 3. Debate Points 1, 2, and 4 accepted as uncontested. Debate Point 3 resolved: DS18B20 OneWire is the authorized outside_temp sensing architecture. NTC sub-circuit (TH1 + R2 + J_TEMP) in schematic rev 0.1 is not authorized. Schematic rev 0.2 required before Stage 2 gate, replacing the NTC sub-circuit with a DS18B20 connector and 4.7 kΩ pull-up to 3V3. The human engineer stated the schematic was exploratory Stage 2 smoke-test preparation — consistent with Option B; rev 0.1 establishes the non-temperature signal paths, rev 0.2 completes the design.
+**Physical/empirical basis:** DS18B20 factory calibration (±0.5°C) is required for the P2 regime classifier thresholds T_COLD_SHOULDER = 5°C and T_WARM_SHOULDER = 15°C (Bills 2-A / 2-B). NTC B-value tolerance (±1–2°C without per-unit calibration) is insufficient to reliably resolve the 10°C shoulder window in a self-installing, no-calibration-step rooftop device. DS18B20 OneWire was the planned architecture in toolchain_config.md; no change to that record is required.
+**Conditions:**
+1. `src/kicad_integration.py` SIGNAL_TO_NET corrected: IMU signals → `SDA`; ct_current_rms → `ADC_CT`; outside_temp → `OUTSIDE_TEMP` (correctly MISSING until rev 0.2); microphone → `PDM_DATA` (correctly MISSING, on-board routing). DONE.
+2. `docs/device_context.md` BOM section must be populated with the 10-component table from Bill 5 Part A before Stage 2 gate opens. PENDING — human action.
+3. Schematic rev 0.2 must replace TH1 + R2 + J_TEMP with DS18B20 connector + 4.7 kΩ pull-up before Stage 2 gate opens. PENDING — new schematic revision Bill required.
+**Procedural note:** Sixth no-hearing direct acceptance. Cases 3–7 precedent applied. First contested Debate Point resolved under Option B (Justice stated preference for DS18B20 on calibration accuracy grounds at the device's self-install constraint).
+**Police violations resolved:** ARTICLE-II-VIOLATION (commit acddbff — schematic files), ARTICLE-II-VIOLATION (commit acddbff — src/kicad_integration.py), AMENDMENT-2-VIOLATION (toolchain_config.md Stage 1 status — fixed 2026-05-19 concurrently).
+**Enacted bill:** Bill 5 — Retroactive Authorization Stage 2 KiCad Schematic + Signal Traceability Module (`docs/governance/bills/stage2-schematic.md`).
+**Implementation branch:** schematics (already committed)
+
+---
+
 ## Frozen Precedents
 
 ### Case 1: XIAO nRF52840 Sense — Platform Resolution for xiaoblesense Board ID
