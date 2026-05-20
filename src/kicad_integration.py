@@ -40,8 +40,8 @@ SIGNAL_TO_NET: dict[str, str] = {
     "imu_gyro_y":     "SDA",
     "imu_gyro_z":     "SDA",
     "ct_current_rms": "ADC_CT",
-    # DS18B20 OneWire — no authorized net in rev 0.1; correctly MISSING until rev 0.2 (Bill 5 Option B)
-    "outside_temp":   "OUTSIDE_TEMP",
+    # DS18B20 OneWire — ONEWIRE net: J_DS18B20 pin 2 → P0.29. Rev 0.2 (Bill 6 / Case 9).
+    "outside_temp":   "ONEWIRE",
     # On-board XIAO routing — no external net in ComfortSense PCB; correctly MISSING
     "microphone":     "PDM_DATA",
 }

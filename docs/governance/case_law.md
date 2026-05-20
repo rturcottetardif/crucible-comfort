@@ -222,6 +222,24 @@ authorizing it.
 
 ---
 
+### Case 9: Bill 6 — Schematic Rev 0.2: DS18B20 OneWire Replaces NTC Sub-circuit
+
+**Date:** 2026-05-19
+**Positions:** A — Bill 6 as drafted (all points uncontested) | B — none raised; Justice direct acceptance per Cases 3–8 procedural precedent.
+**Prevailing position:** A
+**Justice's ruling:** Bill 6 enacts as drafted. All three pre-flagged debate points accepted as uncontested. Case 8 Condition 3 is closed. Pin assignment error from rev 0.1 (ADC_CT on D0/A0, ADC_TEMP on D1/A1) corrected concurrently to match toolchain_config.md (ADC_CT on D2/P0.28, ONEWIRE on D3/P0.29). The human engineer confirmed the existing schematics were exploratory smoke-test preparation — this revision is the first constitutionally sound complete schematic.
+**Physical/empirical basis:** Case 8 ruling grounds DS18B20 architecture. toolchain_config.md Pin Map (LOCKED 2026-04-20) grounds pin assignments D2/P0.28 = CT_CURRENT and D3/P0.29 = OUTSIDE_TEMP.
+**Conditions:**
+1. `hardware/comfortsense.kicad_sch` regenerated at rev 0.2 via `scripts/gen_schematic.py`. DONE.
+2. `src/kicad_integration.py` SIGNAL_TO_NET updated: `"outside_temp": "ONEWIRE"`. DONE.
+3. `docs/device_context.md` BOM section must be populated before Stage 2 gate (carries forward from Case 8 Condition 2). PENDING — human action.
+**Procedural note:** Seventh no-hearing direct acceptance.
+**Closes:** Case 8 Condition 3.
+**Enacted bill:** Bill 6 — Schematic Rev 0.2 DS18B20 (`docs/governance/bills/stage2-schematic-rev2.md`).
+**Implementation branch:** main (direct — implements pre-decided Case 8 ruling)
+
+---
+
 ### Case 8: Bill 5 — Retroactive Authorization: Stage 2 KiCad Schematic, PCB Layout, and Signal Traceability Module
 
 **Date:** 2026-05-19

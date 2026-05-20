@@ -6,7 +6,7 @@ Extracts symbol definitions from the installed KiCad 10 libraries and assembles
 a single-sheet schematic for the ComfortSense HVAC filter monitor, covering:
   - Seeed XIAO nRF52840 Sense module (J1 left / J2 right connectors)
   - CT current-sensing circuit (J_CT, CT1, R_burden, C_bypass)
-  - NTC temperature circuit (J_TEMP, TH1, R_divider)
+  - DS18B20 OneWire temperature probe (J_DS18B20, R_OW pull-up)  [rev 0.2]
   - I2C pull-up resistors (R_SDA, R_SCL)
   - Battery input (J_BAT, +BATT / GND / +3V3 rails)
 
@@ -206,7 +206,7 @@ def no_connect(x, y):
 #  [Battery J_BAT]          [I2C pull-ups R3/R4]
 #                [XIAO Left J1]  [XIAO Right J2]
 #  [CT input J_CT] [CT1 transformer] [R_burden] [C_bypass]
-#  [Temp J_TEMP] [TH1 thermistor] [R_divider]
+#  [J_DS18B20 connector] [R_OW pull-up]
 #
 
 def build_schematic() -> str:
@@ -215,9 +215,9 @@ def build_schematic() -> str:
         ("Device", "R"),
         ("Device", "C"),
         ("Device", "Transformer_1P_1S"),
-        ("Device", "Thermistor_NTC"),
         ("Connector_Generic", "Conn_01x07"),
         ("Connector_Generic", "Conn_01x02"),
+        ("Connector_Generic", "Conn_01x03"),
         ("power", "GND"),
         ("power", "+3V3"),
         ("power", "+BATT"),
@@ -249,13 +249,13 @@ def build_schematic() -> str:
                               ref_offset=(5, -9), val_offset=(5, -11)))
     px = j1_x - 5.08
     pin_y = [j1_y + dy for dy in (7.62, 5.08, 2.54, 0, -2.54, -5.08, -7.62)]
-    # Pin 1 D0/A0 → ADC_CT net
-    elements.append(net_label("ADC_CT",   px, pin_y[0], rot=180))
-    # Pin 2 D1/A1 → ADC_TEMP net
-    elements.append(net_label("ADC_TEMP", px, pin_y[1], rot=180))
-    # Pins 3, 4 not connected
-    elements.append(no_connect(px, pin_y[2]))
-    elements.append(no_connect(px, pin_y[3]))
+    # Pins 1, 2 (D0/A0, D1/A1) not connected
+    elements.append(no_connect(px, pin_y[0]))
+    elements.append(no_connect(px, pin_y[1]))
+    # Pin 3 D2/P0.28 → ADC_CT net (CT_CURRENT per toolchain_config.md)
+    elements.append(net_label("ADC_CT",  px, pin_y[2], rot=180))
+    # Pin 4 D3/P0.29 → ONEWIRE net (OUTSIDE_TEMP / DS18B20 per toolchain_config.md)
+    elements.append(net_label("ONEWIRE", px, pin_y[3], rot=180))
     # Pin 5 D4/SDA
     elements.append(net_label("SDA", px, pin_y[4], rot=180))
     # Pin 6 D5/SCL
@@ -373,46 +373,37 @@ def build_schematic() -> str:
     elements.append(power_sym("GND", c1_x, ct_sb[1] + 2.54 + 2.54, rot=180))
     elements.append(wire(c1_x, ct_sb[1] + 2.54, c1_x, ct_sb[1] + 2.54 + 2.54))
 
-    # ── NTC temperature sensing circuit ───────────────────────────────────────
-    # Voltage divider: +3V3 → TH1 (NTC) → R_divider → GND
-    # Midpoint (TH1/R2 junction) → ADC_TEMP
-    # Thermistor_NTC pin offsets: pin1=(0,+3.81), pin2=(0,−3.81) [same as R]
-    th_x, th_y = 70.0, 145.0
-    elements.append(sym_inst("Device:Thermistor_NTC", th_x, th_y, 0, "TH1", "NTC 10k",
+    # ── DS18B20 OneWire temperature probe (rev 0.2 — replaces NTC sub-circuit) ──
+    # J_DS18B20: 3-pin connector — pin1=VCC, pin2=DATA/ONEWIRE, pin3=GND
+    # R_OW: 4.7 kΩ pull-up, +3V3 → ONEWIRE net (DS18B20 open-drain DATA line)
+    # ONEWIRE net connects to J1 D3/P0.29 (OUTSIDE_TEMP per toolchain_config.md)
+    # Bill 6 / Case 9 — implements Case 8 Condition 3 (DS18B20 Option B)
+    jds_x, jds_y = 45.0, 143.0
+    elements.append(sym_inst("Connector_Generic:Conn_01x03", jds_x, jds_y, 0,
+                              "J_DS18B20", "DS18B20 Temp Probe",
+                              footprint="Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical",
+                              ref_offset=(3, -4), val_offset=(3, 4)))
+    jds_px = jds_x - 5.08
+    # pin 1 (VCC) → +3V3
+    elements.append(power_sym("+3V3", jds_px, jds_y + 5.08 + 2.54, rot=0))
+    elements.append(wire(jds_px, jds_y + 5.08, jds_px, jds_y + 5.08 + 2.54))
+    # pin 2 (DATA) → ONEWIRE net label
+    elements.append(net_label("ONEWIRE", jds_px, jds_y, rot=180))
+    # pin 3 (GND) → GND
+    elements.append(power_sym("GND", jds_px, jds_y - 5.08 - 2.54, rot=180))
+    elements.append(wire(jds_px, jds_y - 5.08, jds_px, jds_y - 5.08 - 2.54))
+
+    # R_OW: 4.7 kΩ pull-up resistor (vertical: pin1=top=+3V3, pin2=bottom=ONEWIRE)
+    row_x, row_y = 70.0, 138.0
+    elements.append(sym_inst("Device:R", row_x, row_y, 0, "R_OW", "4.7k",
                               footprint="Resistor_SMD:R_0402_1005Metric",
                               ref_offset=(1.5, 0), val_offset=(-1.5, 0)))
-    # TH1 pin1 → +3V3
-    elements.append(power_sym("+3V3", th_x, th_y + 3.81 + 2.54, rot=0))
-    elements.append(wire(th_x, th_y + 3.81, th_x, th_y + 3.81 + 2.54))
-    # TH1 pin2 (−3.81) → midpoint
-
-    # R2 voltage divider (10k) below TH1
-    r2_x, r2_y = th_x, th_y + 12.0
-    elements.append(sym_inst("Device:R", r2_x, r2_y, 0, "R2", "10k",
-                              footprint="Resistor_SMD:R_0402_1005Metric",
-                              ref_offset=(1.5, 0), val_offset=(-1.5, 0)))
-    # R2 pin1 → TH1 pin2 (midpoint)
-    elements.append(wire(th_x, th_y - 3.81, r2_x, r2_y + 3.81))
-    # Midpoint label (between TH1 and R2)
-    mid_y = (th_y - 3.81 + r2_y + 3.81) / 2
-    elements.append(wire(th_x, mid_y, th_x + 5, mid_y))
-    elements.append(net_label("ADC_TEMP", th_x + 5, mid_y))
-    # R2 pin2 → GND
-    elements.append(power_sym("GND", r2_x, r2_y - 3.81 - 2.54, rot=180))
-    elements.append(wire(r2_x, r2_y - 3.81, r2_x, r2_y - 3.81 - 2.54))
-
-    # Temp sensor input connector (J_TEMP) left of TH1
-    jtemp_x, jtemp_y = 45.0, 145.0
-    elements.append(sym_inst("Connector_Generic:Conn_01x02", jtemp_x, jtemp_y, 0,
-                              "J_TEMP", "Temp Sensor",
-                              footprint="Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
-                              ref_offset=(3, -3), val_offset=(3, 3)))
-    jtemp_px = jtemp_x - 5.08
-    # wire J_TEMP pin1 → TH1 pin1 (+3V3 rail)
-    elements.append(wire(jtemp_px, jtemp_y + 2.54, th_x, th_y + 3.81))
-    # wire J_TEMP pin2 → GND
-    elements.append(wire(jtemp_px, jtemp_y - 2.54, jtemp_px, jtemp_y - 2.54 - 2.54))
-    elements.append(power_sym("GND", jtemp_px, jtemp_y - 2.54 - 2.54, rot=180))
+    # R_OW pin1 (top) → +3V3
+    elements.append(power_sym("+3V3", row_x, row_y + 3.81 + 2.54, rot=0))
+    elements.append(wire(row_x, row_y + 3.81, row_x, row_y + 3.81 + 2.54))
+    # R_OW pin2 (bottom) → ONEWIRE net label
+    elements.append(wire(row_x, row_y - 3.81, row_x + 5.0, row_y - 3.81))
+    elements.append(net_label("ONEWIRE", row_x + 5.0, row_y - 3.81))
 
     # ── Assemble schematic ────────────────────────────────────────────────────
     body = "\n".join(elements)
@@ -427,9 +418,9 @@ def build_schematic() -> str:
   (title_block
     (title "ComfortSense HVAC Filter Monitor")
     (date "2026-05-19")
-    (rev "0.1")
+    (rev "0.2")
     (company "CrucibleStudio")
-    (comment 1 "nRF52840 Sense + CT current sensor + NTC thermistor")
+    (comment 1 "nRF52840 Sense + CT current sensor + DS18B20 OneWire temperature probe")
     (comment 2 "KiCad MCP server integration — generated by scripts/gen_schematic.py")
   )
   (lib_symbols
