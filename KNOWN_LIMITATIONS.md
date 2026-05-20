@@ -59,9 +59,16 @@ These are on the roadmap. For now, document them manually in your project's `too
 
 ## hw-advisor Limitations
 
-### Reads BOM and schematic in text/markdown form only
+### KiCad schematic parsing available; kicad-cli export requires upgrade
 
-The hw-advisor agent currently reads BOM tables in Markdown format and pin maps in text. It cannot parse KiCad `.kicad_sch` files, Altium schematics, or Eagle `.sch` files directly. Export your schematic as a netlist or describe the key connections in the `toolchain_config.md` pin map section for hw-advisor to use.
+hw-advisor can now parse KiCad `.kicad_sch` files directly via the `kicad` MCP
+server (`.claude/mcp/kicad/`). BOM, netlist, power rail, and component lookup
+work without any external tools — place your `.kicad_sch` file in `hardware/`.
+
+Export (SVG/PDF), ERC, PCB image, and DRC require kicad-cli (KiCad 7.0+). The
+macOS KiCad 6.x does not include kicad-cli. Upgrade: `brew install --cask kicad`.
+
+Altium and Eagle formats are not supported.
 
 ### Suggestions are grounded in test results — not datasheet analysis
 
@@ -91,7 +98,7 @@ Crucible does not address regulatory requirements (FCC, CE, FDA 510(k), EU MDR, 
 |----------------|--------|
 | CI server integration guide | Not written |
 | Generic field data replay pipeline | Not written |
-| KiCad schematic parser for hw-advisor | Not written |
+| KiCad schematic parser for hw-advisor | IMPLEMENTED (0.2.0) — see `.claude/mcp/kicad/` |
 | Multi-team governance exercise results | Not validated |
 | Second device example (smart home sensor) | Skeleton only |
 | Bench instrument calibration tracking | Not implemented |

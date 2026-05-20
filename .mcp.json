@@ -3,6 +3,10 @@
     "xiao-nrf52840-sense": {
       "command": "python3",
       "args": [".claude/mcp/xiao_nrf52840_sense/server.py"]
+    },
+    "kicad": {
+      "command": "python3",
+      "args": [".claude/mcp/kicad/server.py"]
     }
   }
 }

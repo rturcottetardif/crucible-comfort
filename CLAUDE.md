@@ -40,7 +40,7 @@ docs/toolchain_config.md            ← active board, FQBN, pins, libs, blocked 
 crucible/                           ← infrastructure Python (no domain knowledge)
 src/                                ← generated project Python (events, analysis, plot)
                                       run /toolchain scaffold to create this directory
-.claude/agents/                     ← 17 agent definitions
+.claude/agents/                     ← 20 agent definitions
 .claude/commands/                   ← 10 slash command definitions
 ONBOARDING.md                       ← workflow maps and flowcharts
 ```
@@ -67,7 +67,7 @@ hard stop.
 
 ---
 
-## The agent roster (17 agents)
+## The agent roster (20 agents)
 
 ### Judicial Branch
 | Agent | Role |
@@ -89,8 +89,11 @@ hard stop.
 | Agent | Role |
 |---|---|
 | `sw-advisor` | Algorithm suggestions grounded in simulation profile evidence |
-| `hw-advisor` | Hardware suggestions grounded in test results and BOM |
+| `hw-advisor` | Coordinator — hardware suggestions grounded in test results and BOM; spawns schematic sub-agents |
 | `bill-drafter` | Produces complete, debate-ready Bills from evidence |
+| `schematic-correctness` | Datasheet + application note compliance audit for schematic components |
+| `schematic-layout` | Schematic drawing conventions and readability audit |
+| `schematic-verifier` | Cross-checks schematic against physical truth: pin map, BOM, signal inventory, test results |
 
 ### Bureaucracy — Housekeeping
 | Agent | Role |
