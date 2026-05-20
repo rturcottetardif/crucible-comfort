@@ -95,43 +95,46 @@ during Stage 1 simulation and Stage 2 HIL.
 
 ## Bill of Materials (BOM)
 
-> Component-level record. Every component that touches a domain primitive must be here.
-> Include part number, value/spec, supplier, and any substitution notes.
-> Delete this instruction block and replace with your actual BOM.
-
 | Ref | Component | Part Number | Value / Spec | Supplier | Notes |
 |-----|-----------|-------------|--------------|----------|-------|
-| U1  | [MCU board] | — | — | — | [e.g., must be Sense variant] |
-| U2  | [Sensor] | — | [I2C addr, ODR, range] | — | — |
-| R1  | [Resistor] | — | [Ω, tolerance, power] | — | — |
-| C1  | [Capacitor] | — | [μF, voltage] | — | — |
-| J1  | [Connector] | — | — | — | — |
+| J1, J2 | XIAO nRF52840 Sense headers | — | 7-pin 2.54mm male header × 2 | — | Must be Sense variant SKU 102010469 (has IMU + mic). Standard SKU 102010448 has neither. Verify SKU sticker before flashing. |
+| J_BAT | Battery connector | JST-PH B2B-PH-K | 2-pin, 2.0mm pitch | Adafruit / DigiKey | Li-Po supply input to +BATT rail |
+| J_CT | CT sensor connector | — | 2-pin, 2.54mm pitch | — | Receives SCT-013-000 secondary leads |
+| CT1 | Split-core CT clamp | SCT-013-000 | 100A:50mA, 1:2000 ratio | YHDC / Amazon | No conductor modification; clamps around HVAC blower motor supply wire. Resolves "Current clamp — TBD" in toolchain_config.md. |
+| R1 | CT burden resistor | — | 68 Ω, 1%, 0.1W, 0402 | DigiKey / Mouser | V_CT = I_sec × 68 Ω. At I0_HEATING=4A: 0.136V rms; I0_COOLING=9A: 0.306V rms. Both within nRF52840 ADC 3.6V full-scale. |
+| C1 | CT anti-alias capacitor | — | 100 nF, 10V, 0402 | DigiKey / Mouser | RC f_c ≈ 23.4 kHz with R1; attenuates noise above FS_CT_HZ=600 Hz Nyquist (Bill 3). |
+| R3 | I2C SDA pull-up | — | 10 kΩ, 1%, 0402 | DigiKey / Mouser | LSM6DS3TR-C SDA. Within Fast Mode (400 kHz) spec per [S2]. Validated Gate 0.2. |
+| R4 | I2C SCL pull-up | — | 10 kΩ, 1%, 0402 | DigiKey / Mouser | LSM6DS3TR-C SCL. Same derivation as R3. P0.27 = NFC2 pin — configure as GPIO. |
+| J_DS18B20 | DS18B20 probe connector | — | 3-pin, 2.54mm pitch (VCC / DATA / GND) | — | Waterproof probe cable entry. Replaces J_TEMP + NTC circuit (Bill 6 / Case 9). |
+| R_OW | OneWire pull-up | — | 4.7 kΩ, 1%, 0402 | DigiKey / Mouser | DS18B20 DATA open-drain bus pull-up to +3V3. Per DS18B20 datasheet for ≤5m cable. |
 
-**BOM revision:** [vX.Y — YYYY-MM-DD]  
-**Known substitution constraints:**  
-- [e.g., "U2: LSM6DS3TR-C only — LSM6DSO has different WHO_AM_I and I2C timing"]
+**BOM revision:** v0.2 — 2026-05-19 (Bills 5 + 6; Cases 8 + 9)
+**Known substitution constraints:**
+- J1/J2: XIAO nRF52840 **Sense** only — standard XIAO nRF52840 has no IMU or microphone and is physically identical. Verify SKU 102010469.
+- CT1: SCT-013-000 (100A:50mA, 1:2000) only — a different ratio changes the burden resistor calculation. I0_HEATING and I0_COOLING constants (Bill 1) are calibrated to SCT-013-000 characteristics.
+- R_OW: 4.7 kΩ nominal. DS18B20 datasheet allows 4.7 kΩ ± 20% for cable ≤5m. For longer runs, reduce to 2.2 kΩ.
 
 ---
 
 ## Circuit Notes
 
-> Key connections, power rail topology, and any physical issues found during bring-up.
-> Include anything an attorney might need to argue a signal-path or power-budget hearing.
-
 ### Power topology
-- [e.g., "3.3V from on-board LDO via P1.08 software-switched power pin"]
-- [e.g., "Battery: 3.7V Li-Po → USB-C charging via onboard PMIC"]
+- +3V3 from XIAO onboard LDO (USB-C 5V or Li-Po via +BATT rail).
+- IMU powered via P1.08 (software-switched) — drive HIGH and wait ≥45ms before first I2C read.
+- 3.3V LDO can brown out during BLE TX if Li-Po < 3.5V → mid-session IMU reset possible.
 
 ### Key signal paths
-- [e.g., "IMU: I2C on SDA=P0.07 / SCL=P0.27, address 0x6A, INT1=P0.11"]
-- [e.g., "LED RGB: P0.26 (red), P0.30 (green), P0.06 (blue) — active LOW"]
+- **IMU:** I2C on SDA=P0.07 / SCL=P0.27, addr 0x6A, INT1=P0.11 (DRDY/FIFO watermark at 1.66 kHz ODR)
+- **CT current:** ADC on P0.28 (D2) via R1=68Ω burden + C1=100nF anti-alias → net ADC_CT
+- **Outside temp:** DS18B20 OneWire on P0.29 (D3) with R_OW=4.7kΩ pull-up → net ONEWIRE
+- **Microphone:** PDM on-board (XIAO internal routing — no external net on ComfortSense PCB)
 
 ### Known circuit issues
-- [e.g., "P0.27 is also the NFC antenna pin — configure as GPIO before use"]
-- [e.g., "IMU power pin must be asserted HIGH ≥ 5ms before first I2C transaction"]
+- P0.27 (IMU_SCL) is the NFC2 antenna pin by default — configure as GPIO before use. Arduino core handles automatically; Zephyr/nRF SDK must disable NFCT.
+- USB-C CDC serial may take 2–5s to re-enumerate after soft reset.
 
-**Schematic revision:** [vX.Y — YYYY-MM-DD]  
-**Schematic file:** [path or URL, or "not yet committed"]
+**Schematic revision:** v0.2 — 2026-05-19
+**Schematic file:** `hardware/comfortsense.kicad_sch`
 
 ---
 
