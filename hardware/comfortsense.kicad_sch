@@ -2,7 +2,7 @@
   (version 20250114)
   (generator "comfortsense_gen")
   (generator_version "1.0")
-  (uuid "2c6903ca-afaf-45f7-96be-51c6bf331340")
+  (uuid "59e2494c-9978-46b0-8a59-4705371bd4ba")
   (paper "A3")
   (title_block
     (title "ComfortSense HVAC Filter Monitor")
@@ -1726,7 +1726,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "a5754081-75f3-4c51-881f-046aa894f23e")
+    (uuid "60f7a8e6-ccfd-462d-a917-d9167a535004")
     (property "Reference" "J_BAT"
       (at 38.0000 152.0000 0)
       (effects
@@ -1755,7 +1755,7 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "J_BAT")
           (unit 1)
         )
@@ -1764,44 +1764,44 @@
   )
   (symbol
     (lib_id "power:+BATT")
-    (at 29.9200 155.0000 0)
+    (at 29.9200 152.4600 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "087d0ca8-2226-49b9-9c06-3117379399a3")
+    (uuid "7b4fd48e-84cb-4f38-a28f-361542719d64")
     (property "Reference" "#PWR001"
-      (at 29.9200 155.0000 0)
+      (at 29.9200 152.4600 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Value" "+BATT"
-      (at 31.4200 155.0000 0)
+      (at 31.4200 152.4600 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" ""
-      (at 29.9200 155.0000 0)
+      (at 29.9200 152.4600 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 29.9200 155.0000 0)
+      (at 29.9200 152.4600 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
-    (pin "1" (uuid "d56ed431-bf61-4abe-9a1f-ab201d3a6d85"))
+    (pin "1" (uuid "a9e206c1-7b2c-407f-a6f6-4be8dc936a6f"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR001")
           (unit 1)
         )
@@ -1810,44 +1810,44 @@
   )
   (symbol
     (lib_id "power:GND")
-    (at 29.9200 155.0000 180)
+    (at 29.9200 157.5400 180)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "0079fa0a-a2de-4814-9168-129f68a32c46")
+    (uuid "70908664-1e9b-40c4-8dc8-831165cf42bb")
     (property "Reference" "#PWR002"
-      (at 29.9200 155.0000 0)
+      (at 29.9200 157.5400 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Value" "GND"
-      (at 31.4200 155.0000 0)
+      (at 31.4200 157.5400 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" ""
-      (at 29.9200 155.0000 0)
+      (at 29.9200 157.5400 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 29.9200 155.0000 0)
+      (at 29.9200 157.5400 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
-    (pin "1" (uuid "de3586a9-6ba3-4e2f-94db-cc7af1ca71d6"))
+    (pin "1" (uuid "c515c258-099c-47e6-b38c-8d00f779664e"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR002")
           (unit 1)
         )
@@ -1862,7 +1862,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "44d30275-222f-436a-aeb7-eaca29a9f9b5")
+    (uuid "b31dbd91-ad01-4d9f-ab8c-652d698c91b1")
     (property "Reference" "J1"
       (at 125.0000 106.0000 0)
       (effects
@@ -1891,22 +1891,29 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "J1")
           (unit 1)
         )
       )
     )
   )
-  (no_connect (at 114.9200 122.6200) (uuid "5f0f33d6-3f7d-4aa0-b735-f0bf4a6e0d36"))
-  (no_connect (at 114.9200 120.0800) (uuid "4d03b312-988e-4064-a4bb-0ace2482ae69"))
-  (label "ADC_CT"
+  (no_connect (at 114.9200 122.6200) (uuid "bb515451-62b2-4a2f-acc0-64f8c362e65d"))
+  (label "SCL"
+    (at 114.9200 120.0800 180)
+    (effects
+      (font (size 1.27 1.27))
+      (justify left bottom)
+    )
+    (uuid "c33624ca-2e3d-4e99-8cd5-2b7517aa7c1b")
+  )
+  (label "SDA"
     (at 114.9200 117.5400 180)
     (effects
       (font (size 1.27 1.27))
       (justify left bottom)
     )
-    (uuid "913da211-0c66-401e-981d-7d278be92dbc")
+    (uuid "dfd05a70-d6ab-4a0a-a965-2b4e94133d05")
   )
   (label "ONEWIRE"
     (at 114.9200 115.0000 180)
@@ -1914,25 +1921,18 @@
       (font (size 1.27 1.27))
       (justify left bottom)
     )
-    (uuid "3ad29209-3c26-4b70-89c9-3d3432ae261a")
+    (uuid "5298317a-a4a6-42ed-a0f6-36d3d924a304")
   )
-  (label "SDA"
+  (label "ADC_CT"
     (at 114.9200 112.4600 180)
     (effects
       (font (size 1.27 1.27))
       (justify left bottom)
     )
-    (uuid "92324a03-20ff-4058-b2a9-6f62ed9709b9")
+    (uuid "1c767f16-f950-40ee-a832-53e1707b91ff")
   )
-  (label "SCL"
-    (at 114.9200 109.9200 180)
-    (effects
-      (font (size 1.27 1.27))
-      (justify left bottom)
-    )
-    (uuid "d8cc772f-d582-4bd4-9e36-460383a3a47f")
-  )
-  (no_connect (at 114.9200 107.3800) (uuid "26f7ee9b-2e3c-455d-adc2-3130a5be7d8d"))
+  (no_connect (at 114.9200 109.9200) (uuid "0ca27d2d-3326-4df2-ac4e-8e563e75af9b"))
+  (no_connect (at 114.9200 107.3800) (uuid "db851022-93c0-452c-b895-eeaddaf6189a"))
   (symbol
     (lib_id "Connector_Generic:Conn_01x07")
     (at 150.0000 115.0000 180)
@@ -1941,7 +1941,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "c45441cb-270a-4a93-bafa-157d257e57dd")
+    (uuid "2da0a227-61fb-4842-a43b-b304d73263ad")
     (property "Reference" "J2"
       (at 145.0000 106.0000 0)
       (effects
@@ -1970,7 +1970,7 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "J2")
           (unit 1)
         )
@@ -1979,191 +1979,176 @@
   )
   (symbol
     (lib_id "power:+BATT")
-    (at 155.0800 104.8400 0)
+    (at 155.0800 122.6200 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "9570cc95-c377-47dd-8f6b-1247a04e4dd2")
+    (uuid "1818e500-3473-47e8-8944-d2dc177508b4")
     (property "Reference" "#PWR003"
-      (at 155.0800 104.8400 0)
+      (at 155.0800 122.6200 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Value" "+BATT"
-      (at 156.5800 104.8400 0)
+      (at 156.5800 122.6200 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" ""
-      (at 155.0800 104.8400 0)
+      (at 155.0800 122.6200 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 155.0800 104.8400 0)
+      (at 155.0800 122.6200 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
-    (pin "1" (uuid "b776c027-da8a-48d4-ab56-7da7c7e3535b"))
+    (pin "1" (uuid "b831d0ce-a1a7-4b25-a64f-abd61f146938"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR003")
           (unit 1)
         )
       )
     )
   )
-  (wire
-    (pts (xy 155.0800 107.3800) (xy 155.0800 104.8400))
-    (stroke (width 0) (type default))
-    (uuid "1dd68f6c-0081-41e2-9261-a9b9bb43fd3f")
-  )
   (symbol
     (lib_id "power:GND")
-    (at 155.0800 112.4600 180)
+    (at 155.0800 120.0800 180)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "1003726a-d24e-49bb-b9ee-78ee63ec7561")
+    (uuid "d8bb91a8-358c-4de5-ae98-a7a754c8d2aa")
     (property "Reference" "#PWR004"
-      (at 155.0800 112.4600 0)
+      (at 155.0800 120.0800 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Value" "GND"
-      (at 156.5800 112.4600 0)
+      (at 156.5800 120.0800 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" ""
-      (at 155.0800 112.4600 0)
+      (at 155.0800 120.0800 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 155.0800 112.4600 0)
+      (at 155.0800 120.0800 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
-    (pin "1" (uuid "216c9eba-d364-46d1-9352-8088264f20dc"))
+    (pin "1" (uuid "b1b8a3be-312e-40b4-a0f2-eb37a4e8f08f"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR004")
           (unit 1)
         )
       )
     )
   )
-  (wire
-    (pts (xy 155.0800 109.9200) (xy 155.0800 112.4600))
-    (stroke (width 0) (type default))
-    (uuid "b6182457-5343-43d6-b80c-8afc68fc476e")
-  )
   (symbol
     (lib_id "power:+3V3")
-    (at 155.0800 109.9200 0)
+    (at 155.0800 117.5400 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "8c11699a-c8cb-4b56-a579-1d7d9772eed2")
+    (uuid "fb069f6e-036a-4e64-a831-2b32b87c1b21")
     (property "Reference" "#PWR005"
-      (at 155.0800 109.9200 0)
+      (at 155.0800 117.5400 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Value" "+3V3"
-      (at 156.5800 109.9200 0)
+      (at 156.5800 117.5400 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" ""
-      (at 155.0800 109.9200 0)
+      (at 155.0800 117.5400 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 155.0800 109.9200 0)
+      (at 155.0800 117.5400 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
-    (pin "1" (uuid "fab5b02f-8135-49bb-b7de-d65db1d808bf"))
+    (pin "1" (uuid "73045489-6e41-4c53-bdd7-1e24bd0a3c81"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR005")
           (unit 1)
         )
       )
     )
   )
-  (wire
-    (pts (xy 155.0800 112.4600) (xy 155.0800 109.9200))
-    (stroke (width 0) (type default))
-    (uuid "7249c010-a658-4937-b638-d181449c5b69")
-  )
-  (no_connect (at 155.0800 115.0000) (uuid "6e0a3d56-8fbf-46c4-8b36-3924385ae2f0"))
-  (no_connect (at 155.0800 117.5400) (uuid "4fd70960-0705-4c85-ab7d-ed56c2b187b4"))
-  (no_connect (at 155.0800 120.0800) (uuid "32be8431-f28f-40c9-87ab-8513ca4ccde9"))
-  (no_connect (at 155.0800 122.6200) (uuid "ab97d3e7-a494-4691-983e-fa0fbd2f1cda"))
+  (no_connect (at 155.0800 115.0000) (uuid "89782427-3432-450e-91e3-63ed7463aa87"))
+  (no_connect (at 155.0800 112.4600) (uuid "74701b3e-d8d9-4066-95f5-569f1f70fd76"))
+  (no_connect (at 155.0800 109.9200) (uuid "914aa616-25c5-4824-9f1e-ff7ce5ccc2c3"))
+  (no_connect (at 155.0800 107.3800) (uuid "61d53a22-0ca7-42e6-a4e1-ec41c6f955c1"))
   (symbol
     (lib_id "Device:R")
-    (at 114.9200 102.4600 0)
+    (at 88.0000 97.0000 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "316bc5c3-865d-40b5-897a-e9ae2fe53d3b")
+    (uuid "290d3ab1-2cda-4f69-8fb8-152fed061e08")
     (property "Reference" "R3"
-      (at 116.4200 102.4600 0)
+      (at 89.5000 97.0000 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Value" "10k"
-      (at 113.4200 102.4600 0)
+      (at 86.5000 97.0000 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-      (at 114.9200 102.4600 0)
+      (at 88.0000 97.0000 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 114.9200 102.4600 0)
+      (at 88.0000 97.0000 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
@@ -2171,7 +2156,7 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "R3")
           (unit 1)
         )
@@ -2180,44 +2165,44 @@
   )
   (symbol
     (lib_id "power:+3V3")
-    (at 114.9200 103.7300 0)
+    (at 88.0000 103.3500 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "5833b8f4-8216-4595-827a-6ebbf01bc1d6")
+    (uuid "f238fe61-8f2d-4468-b33d-0b2b8880a2e4")
     (property "Reference" "#PWR006"
-      (at 114.9200 103.7300 0)
+      (at 88.0000 103.3500 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Value" "+3V3"
-      (at 116.4200 103.7300 0)
+      (at 89.5000 103.3500 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" ""
-      (at 114.9200 103.7300 0)
+      (at 88.0000 103.3500 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 114.9200 103.7300 0)
+      (at 88.0000 103.3500 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
-    (pin "1" (uuid "4d4e53e3-b9a9-4c22-b80e-6139607c3ef8"))
+    (pin "1" (uuid "6e119fda-5b37-48be-a34d-95efc17069dc"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR006")
           (unit 1)
         )
@@ -2225,45 +2210,48 @@
     )
   )
   (wire
-    (pts (xy 114.9200 106.2700) (xy 114.9200 103.7300))
+    (pts (xy 88.0000 100.8100) (xy 88.0000 103.3500))
     (stroke (width 0) (type default))
-    (uuid "47cf50b4-ecf5-49f9-a811-a873277321b4")
+    (uuid "299cc7e3-9f75-4bf1-8705-5a9650da1177")
   )
-  (wire
-    (pts (xy 114.9200 98.6500) (xy 114.9200 112.4600))
-    (stroke (width 0) (type default))
-    (uuid "8e7bd051-3da1-4ba2-a3f8-6a3d139f6466")
+  (label "SDA"
+    (at 88.0000 93.1900 0)
+    (effects
+      (font (size 1.27 1.27))
+      (justify left bottom)
+    )
+    (uuid "6192a58a-5709-4c16-8c8f-c4ff6d730e49")
   )
   (symbol
     (lib_id "Device:R")
-    (at 114.9200 99.9200 0)
+    (at 99.0000 97.0000 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "6ce98738-c679-4805-9943-1af41f085e4f")
+    (uuid "7af6ad9b-7d96-4496-9193-de57f311c79b")
     (property "Reference" "R4"
-      (at 116.4200 99.9200 0)
+      (at 100.5000 97.0000 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Value" "10k"
-      (at 113.4200 99.9200 0)
+      (at 97.5000 97.0000 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" "Resistor_SMD:R_0402_1005Metric"
-      (at 114.9200 99.9200 0)
+      (at 99.0000 97.0000 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 114.9200 99.9200 0)
+      (at 99.0000 97.0000 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
@@ -2271,7 +2259,7 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "R4")
           (unit 1)
         )
@@ -2280,44 +2268,44 @@
   )
   (symbol
     (lib_id "power:+3V3")
-    (at 114.9200 101.1900 0)
+    (at 99.0000 103.3500 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "04f7053f-8eee-46e9-81d9-73a47a7f7bf8")
+    (uuid "3645d4e1-1a9c-4cfd-a185-e9fb76e0fe25")
     (property "Reference" "#PWR007"
-      (at 114.9200 101.1900 0)
+      (at 99.0000 103.3500 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Value" "+3V3"
-      (at 116.4200 101.1900 0)
+      (at 100.5000 103.3500 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" ""
-      (at 114.9200 101.1900 0)
+      (at 99.0000 103.3500 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 114.9200 101.1900 0)
+      (at 99.0000 103.3500 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
-    (pin "1" (uuid "56006b40-6612-4ec8-b649-ba2ac1df5a03"))
+    (pin "1" (uuid "ae53cb90-ff84-423d-b1d4-e3b4102c58b9"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR007")
           (unit 1)
         )
@@ -2325,14 +2313,17 @@
     )
   )
   (wire
-    (pts (xy 114.9200 103.7300) (xy 114.9200 101.1900))
+    (pts (xy 99.0000 100.8100) (xy 99.0000 103.3500))
     (stroke (width 0) (type default))
-    (uuid "1a81edda-4de9-44de-af27-baeb066ff644")
+    (uuid "42a6e029-4452-4c43-a864-ba9adf276fbd")
   )
-  (wire
-    (pts (xy 114.9200 96.1100) (xy 114.9200 109.9200))
-    (stroke (width 0) (type default))
-    (uuid "e984d732-5437-42cb-9e6a-eb6c15967dfe")
+  (label "SCL"
+    (at 99.0000 93.1900 0)
+    (effects
+      (font (size 1.27 1.27))
+      (justify left bottom)
+    )
+    (uuid "847db4b9-9c6d-4430-8386-1381bba06a4f")
   )
   (symbol
     (lib_id "Device:Transformer_1P_1S")
@@ -2342,7 +2333,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "85045bee-6141-4a68-8708-eb31b72e59e3")
+    (uuid "f2f23912-f096-4b82-9b6c-17cf5ed3498f")
     (property "Reference" "CT1"
       (at 70.0000 51.0000 0)
       (effects
@@ -2371,7 +2362,7 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "CT1")
           (unit 1)
         )
@@ -2386,7 +2377,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "700e928b-5b51-4566-9bbf-235342f0d245")
+    (uuid "f62032ad-55be-416d-bb70-3eb4b75aac2e")
     (property "Reference" "J_CT"
       (at 48.0000 57.0000 0)
       (effects
@@ -2415,7 +2406,7 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "J_CT")
           (unit 1)
         )
@@ -2425,12 +2416,12 @@
   (wire
     (pts (xy 39.9200 62.5400) (xy 59.8400 65.0800))
     (stroke (width 0) (type default))
-    (uuid "d3ebff7f-905a-41f5-a64e-c44d854ed099")
+    (uuid "8f5787a3-c543-40f4-ade3-34abea73fffc")
   )
   (wire
     (pts (xy 39.9200 57.4600) (xy 59.8400 54.9200))
     (stroke (width 0) (type default))
-    (uuid "96d5dacf-1085-472c-bbb8-7c59e1b743d7")
+    (uuid "3eca6d30-78d4-4b85-850e-e31c69d294af")
   )
   (symbol
     (lib_id "Device:R")
@@ -2440,7 +2431,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "4881b4d6-7d89-47db-a9b9-d593f57ba7e9")
+    (uuid "0efee989-32bf-49ba-b2c3-bba9ea2c69fc")
     (property "Reference" "R1"
       (at 81.6600 60.0000 0)
       (effects
@@ -2469,7 +2460,7 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "R1")
           (unit 1)
         )
@@ -2479,17 +2470,17 @@
   (wire
     (pts (xy 80.1600 63.8100) (xy 80.1600 54.9200))
     (stroke (width 0) (type default))
-    (uuid "afd49dcf-4011-4c13-acff-7d26894a7f9d")
+    (uuid "3cc0d6da-f020-4a91-8b7e-8686346bab94")
   )
   (wire
     (pts (xy 80.1600 56.1900) (xy 80.1600 65.0800))
     (stroke (width 0) (type default))
-    (uuid "79197394-77ce-44f3-bd2f-4e35197fe14f")
+    (uuid "1d33944a-aa20-4fe5-b938-e1006a2fd638")
   )
   (wire
     (pts (xy 80.1600 63.8100) (xy 85.1600 63.8100))
     (stroke (width 0) (type default))
-    (uuid "2c599e30-e3dd-4b27-8b17-02746707cc79")
+    (uuid "3f8d86d4-b0d9-4fc7-8877-e534425f7c14")
   )
   (label "ADC_CT"
     (at 85.1600 63.8100 0)
@@ -2497,12 +2488,12 @@
       (font (size 1.27 1.27))
       (justify left bottom)
     )
-    (uuid "36ed1640-5b25-4c1d-a3ae-c40b19d17848")
+    (uuid "5677aacd-7dd7-4482-9910-ad738f1012f9")
   )
   (wire
     (pts (xy 80.1600 65.0800) (xy 80.1600 67.6200))
     (stroke (width 0) (type default))
-    (uuid "acefd4de-502c-40bb-9a05-b8588d3ea73c")
+    (uuid "7b706c2b-dfa3-4425-9215-1763284eb3f3")
   )
   (symbol
     (lib_id "power:GND")
@@ -2512,7 +2503,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "5d06ac1f-f3f1-4a0d-97cc-daea91eb7d16")
+    (uuid "23adb7fe-dadb-4bce-8c46-298fab3c6303")
     (property "Reference" "#PWR008"
       (at 80.1600 67.6200 0)
       (effects
@@ -2540,10 +2531,10 @@
         (hide yes)
       )
     )
-    (pin "1" (uuid "e32ca68a-9031-4cbf-8732-9982e110a700"))
+    (pin "1" (uuid "0a4e40c4-d52d-4f69-9535-79662ef11876"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR008")
           (unit 1)
         )
@@ -2558,7 +2549,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "d4742f34-0fce-4e1f-a1e9-7f9b3a7ec84a")
+    (uuid "0a8d2df6-b018-4944-87e7-3e40b389c38f")
     (property "Reference" "C1"
       (at 89.6600 60.0000 0)
       (effects
@@ -2587,7 +2578,7 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "C1")
           (unit 1)
         )
@@ -2597,17 +2588,17 @@
   (wire
     (pts (xy 88.1600 63.8100) (xy 88.1600 54.9200))
     (stroke (width 0) (type default))
-    (uuid "1fc5697d-94d4-4437-bf21-f23f1e8ae1ba")
+    (uuid "a219008a-2e40-4e86-a880-28b075539481")
   )
   (wire
     (pts (xy 88.1600 54.9200) (xy 80.1600 54.9200))
     (stroke (width 0) (type default))
-    (uuid "bb1b7ae7-9edc-48d3-8ad3-e687a117c008")
+    (uuid "9baab7b8-6c4e-495b-a50b-e810e5e81c86")
   )
   (wire
     (pts (xy 88.1600 56.1900) (xy 88.1600 67.6200))
     (stroke (width 0) (type default))
-    (uuid "68dac243-bcbf-496e-be9b-b403035e94d1")
+    (uuid "191db99f-1a77-43d5-9b9b-4c97f10c704c")
   )
   (symbol
     (lib_id "power:GND")
@@ -2617,7 +2608,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "53373cc3-572e-4ad3-9b2b-a1c686aa36d4")
+    (uuid "91c62eba-0e02-4d50-88c7-8f8ff4ed6d09")
     (property "Reference" "#PWR009"
       (at 88.1600 70.1600 0)
       (effects
@@ -2645,10 +2636,10 @@
         (hide yes)
       )
     )
-    (pin "1" (uuid "afed070f-a5fe-4496-bb3a-17482340a523"))
+    (pin "1" (uuid "6431ba7a-4a4e-4702-b480-d36fb4c9adc9"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR009")
           (unit 1)
         )
@@ -2658,7 +2649,7 @@
   (wire
     (pts (xy 88.1600 67.6200) (xy 88.1600 70.1600))
     (stroke (width 0) (type default))
-    (uuid "16174c28-c538-4805-961b-5c63b6d6b2a9")
+    (uuid "20993b91-9e6d-4750-9c64-a56b2030609f")
   )
   (symbol
     (lib_id "Connector_Generic:Conn_01x03")
@@ -2668,7 +2659,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "e14e286b-c7bf-4e98-b7ee-617f6440ee59")
+    (uuid "29e60523-89a4-4393-b800-ed22afd76359")
     (property "Reference" "J_DS18B20"
       (at 48.0000 139.0000 0)
       (effects
@@ -2697,7 +2688,7 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "J_DS18B20")
           (unit 1)
         )
@@ -2706,54 +2697,49 @@
   )
   (symbol
     (lib_id "power:+3V3")
-    (at 39.9200 150.6200 0)
+    (at 39.9200 140.4600 0)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "264b5976-ede1-4e5e-9403-9b05aec87182")
+    (uuid "a7d0b9b7-a82b-4f38-8fbf-b5de28305c4e")
     (property "Reference" "#PWR010"
-      (at 39.9200 150.6200 0)
+      (at 39.9200 140.4600 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Value" "+3V3"
-      (at 41.4200 150.6200 0)
+      (at 41.4200 140.4600 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" ""
-      (at 39.9200 150.6200 0)
+      (at 39.9200 140.4600 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 39.9200 150.6200 0)
+      (at 39.9200 140.4600 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
-    (pin "1" (uuid "1cbb6714-37ca-4f89-aea7-1b35cd798ade"))
+    (pin "1" (uuid "4a127477-5017-4daf-bdd2-59abfedc2808"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR010")
           (unit 1)
         )
       )
     )
-  )
-  (wire
-    (pts (xy 39.9200 148.0800) (xy 39.9200 150.6200))
-    (stroke (width 0) (type default))
-    (uuid "8cb20f1d-16a7-4031-9145-0a4fcb7c87af")
   )
   (label "ONEWIRE"
     (at 39.9200 143.0000 180)
@@ -2761,58 +2747,53 @@
       (font (size 1.27 1.27))
       (justify left bottom)
     )
-    (uuid "8ac60024-ce46-4630-b832-3c9ef8c6fc32")
+    (uuid "665fc9ec-6ded-490f-a02f-2ef4e6335f7b")
   )
   (symbol
     (lib_id "power:GND")
-    (at 39.9200 135.3800 180)
+    (at 39.9200 145.5400 180)
     (unit 1)
     (exclude_from_sim no)
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "b9e1230b-e4f3-4e0d-9f67-1663fc192fba")
+    (uuid "3bbc9f41-9303-46bf-a7bd-89300992cffb")
     (property "Reference" "#PWR011"
-      (at 39.9200 135.3800 0)
+      (at 39.9200 145.5400 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Value" "GND"
-      (at 41.4200 135.3800 0)
+      (at 41.4200 145.5400 0)
       (effects
         (font (size 1.27 1.27))
       )
     )
     (property "Footprint" ""
-      (at 39.9200 135.3800 0)
+      (at 39.9200 145.5400 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
     (property "Datasheet" "~"
-      (at 39.9200 135.3800 0)
+      (at 39.9200 145.5400 0)
       (effects
         (font (size 1.27 1.27))
         (hide yes)
       )
     )
-    (pin "1" (uuid "5230f7dc-6dbc-47e0-a560-ca5af754e693"))
+    (pin "1" (uuid "dc82eec6-e05b-4a6d-bb50-3b467a4a5fae"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR011")
           (unit 1)
         )
       )
     )
-  )
-  (wire
-    (pts (xy 39.9200 137.9200) (xy 39.9200 135.3800))
-    (stroke (width 0) (type default))
-    (uuid "66ef4cd4-5983-4b23-9c52-25fa8e228ae7")
   )
   (symbol
     (lib_id "Device:R")
@@ -2822,7 +2803,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "1c7e1482-adec-4ea6-97bf-6c97a3e11381")
+    (uuid "08cd5f98-06cf-4087-8550-3e45f0265ffe")
     (property "Reference" "R_OW"
       (at 71.5000 138.0000 0)
       (effects
@@ -2851,7 +2832,7 @@
     )
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "R_OW")
           (unit 1)
         )
@@ -2866,7 +2847,7 @@
     (in_bom yes)
     (on_board yes)
     (dnp no)
-    (uuid "850ce53c-a636-4309-9dc2-2e598bcd807f")
+    (uuid "ebc4d06e-9295-4da3-b92d-8911b85ec348")
     (property "Reference" "#PWR012"
       (at 70.0000 144.3500 0)
       (effects
@@ -2894,10 +2875,10 @@
         (hide yes)
       )
     )
-    (pin "1" (uuid "92971201-13cd-40a4-aaf3-a5fa549f9090"))
+    (pin "1" (uuid "4a4e729e-3b5c-4736-87d4-01db1fe6f6be"))
     (instances
       (project "comfortsense"
-        (path "/2c6903ca-afaf-45f7-96be-51c6bf331340"
+        (path "/59e2494c-9978-46b0-8a59-4705371bd4ba"
           (reference "#PWR012")
           (unit 1)
         )
@@ -2907,12 +2888,12 @@
   (wire
     (pts (xy 70.0000 141.8100) (xy 70.0000 144.3500))
     (stroke (width 0) (type default))
-    (uuid "3d26c04e-cf3c-40ef-8c77-d4d7693a5e09")
+    (uuid "40fb9a5b-fdba-4619-b144-0e1a1347ef43")
   )
   (wire
     (pts (xy 70.0000 134.1900) (xy 75.0000 134.1900))
     (stroke (width 0) (type default))
-    (uuid "fe376f6e-912f-48cf-9aa4-df7bb9323508")
+    (uuid "ba03e140-6fc5-4a2b-a1ba-fe8e825b31c7")
   )
   (label "ONEWIRE"
     (at 75.0000 134.1900 0)
@@ -2920,6 +2901,6 @@
       (font (size 1.27 1.27))
       (justify left bottom)
     )
-    (uuid "e297b284-ed51-47f2-a931-d83a4e22c1fb")
+    (uuid "c5cd4884-c248-4295-93c3-d5ee005ae421")
   )
 )

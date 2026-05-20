@@ -203,10 +203,10 @@ def no_connect(x, y):
 #
 # Layout overview (all coords in mm, Y increases downward):
 #
-#  [Battery J_BAT]          [I2C pull-ups R3/R4]
-#                [XIAO Left J1]  [XIAO Right J2]
-#  [CT input J_CT] [CT1 transformer] [R_burden] [C_bypass]
-#  [J_DS18B20 connector] [R_OW pull-up]
+#  Y≈55-70:  [CT input J_CT (45,60)] [CT1 (70,60)] [R1 burden] [C1 bypass]
+#  Y≈87-107: [I2C R3/R4 (88-99, 97)]   [XIAO J1 (120,115)]  [XIAO J2 (150,115)]
+#  Y≈130-150:[DS18B20 J_DS18B20 (45,143)] [R_OW (70,138)]
+#  Y≈155:    [Battery J_BAT (35,155)]
 #
 
 def build_schematic() -> str:
@@ -227,16 +227,18 @@ def build_schematic() -> str:
     elements = []
 
     # ── Battery connector (J_BAT) ─────────────────────────────────────────────
-    # Conn_01x02 at (35, 155). Pin 1 (+BATT) at (29.92, 152.46), Pin 2 (GND) at (29.92, 157.54)
-    # Conn_01x02 pin offsets: pin1=(-5.08, 2.54), pin2=(-5.08, -2.54)
+    # Conn_01x02 at (35, 155).
+    # Library pin local coords → global (local_y flipped): pin1=(-5.08,+2.54) → (29.92, 152.46) TOP
+    #                                                       pin2=(-5.08,-2.54) → (29.92, 157.54) BOTTOM
     jbat_x, jbat_y = 35.0, 155.0
     elements.append(sym_inst("Connector_Generic:Conn_01x02", jbat_x, jbat_y, 0,
                               "J_BAT", "Battery JST-PH",
                               footprint="Connector_JST:JST_PH_B2B-PH-K_1x02_P2.00mm_Vertical",
                               ref_offset=(3, -3), val_offset=(3, 3)))
-    # pin 1 at (jbat_x - 5.08, jbat_y + 2.54) = (29.92, 157.54)
-    elements.append(power_sym("+BATT", jbat_x - 5.08, jbat_y + 2.54 - 2.54, rot=0))
-    elements.append(power_sym("GND",   jbat_x - 5.08, jbat_y - 2.54 + 2.54, rot=180))
+    jbat_px = jbat_x - 5.08
+    # Place power symbols directly at pin positions — pin is at placement point
+    elements.append(power_sym("+BATT", jbat_px, jbat_y - 2.54, rot=0))   # pin 1 (top)
+    elements.append(power_sym("GND",   jbat_px, jbat_y + 2.54, rot=180)) # pin 2 (bottom)
 
     # ── XIAO nRF52840 Sense module — left 7-pin header (J1) ──────────────────
     # Conn_01x07 at (120, 115), rot=0
@@ -248,20 +250,16 @@ def build_schematic() -> str:
                               footprint="Connector_PinHeader_2.54mm:PinHeader_1x07_P2.54mm_Vertical",
                               ref_offset=(5, -9), val_offset=(5, -11)))
     px = j1_x - 5.08
+    # pin_y[0]=j1_y+7.62 (largest y = bottom = pin 7 TX)
+    # pin_y[6]=j1_y-7.62 (smallest y = top  = pin 1 D0/A0)
     pin_y = [j1_y + dy for dy in (7.62, 5.08, 2.54, 0, -2.54, -5.08, -7.62)]
-    # Pins 1, 2 (D0/A0, D1/A1) not connected
-    elements.append(no_connect(px, pin_y[0]))
-    elements.append(no_connect(px, pin_y[1]))
-    # Pin 3 D2/P0.28 → ADC_CT net (CT_CURRENT per toolchain_config.md)
-    elements.append(net_label("ADC_CT",  px, pin_y[2], rot=180))
-    # Pin 4 D3/P0.29 → ONEWIRE net (OUTSIDE_TEMP / DS18B20 per toolchain_config.md)
-    elements.append(net_label("ONEWIRE", px, pin_y[3], rot=180))
-    # Pin 5 D4/SDA
-    elements.append(net_label("SDA", px, pin_y[4], rot=180))
-    # Pin 6 D5/SCL
-    elements.append(net_label("SCL", px, pin_y[5], rot=180))
-    # Pin 7 TX — not connected
-    elements.append(no_connect(px, pin_y[6]))
+    elements.append(no_connect(px, pin_y[0]))                     # pin 7 D6/TX
+    elements.append(net_label("SCL",    px, pin_y[1], rot=180))   # pin 6 D5/SCL P0.27
+    elements.append(net_label("SDA",    px, pin_y[2], rot=180))   # pin 5 D4/SDA P0.07
+    elements.append(net_label("ONEWIRE",px, pin_y[3], rot=180))   # pin 4 D3/P0.29
+    elements.append(net_label("ADC_CT", px, pin_y[4], rot=180))   # pin 3 D2/P0.28
+    elements.append(no_connect(px, pin_y[5]))                     # pin 2 D1/A1
+    elements.append(no_connect(px, pin_y[6]))                     # pin 1 D0/A0
 
     # ── XIAO right 7-pin header (J2) ─────────────────────────────────────────
     # Conn_01x07 at (150, 115), rot=180
@@ -274,29 +272,27 @@ def build_schematic() -> str:
                               footprint="Connector_PinHeader_2.54mm:PinHeader_1x07_P2.54mm_Vertical",
                               ref_offset=(-5, -9), val_offset=(-5, -11)))
     px2 = j2_x + 5.08
-    # With 180° rotation, original pin y-offsets are negated and pin order reverses visually
-    # Original: pin1=(−5.08,+7.62), after 180: (+5.08,−7.62)
-    # So absolute for j2 at (150,115):
-    pin_y2 = [j2_y + dy for dy in (-7.62, -5.08, -2.54, 0, 2.54, 5.08, 7.62)]
-    # Pin 1 VIN → +BATT
-    elements.append(power_sym("+BATT", px2, pin_y2[0] - 2.54, rot=0))
-    elements.append(wire(px2, pin_y2[0], px2, pin_y2[0] - 2.54))
-    # Pin 2 GND
-    elements.append(power_sym("GND", px2, pin_y2[1] + 2.54, rot=180))
-    elements.append(wire(px2, pin_y2[1], px2, pin_y2[1] + 2.54))
-    # Pin 3 3V3
-    elements.append(power_sym("+3V3", px2, pin_y2[2] - 2.54, rot=0))
-    elements.append(wire(px2, pin_y2[2], px2, pin_y2[2] - 2.54))
+    # For Conn_01x07 at rot=180, local y flips AND x flips.
+    # Library pin 1 at local(-5.08, +7.62) → global(px2, j2_y+7.62) = BOTTOM (largest y)
+    # Library pin 7 at local(-5.08, -7.62) → global(px2, j2_y-7.62) = TOP (smallest y)
+    # XIAO Right pinout top-to-bottom on PCB: D10/RX, SCK, MOSI, MISO, +3V3, GND, VIN
+    # i.e. pin 7→pin 1 from top to bottom.
+    pin_y2 = [j2_y + dy for dy in (7.62, 5.08, 2.54, 0, -2.54, -5.08, -7.62)]
+    # index 0 = j2_y+7.62 = pin 1 (VIN) at BOTTOM; index 6 = j2_y-7.62 = pin 7 (RX) at TOP
+    # Place power symbols directly at pin positions (no wires needed)
+    elements.append(power_sym("+BATT", px2, pin_y2[0], rot=0))    # pin 1 VIN
+    elements.append(power_sym("GND",   px2, pin_y2[1], rot=180))  # pin 2 GND
+    elements.append(power_sym("+3V3",  px2, pin_y2[2], rot=0))    # pin 3 +3V3
     # Pins 4-7 not connected
     for i in range(3, 7):
         elements.append(no_connect(px2, pin_y2[i]))
 
     # ── I2C pull-up resistors (R3 = SDA, R4 = SCL) ───────────────────────────
-    # Vertical resistors, pin1 at top (+3V3), pin2 at bottom (SDA/SCL label)
-    # Device:R pin offsets: pin1=(0,+3.81), pin2=(0,−3.81)
-    # Place R3 above J1 pin 5 (SDA), R4 above J1 pin 6 (SCL)
-    r3_x, r3_y = px, j1_y - 2.54 - 10.0   # above SDA pin
-    r4_x, r4_y = px, j1_y - 5.08 - 10.0   # above SCL pin
+    # Placed to the left of J1, above XIAO body, so they don't overlap.
+    # Device:R pin offsets from center: pin1=(0,+3.81) LOWER, pin2=(0,−3.81) UPPER.
+    # Pull-up wiring: pin1 (lower) → +3V3; pin2 (upper) → net label (connects to J1 by name).
+    r3_x, r3_y = 88.0, 97.0   # R3: SDA pull-up
+    r4_x, r4_y = 99.0, 97.0   # R4: SCL pull-up
 
     for rx_pos, ry_pos, rref, rnet in (
         (r3_x, r3_y, "R3", "SDA"),
@@ -305,13 +301,11 @@ def build_schematic() -> str:
         elements.append(sym_inst("Device:R", rx_pos, ry_pos, 0, rref, "10k",
                                   footprint="Resistor_SMD:R_0402_1005Metric",
                                   ref_offset=(1.5, 0), val_offset=(-1.5, 0)))
-        # pin 1 (0, +3.81) → +3V3 power
-        elements.append(power_sym("+3V3", rx_pos, ry_pos + 3.81 - 2.54, rot=0))
-        elements.append(wire(rx_pos, ry_pos + 3.81, rx_pos, ry_pos + 3.81 - 2.54))
-        # pin 2 (0, -3.81) → wire down to the connector pin
-        pin2_y = ry_pos - 3.81
-        net_y = j1_y + {"SDA": -2.54, "SCL": -5.08}[rnet]
-        elements.append(wire(rx_pos, pin2_y, rx_pos, net_y))
+        # pin1 (lower, y+3.81) → +3V3
+        elements.append(power_sym("+3V3", rx_pos, ry_pos + 3.81 + 2.54, rot=0))
+        elements.append(wire(rx_pos, ry_pos + 3.81, rx_pos, ry_pos + 3.81 + 2.54))
+        # pin2 (upper, y-3.81) → net label; net name matches J1 SDA/SCL label for connectivity
+        elements.append(net_label(rnet, rx_pos, ry_pos - 3.81, rot=0))
 
     # ── CT current-sensing circuit ────────────────────────────────────────────
     # Primary (L1/L2) faces the AC wiring, secondary faces the MCU ADC.
@@ -384,14 +378,14 @@ def build_schematic() -> str:
                               footprint="Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical",
                               ref_offset=(3, -4), val_offset=(3, 4)))
     jds_px = jds_x - 5.08
-    # pin 1 (VCC) → +3V3
-    elements.append(power_sym("+3V3", jds_px, jds_y + 5.08 + 2.54, rot=0))
-    elements.append(wire(jds_px, jds_y + 5.08, jds_px, jds_y + 5.08 + 2.54))
-    # pin 2 (DATA) → ONEWIRE net label
-    elements.append(net_label("ONEWIRE", jds_px, jds_y, rot=180))
-    # pin 3 (GND) → GND
-    elements.append(power_sym("GND", jds_px, jds_y - 5.08 - 2.54, rot=180))
-    elements.append(wire(jds_px, jds_y - 5.08, jds_px, jds_y - 5.08 - 2.54))
+    # Conn_01x03 library: pin1 at local(-5.08,+2.54) → global(jds_px, jds_y-2.54) = TOP
+    #                     pin2 at local(-5.08, 0)     → global(jds_px, jds_y)      = MID
+    #                     pin3 at local(-5.08,-2.54)  → global(jds_px, jds_y+2.54) = BOTTOM
+    # Desired: VCC(top) / DATA(mid) / GND(bottom)
+    # Place power symbols directly at pin positions for reliable net assignment.
+    elements.append(power_sym("+3V3", jds_px, jds_y - 2.54, rot=0))   # pin 1 (top) → VCC
+    elements.append(net_label("ONEWIRE", jds_px, jds_y, rot=180))       # pin 2 (mid) → DATA
+    elements.append(power_sym("GND",  jds_px, jds_y + 2.54, rot=180))  # pin 3 (bot) → GND
 
     # R_OW: 4.7 kΩ pull-up resistor (vertical: pin1=top=+3V3, pin2=bottom=ONEWIRE)
     row_x, row_y = 70.0, 138.0
