@@ -155,15 +155,22 @@ _review_process: subprocess.Popen | None = None
 _review_output: list[str] = []
 
 
+def _ts() -> str:
+    import time
+    return time.strftime("%H:%M:%S")
+
+
 @app.post("/api/review/trigger")
 async def trigger_review():
     """Start a new /advisor hw review run via claude CLI."""
     global _review_process, _review_output
     if _review_process and _review_process.poll() is None:
         return {"ok": False, "message": "Review already running"}
-    _review_output = []
-    # Invoke claude code CLI to run /advisor hw (full review)
-    # The claude CLI must be on PATH in the project's environment
+    _review_output = [
+        f"[{_ts()}] Dashboard: launching review subprocess…",
+        f"[{_ts()}] Dashboard: schematic = {SCH_SVG.name}",
+        f"[{_ts()}] Dashboard: output → docs/schematic_review/",
+    ]
     _review_process = subprocess.Popen(
         [sys.executable, "-m", "crucible.ui._review_runner"],
         cwd=str(_PROJECT_ROOT),
