@@ -1,0 +1,32 @@
+{
+  "_comment": "ComfortSense Rev 0.2 — schematic layout rules. Loaded by schematic-layout agent at startup. Any key absent here uses the agent's built-in default.",
+  "sheet": {
+    "width_mm": 297,
+    "height_mm": 210,
+    "title": "ComfortSense",
+    "company": "CrucibleStudio"
+  },
+  "power_rails": {
+    "positive_names": ["+3V3", "+BATT", "VCC", "3V3"],
+    "positive_max_y_fraction": 0.35,
+    "gnd_min_y_fraction": 0.65
+  },
+  "signal_flow": {
+    "inputs_max_x_fraction": 0.45,
+    "outputs_min_x_fraction": 0.55
+  },
+  "net_labels": {
+    "high_fanout_threshold": 4
+  },
+  "ref_designators": {
+    "ref_above_body": true,
+    "value_below_body": true
+  },
+  "connectors": {
+    "all_pins_must_be_named": true
+  },
+  "text": {
+    "min_size_mm": 1.27,
+    "preferred_size_mm": 1.5
+  }
+}

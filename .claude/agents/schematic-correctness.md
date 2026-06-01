@@ -1,7 +1,7 @@
 ---
 name: schematic-correctness
 description: "Audits KiCad schematic components against datasheet requirements and application note recommendations. Checks decoupling caps, I2C pull-ups, supply voltage ranges, ADC signal conditioning, and DC bias for AC-coupled inputs. Called by hw-advisor. Returns a structured PASS/WARN/FAIL report."
-tools: Read, mcp__kicad__read_bom, mcp__kicad__read_netlist, mcp__kicad__read_power_rails, mcp__kicad__find_component, WebSearch
+tools: Read, Write, mcp__kicad__read_bom, mcp__kicad__read_netlist, mcp__kicad__read_power_rails, mcp__kicad__find_component, WebSearch
 model: sonnet
 color: orange
 ---
@@ -92,19 +92,18 @@ Flag: AC-coupled input with no DC bias divider; bypass cap absent.
 
 **Rule:** Each IC's VDD must be within the part's operating range.
 
-**Embedded part knowledge:**
+**How to detect:**
+1. `read_bom` — list all IC components (exclude passives: R, C, L, D; exclude connectors: J).
+2. `read_power_rails` — get the voltage of each rail (use rail name as proxy: +3V3 = 3.3 V, +5V = 5 V, +BATT ≈ 3.7 V).
+3. For each IC, determine which VDD net it connects to via `read_netlist`.
+4. Look up the part's operating VDD range:
+   - First check `docs/device_context.md` BOM section — part numbers are listed there.
+   - If the range is not in device_context.md, `WebSearch` with `"<part number> datasheet supply voltage operating range"` and extract the min/max VDD from the result.
+5. Compare the rail voltage against the part's VDD range.
 
-| Part | VDD range | Project rail | Result |
-|------|-----------|--------------|--------|
-| LSM6DS3TR-C VDD | 1.71 V – 3.6 V | +3V3 | OK |
-| LSM6DS3TR-C VDDIO | 1.71 V – 3.6 V | +3V3 | OK |
-| XIAO nRF52840 Sense | 3.0–3.6 V (VIN 3.7–5.5 V) | module-internal | OK |
-| SCT-013-000 CT clamp | passive — no VDD | — | N/A |
-| NTC 10k thermistor | passive — no VDD | — | N/A |
-
-For any part NOT in the table: `WebSearch` with
-`"<part number> datasheet supply voltage operating range"` and compare against the
-schematic power rail.
+FAIL if rail voltage is outside the part's VDD range.
+WARN if rail voltage is within 10% of the min or max limit.
+PASS if comfortably within range.
 
 ---
 
@@ -129,6 +128,7 @@ Flag: any IC input pin that appears in no net.
 ### Check 1: Decoupling — <ref> (<part>)
 Status: PASS | WARN | FAIL
 Finding: <what was found in the netlist/BOM data>
+Fix: <one-line concrete change — only for WARN or FAIL>
 Rule basis: <datasheet section or specification reference>
 ```
 
@@ -143,3 +143,36 @@ Summary: N PASS, N WARN, N FAIL
 - PASS — check satisfied.
 - WARN — deviates from best practice; acceptable but hw-advisor should note it.
 - FAIL — clear violation; hw-advisor must generate a Bill.
+
+---
+
+## JSON output
+
+After completing all checks and printing the text report, write findings to
+`docs/schematic_review/correctness_findings.json` using the `Write` tool.
+
+Format — one object per check instance:
+```json
+[
+  {
+    "id": "CHK1-<ref>",
+    "source": "correctness",
+    "check": "<check name, e.g. Decoupling>",
+    "ref": "<component reference, e.g. R1>",
+    "status": "PASS|WARN|FAIL",
+    "finding": "<one-line finding>",
+    "fix": "<one-line fix, or null if PASS>",
+    "rule_basis": "<rule source>",
+    "coords": null
+  }
+]
+```
+
+`id` format: `CHK<N>-<ref>` where N is the check number (1–6) and ref is the component
+reference (e.g. `CHK1-C1`, `CHK2-R3`). For net-level checks with no single ref, use
+the net name (e.g. `CHK3-ADC_CT`).
+
+`coords` is always `null` from this agent — schematic-layout emits coordinates.
+
+Only include WARN and FAIL findings in the JSON (omit PASS). This keeps the file
+small and focused on actionable items.

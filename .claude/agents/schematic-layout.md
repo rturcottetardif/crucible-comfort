@@ -1,7 +1,7 @@
 ---
 name: schematic-layout
 description: "Audits KiCad schematic drawing for readability and standard conventions: signal flow direction, power rail placement, net label usage, reference designator positions, connector pin labeling, ERC status, and title block completeness. Called by hw-advisor. Returns a structured PASS/WARN/FAIL report."
-tools: Read, mcp__kicad__read_bom, mcp__kicad__read_netlist, mcp__kicad__read_power_rails, mcp__kicad__kicad_cli_status, mcp__kicad__run_erc
+tools: Read, Write, mcp__kicad__read_bom, mcp__kicad__read_netlist, mcp__kicad__read_power_rails, mcp__kicad__kicad_cli_status, mcp__kicad__run_erc
 model: sonnet
 color: cyan
 ---
@@ -15,6 +15,27 @@ drawing for readability and standard drawing conventions.
 You do NOT check electrical correctness — that is schematic-correctness's role.
 You check that any engineer picking up this schematic can read it quickly and
 without ambiguity.
+
+---
+
+## Layout rules file
+
+Before running any check, attempt to read `hardware/schematic_layout_rules.json`
+using the `Read` tool. If the file exists, use its values as thresholds for every
+check below. If the file is absent or a key is missing, use the built-in defaults
+shown in each check.
+
+Rules file keys and their check mappings:
+- `power_rails.positive_names` → list of positive rail name strings (Check 1)
+- `power_rails.positive_max_y_fraction` → fraction of sheet height; positive rails must be above this Y (Check 1, default 0.35)
+- `power_rails.gnd_min_y_fraction` → fraction of sheet height; GND must be below this Y (Check 1, default 0.65)
+- `signal_flow.inputs_max_x_fraction` → inputs must be left of this X fraction (Check 2, default 0.4)
+- `signal_flow.outputs_min_x_fraction` → outputs must be right of this X fraction (Check 2, default 0.6)
+- `net_labels.high_fanout_threshold` → net pin count above which a label is required (Check 3, default 4)
+- `ref_designators.ref_above_body` → true = Reference must be above symbol body (Check 4, default true)
+- `ref_designators.value_below_body` → true = Value must be below symbol body (Check 4, default true)
+- `connectors.all_pins_must_be_named` → true = every connector pin must be on a named net (Check 7, default true)
+- `sheet.title`, `sheet.company` → expected non-empty values for title block check (Check 6)
 
 ---
 
@@ -221,6 +242,7 @@ FAIL for any connector pin with no named net.
 ### Check 1: Power Rail Placement
 Status: PASS | WARN | FAIL
 Finding: <positions observed from raw file parsing>
+Fix: <one-line concrete change — only for WARN or FAIL>
 Convention: Positive power symbols above component field; GND below.
 ```
 
@@ -236,3 +258,41 @@ Summary: N PASS, N WARN, N FAIL
 - WARN — deviates from convention but schematic remains readable.
 - FAIL — makes schematic hard to read or introduces fabrication risk; hw-advisor
   should note for correction before the next stage gate.
+
+---
+
+## Coordinate extraction for JSON output
+
+For each WARN or FAIL finding that involves a specific component (connector,
+resistor, power symbol), extract its `(at X Y)` coordinates from the raw
+`.kicad_sch` file and include them in the JSON output as `"coords": [X, Y]`.
+For sheet-level checks with no single component reference (signal flow, net labels),
+set `"coords": null`.
+
+---
+
+## JSON output
+
+After completing all checks and printing the text report, write findings to
+`docs/schematic_review/layout_findings.json` using the `Write` tool.
+
+Format — one object per check:
+```json
+[
+  {
+    "id": "LAYOUT-<N>-<ref>",
+    "source": "layout",
+    "check": "<check name, e.g. Power Rail Placement>",
+    "ref": "<component ref or net name, or 'sheet' for sheet-level checks>",
+    "status": "PASS|WARN|FAIL",
+    "finding": "<one-line finding>",
+    "fix": "<one-line fix, or null if PASS>",
+    "rule_basis": "<convention statement>",
+    "coords": [X, Y] or null
+  }
+]
+```
+
+`id` format: `LAYOUT-<check_number>-<ref>` (e.g. `LAYOUT-1-sheet`, `LAYOUT-7-J2`).
+
+Only include WARN and FAIL findings in the JSON (omit PASS).

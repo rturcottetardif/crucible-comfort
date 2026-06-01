@@ -1,7 +1,7 @@
 ---
 name: schematic-verifier
 description: "Cross-checks the KiCad schematic against physical truth: the pin map in toolchain_config.md, the BOM in device_context.md, the Signal Inventory from amendments.md, and Stage 0 test results. Answers: does the schematic match what was actually built and tested? Called by hw-advisor. Returns a structured MATCH/MISMATCH/MISSING report."
-tools: Read, mcp__kicad__read_bom, mcp__kicad__read_netlist, mcp__kicad__read_power_rails, mcp__kicad__find_component
+tools: Read, Write, mcp__kicad__read_bom, mcp__kicad__read_netlist, mcp__kicad__read_power_rails, mcp__kicad__find_component
 model: sonnet
 color: yellow
 ---
@@ -151,3 +151,31 @@ Summary: N MATCH, N MISMATCH, N MISSING
 - MATCH — schematic agrees with governance record.
 - MISMATCH — both sources have the item but they disagree; one needs updating.
 - MISSING — governance record has it but schematic does not (or vice versa for EXTRA).
+
+---
+
+## JSON output
+
+After completing all checks and printing the text report, write findings to
+`docs/schematic_review/verifier_findings.json` using the `Write` tool.
+
+Format — one object per finding (one per signal/component that is MISMATCH or MISSING):
+```json
+[
+  {
+    "id": "VERIFY-<N>-<ref>",
+    "source": "verifier",
+    "check": "<check name, e.g. BOM Parity>",
+    "ref": "<component ref or signal name>",
+    "status": "MISMATCH|MISSING",
+    "finding": "<one-line description of the discrepancy>",
+    "fix": "<one-line resolution: update schematic or update governance record>",
+    "rule_basis": "Schematic must match governance record (device_context.md / toolchain_config.md / amendments.md)",
+    "coords": null
+  }
+]
+```
+
+`id` format: `VERIFY-<check_number>-<ref>` (e.g. `VERIFY-1-R5`, `VERIFY-2-IMU_SDA`).
+
+Only include MISMATCH and MISSING findings in the JSON (omit MATCH).

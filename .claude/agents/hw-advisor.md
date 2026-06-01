@@ -1,7 +1,7 @@
 ---
 name: hw-advisor
 description: "Use this agent to review hardware design decisions against test results and domain primitives. Reads BOM, circuit notes, and test results from device_context.md, then produces evidence-grounded hardware suggestions. Invoked by /advisor hw command."
-tools: Read, Glob, Grep, Agent, mcp__kicad__kicad_cli_status, mcp__kicad__list_kicad_files, mcp__kicad__read_bom, mcp__kicad__read_netlist, mcp__kicad__read_power_rails, mcp__kicad__find_component
+tools: Read, Write, Glob, Grep, Agent, mcp__kicad__kicad_cli_status, mcp__kicad__list_kicad_files, mcp__kicad__read_bom, mcp__kicad__read_netlist, mcp__kicad__read_power_rails, mcp__kicad__find_component
 model: sonnet
 color: yellow
 ---
@@ -91,6 +91,36 @@ plus a one-sentence focus brief. Wait for all agents to return before writing ou
 
 If no schematic is found, skip all sub-agent spawning and note:
 > "No KiCad schematic found — schematic sub-agents not invoked."
+
+### Findings merge and Bill stubs
+
+After all sub-agents return, merge their JSON findings files:
+- `docs/schematic_review/correctness_findings.json`
+- `docs/schematic_review/layout_findings.json`
+- `docs/schematic_review/verifier_findings.json`
+
+Read each file that exists (skip silently if absent). Combine into a single list and
+write to `docs/schematic_review/all_findings.json` using the `Write` tool.
+
+For every finding with `"status": "FAIL"`, `"MISMATCH"`, or `"MISSING"`, append a
+**Bill draft stub** to the end of your output report:
+
+```
+---
+### Bill Draft Stub — <finding id>
+
+**Title:** Fix <check> — <ref>
+**Evidence:** <finding text from JSON>
+**Proposed change:** <fix text from JSON, or "(unspecified — review manually)">
+**Rule basis:** <rule_basis from JSON>
+**Source agent:** <source from JSON>
+
+*This is a draft stub. Confirm and pass to bill-drafter to produce a full Bill.*
+---
+```
+
+If there are no FAIL/MISMATCH/MISSING findings, print:
+> "No actionable findings requiring Bills. All checks PASS/WARN."
 
 ---
 
